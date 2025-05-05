@@ -1,6 +1,7 @@
 ---
-// Importez uniquement le footer
+// Importez uniquement le footer et le menu latéral
 import Footer from './footer.astro';
+import SidebarMenu from '../components/sidebar_menu.astro';
 import '../styles/global.css';
 
 // Définissez les props que vous souhaitez passer à votre layout
@@ -13,7 +14,7 @@ interface Props {
 // Récupérez les props avec des valeurs par défaut
 const { 
   title, 
-  description = "Mon site minimaliste", 
+  description = "Briec2000 - Site de l'Association", 
   image = "/images/default-og.png" 
 } = Astro.props;
 ---
@@ -27,15 +28,33 @@ const {
     <meta property="og:image" content={image} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
+    <style>
+      @view-transition {
+        navigation: auto; /* enabled! */
+      }
+    </style>
   </head>
   <body class="min-h-screen flex flex-col bg-white text-black">
-    <!-- Pas de header -->
-    
-    <main class="flex-grow container mx-auto px-4 py-12 min-h-[100vh]">
-      <slot />
+    <main class="flex-grow container mx-auto px-4 py-12 flex">
+      <!-- Menu latéral pour desktop uniquement -->
+      <div class="hidden md:block">
+        <SidebarMenu />
+      </div>
+      
+      <!-- Menu mobile (hamburger) pour les petits écrans -->
+      <div class="md:hidden mb-8">
+        <!-- Pour l'instant, juste un espace réservé pour le menu mobile -->
+        <button class="text-black">
+          Menu ☰
+        </button>
+      </div>
+      
+      <!-- Contenu principal -->
+      <div class="md:ml-12 w-full max-w-4xl">
+        <slot />
+      </div>
     </main>
     
-    <!-- Footer qui apparaît seulement après défilement -->
     <Footer />
   </body>
 </html>

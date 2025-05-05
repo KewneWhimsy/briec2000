@@ -2,26 +2,66 @@
 import Layout from '../layouts/layout.astro';
 ---
 
-<Layout title="Mon Site Minimaliste">
-  <section class="max-w-3xl mx-auto">
-    <h1 class="mb-12">Titre principal</h1>
+<Layout title="Briec2000 - Association locale">
+  <section>
+    <h1 class="mb-12">Briec2000</h1>
     
     <p class="text-lg mb-10">
-      Ceci est un site minimaliste qui privilégie le contenu, avec un style épuré en noir et blanc. La simplicité est au cœur de ce design, où la typographie et l'espace sont les protagonistes.
+      Une association locale basée à Briec-de-l'Odet (29510) qui organise des événements communautaires et culturels.
     </p>
     
-    <div class="mb-20">
-      <h2 class="mb-8">À propos</h2>
-      <p class="mb-6">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam id dolor id nibh ultricies vehicula ut id elit. Nullam quis risus eget urna mollis ornare vel eu leo.
-      </p>
-      <p class="mb-6">
-        Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. 
-      </p>
-      <p>
-        Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ullamcorper nulla non metus auctor fringilla.
-      </p>
+    <div class="mb-12">
+      <h2 class="mb-8">Nos activités</h2>
+      
+      <div class="grid gap-10">
+        <div>
+          <h3 class="text-xl mb-4">Cantines solidaires</h3>
+          <p>
+            Chaque premier dimanche du mois, nous proposons une cantine solidaire à Ti Glazik. 
+            Les fonds collectés financent nos projets communautaires.
+          </p>
+          <a href="/cantines" class="btn mt-4">En savoir plus</a>
+        </div>
+        
+        <div>
+          <h3 class="text-xl mb-4">CarnaBal des monstres et créatures</h3>
+          <p>
+            Un événement festif annuel, financé par les cantines solidaires et organisé 
+            pour célébrer la créativité et la communauté.
+          </p>
+          <a href="/carnabal" class="btn mt-4">Découvrir</a>
+        </div>
+        
+        <div>
+          <h3 class="text-xl mb-4">Événements culturels</h3>
+          <p>
+            Tout au long de l'année, nous organisons diverses animations pour la communauté locale.
+          </p>
+          <a href="/evenements" class="btn mt-4">Voir le programme</a>
+        </div>
+      </div>
     </div>
-  
+    
+    <div class="mt-16">
+      <h2 class="mb-8">Prochaine cantine solidaire</h2>
+      <div class="border border-black p-8">
+        <p class="mb-4"><strong>Date :</strong> Dimanche 2 juin 2025</p>
+        <p class="mb-4"><strong>Lieu :</strong> Ti Glazik, Place de Ruthin, 29510 Briec</p>
+        <p class="mb-4"><strong>Horaires :</strong> Retrait des plats entre 18h et 20h</p>
+        <p class="mb-6">
+          <strong>Menu :</strong> Petite salade, plat principal "façon tajine" avec semoule 
+          (amandes, abricots, raisins secs, légumes, protéine de soja ou poulet)
+        </p>
+        <p class="mb-4"><strong>Tarifs :</strong></p>
+        <ul class="list-disc ml-6 mb-6">
+          <li>8€ (menu végétarien)</li>
+          <li>12€ (menu carné)</li>
+          <li>Demi-portions à demi-prix pour les petits mangeurs</li>
+          <li>Sur place, desserts au choix à 1€</li>
+        </ul>
+        <p class="mb-4"><strong>Réservations :</strong> Par mail à briec2000@emailasso.net</p>
+        <p class="text-sm italic">Pensez à apporter vos contenants propres pour les repas à emporter !</p>
+      </div>
+    </div>
   </section>
 </Layout>

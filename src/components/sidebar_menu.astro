@@ -1,0 +1,39 @@
+---
+// Définissez les liens de votre menu ici
+const menuItems = [
+  { title: 'Accueil', url: '/' },
+  { title: 'À propos', url: '/about' },
+  { title: 'Cantines solidaires', url: '/cantines' },
+  { title: 'CarnaBal', url: '/carnabal' },
+  { title: 'Événements', url: '/evenements' },
+  { title: 'Contact', url: '/contact' },
+];
+---
+
+<aside class="sidebar-menu">
+  <nav class="py-8">
+    <ul class="space-y-6">
+      {menuItems.map((item) => (
+        <li>
+          <a href={item.url} class="sidebar-link text-lg hover:text-gray-500 transition-colors">
+            {item.title}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</aside>
+
+<style>
+  .sidebar-menu {
+    min-width: 200px;
+    border-right: 1px solid #e5e7eb;
+    padding-right: 2rem;
+  }
+  
+  .sidebar-link {
+    border-bottom: none;
+    padding-bottom: 0;
+    font-weight: 300;
+  }
+</style>
