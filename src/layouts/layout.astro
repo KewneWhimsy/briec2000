@@ -1,0 +1,41 @@
+---
+// Importez uniquement le footer
+import Footer from './footer.astro';
+import '../styles/global.css';
+
+// Définissez les props que vous souhaitez passer à votre layout
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+// Récupérez les props avec des valeurs par défaut
+const { 
+  title, 
+  description = "Mon site minimaliste", 
+  image = "/images/default-og.png" 
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta property="og:image" content={image} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen flex flex-col bg-white text-black">
+    <!-- Pas de header -->
+    
+    <main class="flex-grow container mx-auto px-4 py-12 min-h-[100vh]">
+      <slot />
+    </main>
+    
+    <!-- Footer qui apparaît seulement après défilement -->
+    <Footer />
+  </body>
+</html>

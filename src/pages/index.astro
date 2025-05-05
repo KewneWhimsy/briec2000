@@ -1,16 +1,48 @@
 ---
-
+import Layout from '../layouts/layout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Mon Site Minimaliste">
+  <section class="max-w-3xl mx-auto">
+    <h1 class="mb-12">Titre principal</h1>
+    
+    <p class="text-lg mb-10">
+      Ceci est un site minimaliste qui privilégie le contenu, avec un style épuré en noir et blanc. La simplicité est au cœur de ce design, où la typographie et l'espace sont les protagonistes.
+    </p>
+    
+    <div class="mb-20">
+      <h2 class="mb-8">À propos</h2>
+      <p class="mb-6">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam id dolor id nibh ultricies vehicula ut id elit. Nullam quis risus eget urna mollis ornare vel eu leo.
+      </p>
+      <p class="mb-6">
+        Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. 
+      </p>
+      <p>
+        Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec ullamcorper nulla non metus auctor fringilla.
+      </p>
+    </div>
+    
+    <div class="mb-20">
+      <h2 class="mb-8">Projets</h2>
+      <ul class="space-y-6">
+        <li class="border-b border-gray-100 pb-6">
+          <h3 class="text-xl mb-2">Projet un</h3>
+          <p>Description du premier projet avec une approche minimaliste.</p>
+        </li>
+        <li class="border-b border-gray-100 pb-6">
+          <h3 class="text-xl mb-2">Projet deux</h3>
+          <p>Description du deuxième projet avec une approche minimaliste.</p>
+        </li>
+        <li>
+          <h3 class="text-xl mb-2">Projet trois</h3>
+          <p>Description du troisième projet avec une approche minimaliste.</p>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="mb-32">
+      <a href="/contact" class="btn">Contact</a>
+    </div>
+  </section>
+</Layout>
