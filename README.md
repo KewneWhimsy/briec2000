@@ -19,38 +19,68 @@ Briec2000 est une association locale basée à Briec-de-l'Odet (29510) qui organ
 - **Design moderne avec Tailwind** : Interface utilisateur élégante avec Tailwind CSS v4
 - **Responsive** : Adaptation parfaite à tous les appareils
 - **SEO-Friendly** : Optimisé pour les moteurs de recherche
-- **Facile à mettre à jour** : Architecture simple et intuitive
+- **Facile à mettre à jour** : Architecture basée sur des fichiers Markdown facilement éditables
 
-## 🚀 Project Structure
+## 🚀 Structure du projet
 
 ```text
 /
-├── public/               # Static assets
-│   └── favicon.svg       # Site favicon
 ├── src/
-│   ├── components/       # Reusable UI components
-│   ├── layouts/          # Page layouts
-│   ├── pages/            # Page routes
-│   │   └── index.astro   # Home page
-│   └── styles/           # Global styles
-│       └── global.css    # Global CSS with Tailwind imports
-├── astro.config.mjs      # Astro configuration
-├── package.json          # Project dependencies
-├── tailwind.config.js    # Tailwind configuration
-└── tsconfig.json         # TypeScript configuration
+│   ├── content/       # Fichiers Markdown pour le contenu
+│   │   ├── events/    # Événements (cantines, carnabal, etc.)
+│   │   │   ├── 2025-06-02-cantine-juin.md
+│   │   │   └── 2025-10-31-carnabal.md
+│   │   ├── cantines/  # Infos sur les cantines
+│   │   │   └── cantines-info.md
+│   │   └── pages/     # Pages générales
+│   │       ├── about.md
+│   │       └── contact.md
+│   ├── components/    # Composants Astro réutilisables
+│   ├── layouts/       # Mises en page
+│   ├── pages/         # Pages du site (routes)
+│   └── images/        # Images optimisées par Astro
+│       ├── events/    # Photos d'événements
+│       ├── cantines/  # Photos des cantines
+│       └── team/      # Photos de l'équipe
+├── public/            # Assets statiques non-optimisables
+│   └── favicon.svg    # Favicon du site
+├── astro.config.mjs   # Configuration Astro
+├── package.json       # Dépendances du projet
+└── tailwind.config.js # Configuration Tailwind
 ```
 
-## 🧞 Commands
+## 🧞 Commandes
 
-All commands are run from the root of the project, from a terminal:
+Toutes les commandes sont exécutées depuis la racine du projet, à partir d'un terminal :
 
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `npm install`          | Installs dependencies                            |
-| `npm run dev`          | Starts local dev server at `localhost:4321`      |
-| `npm run build`        | Build your production site to `./dist/`          |
-| `npm run preview`      | Preview your build locally, before deploying     |
-| `npm run astro ...`    | Run CLI commands like `astro add`, `astro check` |
+| Commande             | Action                                           |
+| :------------------- | :----------------------------------------------- |
+| `npm install`        | Installe les dépendances                         |
+| `npm run dev`        | Démarre le serveur de dev sur `localhost:4321`   |
+| `npm run build`      | Construit le site pour la production dans `./dist/` |
+| `npm run preview`    | Prévisualise le build localement                 |
+| `npm run astro ...`  | Exécute les commandes CLI comme `astro add`, `astro check` |
+
+## 📝 Modification du contenu
+
+### Pour les non-développeurs
+
+Le contenu du site est principalement stocké dans des fichiers Markdown (.md) dans le dossier `src/content`. Ces fichiers peuvent être modifiés directement via l'interface GitHub :
+
+1. Accédez au dépôt GitHub
+2. Naviguez jusqu'au fichier que vous souhaitez modifier
+3. Cliquez sur l'icône "crayon" (Edit this file)
+4. Effectuez vos modifications
+5. Cliquez sur "Commit changes"
+
+Chaque fichier Markdown est composé de deux parties :
+- **En-tête** : section entre `---` contenant les métadonnées (titre, date, etc.)
+- **Corps** : contenu principal avec formatage Markdown
+
+### Pour ajouter une image
+
+1. Téléversez votre image dans le dossier approprié dans `src/images/`
+2. Référencez l'image dans vos fichiers Markdown
 
 ## 📅 Nos événements
 
@@ -72,33 +102,11 @@ Chaque premier dimanche du mois, nous proposons une cantine solidaire :
 
 *Pensez à apporter vos contenants propres pour les repas à emporter !*
 
-## 🧠 Développement du site
+## 🔧 Stack technique
 
-1. Cloner ce dépôt
-2. Installer les dépendances :
-   ```bash
-   npm install
-   ```
-3. Démarrer le serveur de développement :
-   ```bash
-   npm run dev
-   ```
-4. Ouvrir votre navigateur à l'adresse `http://localhost:4321`
-
-## 🎨 Customizing Tailwind
-
-This project uses Tailwind CSS v4, which offers improved performance and new features. You can customize your Tailwind configuration in `tailwind.config.js`.
-
-## 📚 Learn More
-
-- [Astro Documentation](https://docs.astro.build)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-
-## 🔧 Tech Stack
-
-- [Astro](https://astro.build/) - The web framework for content-driven websites
-- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework
-- [TypeScript](https://www.typescriptlang.org/) - JavaScript with syntax for types
+- [Astro](https://astro.build/) - Framework web pour sites à contenu statique
+- [Tailwind CSS](https://tailwindcss.com/) - Framework CSS utilitaire
+- [Markdown](https://www.markdownguide.org/) - Format de contenu simple et lisible
 
 ## 📢 Contact
 
