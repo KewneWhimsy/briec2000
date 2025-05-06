@@ -1,6 +1,7 @@
 // src/content/config.ts
 import { defineCollection, z } from 'astro:content';
 
+
 // Définition du schéma pour les événements
 const eventsCollection = defineCollection({
   schema: z.object({
@@ -45,8 +46,4 @@ const pagesCollection = defineCollection({
 });
 
 // Exporter les collections
-export const collections = {
-  'events': eventsCollection,
-  'cantines': cantinesCollection,
-  'pages': pagesCollection,
-};
+export const collections = { eventsCollection, cantinesCollection, pagesCollection};
