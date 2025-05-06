@@ -1,5 +1,56 @@
 ---
 import Layout from '../layouts/layout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+// Type pour les prix
+interface Price {
+  name: string;
+  amount: number;
+}
+
+// Type pour les entrées des collections
+type CantineEntry = CollectionEntry<'cantines'>;
+type EventEntry = CollectionEntry<'events'>;
+
+// Récupérer les informations sur les cantines
+const cantineInfoCollection = await getCollection('cantines');
+const cantineInfo = cantineInfoCollection.filter((entry: CantineEntry) => 
+  entry.data.title === "Cantines Solidaires"
+);
+
+// Récupérer le prochain événement (par date)
+const allEvents = await getCollection('events');
+const currentDate = new Date();
+
+// Filtrer pour ne montrer que les événements à venir et non brouillons
+const upcomingEvents = allEvents
+  .filter((event: EventEntry) => {
+    // Vérifier si date existe et convertir en Date si c'est une string
+    const eventDate = event.data.date instanceof Date ? 
+      event.data.date : 
+      new Date(event.data.date);
+      
+    return eventDate > currentDate && event.data.draft !== true;
+  })
+  .sort((a: EventEntry, b: EventEntry) => {
+    const dateA = a.data.date instanceof Date ? a.data.date : new Date(a.data.date);
+    const dateB = b.data.date instanceof Date ? b.data.date : new Date(b.data.date);
+    return dateA.getTime() - dateB.getTime();
+  });
+
+const nextEvent = upcomingEvents.length > 0 ? upcomingEvents[0] : null;
+
+// Formater la date en français
+function formatDate(date: Date | string): string {
+  const dateObj = date instanceof Date ? date : new Date(date);
+  const options: Intl.DateTimeFormatOptions = { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  };
+  return dateObj.toLocaleDateString('fr-FR', options);
+}
 ---
 
 <Layout title="Briec2000 - Association locale">
@@ -10,27 +61,67 @@ import Layout from '../layouts/layout.astro';
       Association locale à Briec-de-l'Odet (29510) organisant des événements communautaires et culturels.
     </p>
     
-    <div class="mt-8 mb-10">
-      <h2 class="mb-6 border-b pb-2">Prochaine cantine solidaire</h2>
-      <div class="border border-black p-8 bg-gray-50">
-        <p class="mb-4"><strong>Date :</strong> Dimanche 2 juin 2025</p>
-        <p class="mb-4"><strong>Lieu :</strong> Ti Glazik, Place de Ruthin, 29510 Briec</p>
-        <p class="mb-4"><strong>Horaires :</strong> Retrait des plats entre 18h et 20h</p>
-        <p class="mb-6">
-          <strong>Menu :</strong> Petite salade, plat principal "façon tajine" avec semoule 
-          (amandes, abricots, raisins secs, légumes, protéine de soja ou poulet)
-        </p>
-        <p class="mb-4"><strong>Tarifs :</strong></p>
-        <ul class="list-disc ml-6 mb-6">
-          <li>8€ (menu végétarien)</li>
-          <li>12€ (menu carné)</li>
-          <li>Demi-portions à demi-prix pour les petits mangeurs</li>
-          <li>Sur place, desserts au choix à 1€</li>
-        </ul>
-        <p class="mb-4"><strong>Réservations :</strong> Par mail à briec2000@emailasso.net</p>
-        <p class="text-sm italic">Pensez à apporter vos contenants propres pour les repas à emporter !</p>
+    {nextEvent && (
+      <div class="mt-8 mb-10">
+        <h2 class="mb-6 border-b pb-2">Prochain événement: {nextEvent.data.title}</h2>
+        <div class="border border-black p-8 bg-gray-50">
+          <p class="mb-4"><strong>Date :</strong> {formatDate(nextEvent.data.date)}</p>
+          <p class="mb-4"><strong>Lieu :</strong> {nextEvent.data.location}</p>
+          <p class="mb-4"><strong>Horaires :</strong> {nextEvent.data.time}</p>
+          
+          {nextEvent.data.price && nextEvent.data.price.length > 0 && (
+            <>
+              <p class="mb-4"><strong>Tarifs :</strong></p>
+              <ul class="list-disc ml-6 mb-6">
+                {nextEvent.data.price.map((price: Price) => (
+                  <li>{price.name}: {price.amount > 0 ? `${price.amount}€` : 'Gratuit'}</li>
+                ))}
+              </ul>
+            </>
+          )}
+          
+          <p class="mb-4">
+            <a href={`/events/${nextEvent.slug}`} class="btn inline-block mt-2">
+              Voir les détails
+            </a>
+          </p>
+        </div>
       </div>
-    </div>
+    )}
+    
+    {cantineInfo.length > 0 && (
+      <div class="mt-8 mb-10">
+        <h2 class="mb-6 border-b pb-2">Cantines Solidaires</h2>
+        <div class="border border-black p-8 bg-gray-50">
+          <p class="mb-4">{cantineInfo[0].data.description}</p>
+          <p class="mb-4"><strong>Lieu :</strong> {cantineInfo[0].data.location}</p>
+          <p class="mb-4"><strong>Horaires :</strong> {cantineInfo[0].data.time}</p>
+          <p class="mb-6">
+            <strong>Menu :</strong> {cantineInfo[0].data.menu}
+          </p>
+          
+          {cantineInfo[0].data.price && cantineInfo[0].data.price.length > 0 && (
+            <>
+              <p class="mb-4"><strong>Tarifs :</strong></p>
+              <ul class="list-disc ml-6 mb-6">
+                {cantineInfo[0].data.price.map((price: Price) => (
+                  <li>{price.name}: {price.amount}€</li>
+                ))}
+              </ul>
+            </>
+          )}
+          
+          <p class="mb-4"><strong>Réservations :</strong> {cantineInfo[0].data.reservation}</p>
+          <p class="text-sm italic">Pensez à apporter vos contenants propres pour les repas à emporter !</p>
+          
+          <p class="mb-4">
+            <a href="/cantines" class="btn inline-block mt-2">
+              En savoir plus sur les cantines
+            </a>
+          </p>
+        </div>
+      </div>
+    )}
     
     <div class="mt-12 mb-6">
       <p class="mb-4">

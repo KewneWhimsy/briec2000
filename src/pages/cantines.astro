@@ -1,0 +1,171 @@
+---
+import Layout from '../layouts/layout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+// Types pour les entrées de collection
+type CantineEntry = CollectionEntry<'cantines'>;
+type EventEntry = CollectionEntry<'events'>;
+
+// Type pour les prix
+interface Price {
+  name: string;
+  amount: number;
+}
+
+// Récupérer les informations sur les cantines
+const cantinesCollection = await getCollection('cantines');
+const cantineInfo = cantinesCollection.filter((entry: CantineEntry) => 
+  entry.data.title === "Cantines Solidaires"
+);
+
+// Récupérer le contenu Markdown s'il existe
+const cantineEntry = cantineInfo.length > 0 ? cantineInfo[0] : null;
+const contentRender = cantineEntry ? await cantineEntry.render() : null;
+const Content = contentRender ? contentRender.Content : null;
+
+// Récupérer les prochains événements de type cantine
+const allEvents = await getCollection('events');
+const currentDate = new Date();
+
+// Filtrer pour ne montrer que les événements à venir liés aux cantines
+const upcomingCantines = allEvents
+  .filter((event: EventEntry) => {
+    const eventDate = event.data.date instanceof Date ? 
+      event.data.date : 
+      new Date(event.data.date);
+      
+    // Vérifier s'il s'agit d'une cantine (par le titre) et si c'est à venir
+    return eventDate > currentDate && 
+           event.data.draft !== true && 
+           event.data.title.toLowerCase().includes('cantine');
+  })
+  .sort((a: EventEntry, b: EventEntry) => {
+    const dateA = a.data.date instanceof Date ? a.data.date : new Date(a.data.date);
+    const dateB = b.data.date instanceof Date ? b.data.date : new Date(b.data.date);
+    return dateA.getTime() - dateB.getTime();
+  });
+
+// Formater la date en français
+function formatDate(date: Date | string): string {
+  const dateObj = date instanceof Date ? date : new Date(date);
+  const options: Intl.DateTimeFormatOptions = { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  };
+  return dateObj.toLocaleDateString('fr-FR', options);
+}
+---
+
+<Layout title="Cantines Solidaires - Briec2000">
+  <section>
+    <h1 class="mb-8">Cantines Solidaires</h1>
+    
+    {cantineEntry && (
+      <div class="mb-8">
+        <p class="text-lg mb-6">{cantineEntry.data.description}</p>
+      </div>
+    )}
+    
+    {upcomingCantines.length > 0 && (
+      <div class="mb-12">
+        <h2 class="mb-6 border-b pb-2">Prochaines cantines</h2>
+        <div class="grid gap-8 md:grid-cols-2">
+          {upcomingCantines.map((event: EventEntry) => (
+            <div class="border border-black p-6 hover:bg-gray-50 transition-colors">
+              <h3 class="text-xl mb-2">{event.data.title}</h3>
+              <p class="text-sm mb-3">
+                <time datetime={event.data.date.toISOString()}>
+                  {formatDate(event.data.date)}
+                </time>
+              </p>
+              <p class="mb-4">{event.data.description}</p>
+              <a href={`/events/${event.slug}`} class="btn inline-block">Voir les détails</a>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+    
+    {cantineEntry && cantineEntry.data.price && cantineEntry.data.price.length > 0 && (
+      <div class="mb-8 p-6 border border-black bg-gray-50">
+        <h2 class="text-xl mb-4">Tarifs</h2>
+        <ul class="list-disc ml-6 mb-4">
+          {cantineEntry.data.price.map((price: Price) => (
+            <li class="mb-2">{price.name}: {price.amount}€</li>
+          ))}
+        </ul>
+        <p class="text-sm italic">Demi-portions disponibles à demi-prix pour les petits mangeurs</p>
+      </div>
+    )}
+    
+    {Content && (
+      <div class="cantines-content mb-12">
+        <Content />
+      </div>
+    )}
+    
+    <div class="bg-gray-100 p-6 rounded-lg mb-12">
+      <h2 class="text-xl mb-4">Comment réserver ?</h2>
+      <p class="mb-4">
+        Pour réserver votre place à la prochaine cantine solidaire, envoyez un email à : 
+        <a href="#" class="email-copy font-medium">briec2000@emailasso.net</a>
+      </p>
+      <p class="mb-2">Dans votre message, précisez :</p>
+      <ul class="list-disc ml-6 mb-4">
+        <li>Votre nom</li>
+        <li>Le nombre de repas souhaités (végétariens ou carnés)</li>
+        <li>Si vous souhaitez des demi-portions</li>
+      </ul>
+      <p class="text-sm italic">Pensez à apporter vos contenants propres pour les repas à emporter !</p>
+    </div>
+    
+    <div class="text-center mt-12">
+      <a href="/" class="btn">Retour à l'accueil</a>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Styles spécifiques pour le contenu Markdown rendu */
+  .cantines-content :global(h1) {
+    display: none; /* Cacher le premier titre H1 car nous avons déjà un H1 dans la page */
+  }
+  
+  .cantines-content :global(h2) {
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    font-weight: 300;
+  }
+  
+  .cantines-content :global(h3) {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+  }
+  
+  .cantines-content :global(p) {
+    margin-bottom: 1rem;
+  }
+  
+  .cantines-content :global(ul) {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+    list-style-type: disc;
+  }
+  
+  .cantines-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+  
+  .cantines-content :global(strong) {
+    font-weight: 600;
+  }
+  
+  .cantines-content :global(em) {
+    font-style: italic;
+  }
+</style>

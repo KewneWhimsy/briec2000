@@ -1,0 +1,106 @@
+---
+import Layout from '../../layouts/layout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+// Type pour les entrées de collection
+type EventEntry = CollectionEntry<'events'>;
+
+// Récupérer tous les événements non brouillons
+const allEvents = await getCollection('events');
+
+// Trier les événements par date (du plus récent au plus ancien)
+const sortedEvents = allEvents
+  .filter((event: EventEntry) => event.data.draft !== true)
+  .sort((a: EventEntry, b: EventEntry) => {
+    const dateA = a.data.date instanceof Date ? a.data.date : new Date(a.data.date);
+    const dateB = b.data.date instanceof Date ? b.data.date : new Date(b.data.date);
+    return dateB.getTime() - dateA.getTime();
+  });
+
+// Diviser en événements à venir et passés
+const now = new Date();
+const upcomingEvents = sortedEvents.filter((event: EventEntry) => {
+  const eventDate = event.data.date instanceof Date ? 
+    event.data.date : 
+    new Date(event.data.date);
+  return eventDate >= now;
+});
+
+const pastEvents = sortedEvents.filter((event: EventEntry) => {
+  const eventDate = event.data.date instanceof Date ? 
+    event.data.date : 
+    new Date(event.data.date);
+  return eventDate < now;
+});
+
+// Formater la date en français
+function formatDate(date: Date | string): string {
+  const dateObj = date instanceof Date ? date : new Date(date);
+  const options: Intl.DateTimeFormatOptions = { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  };
+  return dateObj.toLocaleDateString('fr-FR', options);
+}
+---
+
+<Layout title="Événements - Briec2000">
+  <section>
+    <h1 class="mb-8">Nos événements</h1>
+    
+    <p class="text-lg mb-6">
+      Découvrez les événements organisés par l'association Briec2000.
+    </p>
+    
+    {upcomingEvents.length > 0 && (
+      <div class="mb-12">
+        <h2 class="mb-6 border-b pb-2">Événements à venir</h2>
+        <div class="grid gap-8 md:grid-cols-2">
+          {upcomingEvents.map((event: EventEntry) => (
+            <div class="border border-black p-6 hover:bg-gray-50 transition-colors">
+              <h3 class="text-xl mb-2">{event.data.title}</h3>
+              <p class="text-sm mb-3">
+                <time datetime={event.data.date.toISOString()}>
+                  {formatDate(event.data.date)}
+                </time>
+              </p>
+              <p class="mb-4">{event.data.description}</p>
+              <a href={`/events/${event.slug}`} class="btn inline-block">Voir les détails</a>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+    
+    {pastEvents.length > 0 && (
+      <div>
+        <h2 class="mb-6 border-b pb-2">Événements passés</h2>
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {pastEvents.slice(0, 6).map((event: EventEntry) => (
+            <div class="border border-gray-200 p-4 hover:bg-gray-50 transition-colors">
+              <h3 class="text-lg mb-1">{event.data.title}</h3>
+              <p class="text-sm text-gray-600 mb-2">
+                <time datetime={event.data.date.toISOString()}>
+                  {formatDate(event.data.date)}
+                </time>
+              </p>
+              <a href={`/events/${event.slug}`} class="text-sm hover:underline">Voir plus →</a>
+            </div>
+          ))}
+        </div>
+        
+        {pastEvents.length > 6 && (
+          <div class="text-center mt-6">
+            <a href="/events/archives" class="btn">Voir tous les événements passés</a>
+          </div>
+        )}
+      </div>
+    )}
+    
+    <div class="text-center mt-12">
+      <a href="/" class="btn">Retour à l'accueil</a>
+    </div>
+  </section>
+</Layout>

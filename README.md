@@ -23,31 +23,26 @@ Briec2000 est une association locale basée à Briec-de-l'Odet (29510) qui organ
 
 ## 🚀 Structure du projet
 
-```text
-/
-├── src/
-│   ├── content/       # Fichiers Markdown pour le contenu
-│   │   ├── events/    # Événements (cantines, carnabal, etc.)
-│   │   │   ├── 2025-06-02-cantine-juin.md
-│   │   │   └── 2025-10-31-carnabal.md
-│   │   ├── cantines/  # Infos sur les cantines
-│   │   │   └── cantines-info.md
-│   │   └── pages/     # Pages générales
-│   │       ├── about.md
-│   │       └── contact.md
-│   ├── components/    # Composants Astro réutilisables
-│   ├── layouts/       # Mises en page
-│   ├── pages/         # Pages du site (routes)
-│   └── images/        # Images optimisées par Astro
-│       ├── events/    # Photos d'événements
-│       ├── cantines/  # Photos des cantines
-│       └── team/      # Photos de l'équipe
-├── public/            # Assets statiques non-optimisables
-│   └── favicon.svg    # Favicon du site
-├── astro.config.mjs   # Configuration Astro
-├── package.json       # Dépendances du projet
-└── tailwind.config.js # Configuration Tailwind
-```
+src/
+├── content/
+│   ├── config.ts           # Configuration des collections
+│   ├── events/             # Événements
+│   │   ├── 2025-06-02-cantine-juin.md
+│   │   └── 2025-10-31-carnabal.md
+│   ├── cantines/          # Informations sur les cantines
+│   │   └── cantines-info.md
+│   └── pages/             # Pages générales
+│       └── about.md
+├── pages/                 # Pages Astro
+│   ├── index.astro        # Page d'accueil
+│   ├── about.astro        # Page À propos
+│   ├── cantines.astro     # Page Cantines
+│   └── events/
+│       ├── index.astro    # Liste des événements
+│       └── [slug].astro   # Page de détail d'événement
+├── layouts/               # Layouts
+├── components/            # Composants
+└── styles/                # Styles CSS
 
 ## 🧞 Commandes
 
