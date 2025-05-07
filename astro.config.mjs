@@ -16,28 +16,28 @@ export default defineConfig({
             weight: 400,
             style: "normal",
             src: [
-              "src/assets/fonts/champagne_limousines/champagne_limousines.ttf",
+              "src/assets/champagne_limousines/champagne_limousines.ttf",
             ],
           },
           {
             weight: 700,
             style: "normal",
             src: [
-              "src/assets/fonts/champagne_limousines/champagne_limousines_bold.ttf",
+              "src/assets/champagne_limousines/champagne_limousines_bold.ttf",
             ],
           },
           {
             weight: 400,
             style: "italic",
             src: [
-              "src/assets/fonts/champagne_limousines/champagne_limousines_italic.ttf",
+              "src/assets/champagne_limousines/champagne_limousines_italic.ttf",
             ],
           },
           {
             weight: 700,
             style: "italic",
             src: [
-              "src/assets/fonts/champagne_limousines/champagne_limousines_bold_italic.ttf",
+              "src/assets/champagne_limousines/champagne_limousines_bold_italic.ttf",
             ],
           },
         ],
