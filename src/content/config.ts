@@ -1,9 +1,8 @@
 // src/content/config.ts
 import { defineCollection, z } from 'astro:content';
 
-
 // Définition du schéma pour les événements
-const eventsCollection = defineCollection({
+const events = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.date(),
@@ -20,7 +19,7 @@ const eventsCollection = defineCollection({
 });
 
 // Définition du schéma pour les cantines
-const cantinesCollection = defineCollection({
+const cantines = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -37,7 +36,7 @@ const cantinesCollection = defineCollection({
 });
 
 // Définition du schéma pour les pages générales
-const pagesCollection = defineCollection({
+const pages = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -46,4 +45,8 @@ const pagesCollection = defineCollection({
 });
 
 // Exporter les collections
-export const collections = { eventsCollection, cantinesCollection, pagesCollection};
+export const collections = { 
+  events, 
+  cantines, 
+  pages
+};
