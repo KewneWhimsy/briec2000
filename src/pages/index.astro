@@ -186,8 +186,8 @@ function getMonthName(date: Date | string): string {
     
     {/* Menu du mois en version desktop - s'affiche à droite */}
     {nextCantine && (
-      <div class="hidden lg:flex lg:flex-col lg:items-center lg:justify-end lg:w-80 xl:w-96 shrink-0">
-        <div class="restaurant-menu sticky top-8">
+      <div class="hidden lg:block lg:w-80 xl:w-96 shrink-0">
+        <div class="restaurant-menu sticky-sidebar">
           <div class="menu-heading">
             <div class="menu-title">
               <h3>La Cantine Solidaire</h3>
@@ -254,6 +254,13 @@ function getMonthName(date: Date | string): string {
     background-color: #f8f7f2;
     margin: 0 auto;
     font-family: var(--font-champ);
+  }
+  
+  /* Ajout pour comportement sticky */
+  .sticky-sidebar {
+    position: sticky;
+    top: 2rem;
+    align-self: flex-start;
   }
   
   .menu-heading {
@@ -422,13 +429,5 @@ function getMonthName(date: Date | string): string {
   
   .event-content :global(em) {
     font-style: italic;
-  }
-  
-  /* Style pour rendre le menu "sticky" en desktop */
-  @media (min-width: 1024px) {
-    .sticky {
-      position: sticky;
-      top: 2rem;
-    }
   }
 </style>
