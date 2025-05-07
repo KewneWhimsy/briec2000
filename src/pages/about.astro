@@ -18,7 +18,7 @@ const contentRender = aboutPage ? await aboutPage.render() : null;
 const Content = contentRender ? contentRender.Content : null;
 ---
 
-<Layout title={aboutPage ? aboutPage.data.title : "À propos - Briec2000"}>
+<Layout title={aboutPage ? aboutPage.data.title : "L'association Briec2000"}>
   <section>
     {Content ? (
       <div class="about-content">
@@ -26,7 +26,7 @@ const Content = contentRender ? contentRender.Content : null;
       </div>
     ) : (
       <div>
-        <h1 class="mb-8">À propos de Briec2000</h1>
+        <h1 class="mb-8">L'association Briec2000</h1>
         
         <p class="text-lg mb-6">
           Briec2000 est une association locale basée à Briec-de-l'Odet (29510) qui organise 

@@ -1,10 +1,10 @@
 ---
-title: "Cantine Solidaire de Juin"
-date: 2025-06-02
+title: "Cantine du dimanche 1er Juin"
+date: 2025-06-01
 description: "Venez découvrir notre cantine solidaire du mois de juin avec un menu spécial façon tajine."
 location: "Ti Glazik, Place de Ruthin, 29510 Briec"
 time: "Retrait des plats entre 18h et 20h"
-image: "/images/events/cantine-juin.jpg"
+image: "/src/assets/events/repas.png"
 price:
   - name: "Menu végétarien"
     amount: 8
@@ -19,10 +19,6 @@ price:
 draft: false
 ---
 
-# Cantine Solidaire - Juin 2025
-
-Rejoignez-nous pour notre cantine solidaire mensuelle à Ti Glazik !
-
 ## Menu du mois
 
 Notre menu de juin propose :
@@ -35,7 +31,7 @@ Notre menu de juin propose :
 
 - **Apportez vos contenants** pour les repas à emporter
 - Les desserts sont disponibles sur place uniquement (1€)
-- Réservation par mail à briec2000@emailasso.net
+- Réservation par mail à <span class="email-copy">briec2000@emailasso.net</span>
 
 ## Soutenir l'association
 

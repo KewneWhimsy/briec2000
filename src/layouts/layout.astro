@@ -3,6 +3,7 @@
 import Footer from './footer.astro';
 import SidebarMenu from '../components/sidebar_menu.astro';
 import '../styles/global.css';
+import { Font } from 'astro:assets';
 
 // Définissez les props que vous souhaitez passer à votre layout
 interface Props {
@@ -28,10 +29,26 @@ const {
     <meta property="og:image" content={image} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
+    <Font cssVariable='--font-champ' preload />
+    <Font cssVariable='--font-luciole' preload />
     <style>
+      /* Styles globaux */
+      html {
+        scroll-behavior: smooth;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+
+      }
       @view-transition {
         navigation: auto; /* enabled! */
       }
+      body {
+        font-family: var(--font-luciole);
+      }
+      h1, h2, h3, h4, h5 {
+  font-family: var(--font-champ) !important;
+}
+
     </style>
   </head>
   <body class="min-h-screen flex flex-col bg-white text-black">

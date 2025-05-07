@@ -9,14 +9,7 @@ interface Price {
 }
 
 // Type pour les entrées des collections
-type CantineEntry = CollectionEntry<'cantines'>;
 type EventEntry = CollectionEntry<'events'>;
-
-// Récupérer les informations sur les cantines
-const cantineInfoCollection = await getCollection('cantines');
-const cantineInfo = cantineInfoCollection.filter((entry: CantineEntry) => 
-  entry.data.title === "Cantines Solidaires"
-);
 
 // Récupérer le prochain événement (par date)
 const allEvents = await getCollection('events');
@@ -63,7 +56,7 @@ function formatDate(date: Date | string): string {
     
     {nextEvent && (
       <div class="mt-8 mb-10">
-        <h2 class="mb-6 border-b pb-2">Prochain événement: {nextEvent.data.title}</h2>
+        <h2 class="mb-6 border-b pb-2">À venir : {nextEvent.data.title}</h2>
         <div class="border border-black p-8 bg-gray-50">
           <p class="mb-4"><strong>Date :</strong> {formatDate(nextEvent.data.date)}</p>
           <p class="mb-4"><strong>Lieu :</strong> {nextEvent.data.location}</p>
@@ -81,42 +74,8 @@ function formatDate(date: Date | string): string {
           )}
           
           <p class="mb-4">
-            <a href={`/events/${nextEvent.slug}`} class="btn inline-block mt-2">
+            <a href={`/events/${nextEvent.slug}/`} class="btn inline-block mt-2">
               Voir les détails
-            </a>
-          </p>
-        </div>
-      </div>
-    )}
-    
-    {cantineInfo.length > 0 && (
-      <div class="mt-8 mb-10">
-        <h2 class="mb-6 border-b pb-2">Cantines Solidaires</h2>
-        <div class="border border-black p-8 bg-gray-50">
-          <p class="mb-4">{cantineInfo[0].data.description}</p>
-          <p class="mb-4"><strong>Lieu :</strong> {cantineInfo[0].data.location}</p>
-          <p class="mb-4"><strong>Horaires :</strong> {cantineInfo[0].data.time}</p>
-          <p class="mb-6">
-            <strong>Menu :</strong> {cantineInfo[0].data.menu}
-          </p>
-          
-          {cantineInfo[0].data.price && cantineInfo[0].data.price.length > 0 && (
-            <>
-              <p class="mb-4"><strong>Tarifs :</strong></p>
-              <ul class="list-disc ml-6 mb-6">
-                {cantineInfo[0].data.price.map((price: Price) => (
-                  <li>{price.name}: {price.amount}€</li>
-                ))}
-              </ul>
-            </>
-          )}
-          
-          <p class="mb-4"><strong>Réservations :</strong> {cantineInfo[0].data.reservation}</p>
-          <p class="text-sm italic">Pensez à apporter vos contenants propres pour les repas à emporter !</p>
-          
-          <p class="mb-4">
-            <a href="/cantines" class="btn inline-block mt-2">
-              En savoir plus sur les cantines
             </a>
           </p>
         </div>
@@ -129,7 +88,7 @@ function formatDate(date: Date | string): string {
         <a href="#" class="email-copy hover:underline">briec2000@emailasso.net</a>
       </p>
       <div class="text-center mt-6">
-        <a href="/about" class="btn">En savoir plus sur l'association</a>
+        <a href="/about/" class="btn">En savoir plus sur l'association</a>
       </div>
     </div>
   </section>

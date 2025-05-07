@@ -67,7 +67,7 @@ function formatDate(date: Date | string): string {
                 </time>
               </p>
               <p class="mb-4">{event.data.description}</p>
-              <a href={`/events/${event.slug}`} class="btn inline-block">Voir les détails</a>
+              <a href={`/events/${event.slug}/`} class="btn inline-block">Voir les détails</a>
             </div>
           ))}
         </div>
@@ -86,14 +86,14 @@ function formatDate(date: Date | string): string {
                   {formatDate(event.data.date)}
                 </time>
               </p>
-              <a href={`/events/${event.slug}`} class="text-sm hover:underline">Voir plus →</a>
+              <a href={`/events/${event.slug}/`} class="text-sm hover:underline">Voir plus →</a>
             </div>
           ))}
         </div>
         
         {pastEvents.length > 6 && (
           <div class="text-center mt-6">
-            <a href="/events/archives" class="btn">Voir tous les événements passés</a>
+            <a href="/events/archives/" class="btn">Voir tous les événements passés</a>
           </div>
         )}
       </div>

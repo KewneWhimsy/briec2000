@@ -36,23 +36,4 @@ Chaque premier dimanche du mois, Briec2000 organise une cantine solidaire à Ti 
 2. **Venez avec vos contenants** le jour J pour un repas à emporter
 3. **Ou restez sur place** pour déguster votre repas et profiter des desserts faits maison à 1€
 
-## Menu type
-
-Notre menu traditionnel comprend une petite salade fraîche, suivie d'un plat principal "façon tajine" avec semoule. Ce plat est agrémenté d'amandes, d'abricots secs, de raisins secs, de légumes variés et, selon votre choix, de protéines de soja (version végétarienne) ou de poulet (version carnée).
-
-## Calendrier 2025
-
-- Dimanche 5 janvier
-- Dimanche 2 février
-- Dimanche 2 mars
-- Dimanche 6 avril
-- Dimanche 4 mai
-- Dimanche 1 juin
-- Dimanche 6 juillet
-- Dimanche 3 août
-- Dimanche 7 septembre
-- Dimanche 5 octobre
-- Dimanche 2 novembre
-- Dimanche 7 décembre
-
 **Pensez à réserver à l'avance, les places sont limitées !**
