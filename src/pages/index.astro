@@ -1,9 +1,9 @@
 ---
 import Layout from '../layouts/layout.astro';
 import { getCollection } from 'astro:content';
-import type { EventEntry, Price } from '../../types';
+import type { EventEntry, CantineEntry, Price } from '../../types';
 
-// Récupérer le prochain événement (par date)
+// Récupérer tous les événements
 const allEvents = await getCollection('events') as EventEntry[];
 const currentDate = new Date();
 
@@ -23,7 +23,26 @@ const upcomingEvents = allEvents
     return dateA.getTime() - dateB.getTime();
   });
 
+// Récupérer le prochain événement
 const nextEvent = upcomingEvents.length > 0 ? upcomingEvents[0] : null;
+
+// Trouver la prochaine cantine
+const nextCantine = upcomingEvents.find((event: EventEntry) => 
+  event.data.title.toLowerCase().includes('cantine')
+);
+
+// Récupérer les informations générales sur les cantines
+const cantinesCollection = await getCollection('cantines') as CantineEntry[];
+const cantineInfo = cantinesCollection.find((entry: CantineEntry) => 
+  entry.data.title === "Cantines Solidaires"
+);
+
+// Préparer le contenu Markdown pour l'affichage si un événement existe
+let Content;
+if (nextEvent) {
+  const contentRender = await nextEvent.render();
+  Content = contentRender.Content;
+}
 
 // Formater la date en français
 function formatDate(date: Date | string): string {
@@ -36,52 +55,380 @@ function formatDate(date: Date | string): string {
   };
   return dateObj.toLocaleDateString('fr-FR', options);
 }
+
+// Extraire le mois pour l'afficher dans le menu
+function getMonthName(date: Date | string): string {
+  const dateObj = date instanceof Date ? date : new Date(date);
+  const options: Intl.DateTimeFormatOptions = { month: 'long' };
+  return dateObj.toLocaleDateString('fr-FR', options);
+}
 ---
 
 <Layout title="Briec2000 - Association locale">
-  <section>
-    <h1 class="mb-8">Briec2000</h1>
+  <!-- Wrapper flex pour la mise en page desktop -->
+  <div class="lg:flex lg:gap-8 xl:gap-20 lg:items-start">
+    <!-- Contenu principal avec max-width -->
+    <div class="lg:flex-1 max-w-3xl">
+      <h1 class="mb-8">Briec2000</h1>
+      
+      <p class="text-lg mb-6">
+        Association locale à Briec-de-l'Odet (29510) organisant des événements communautaires et culturels.
+      </p>
+      
+      {/* Menu du mois en version mobile - s'affiche avant l'événement */}
+      {nextCantine && (
+        <div class="lg:hidden mt-8 mb-10">
+          <div class="restaurant-menu">
+            <div class="menu-heading">
+              <div class="menu-title">
+                <h3>La Cantine Solidaire</h3>
+                <p class="menu-subtitle">Menu de {getMonthName(nextCantine.data.date)}</p>
+              </div>
+            </div>
+            
+            <div class="menu-body">
+              <div class="menu-section">
+                <h4 class="course-title">Entrée</h4>
+                <div class="dish">
+                  <p class="dish-name">Petite salade fraîche de saison</p>
+                </div>
+              </div>
+              
+              <div class="menu-section">
+                <h4 class="course-title">Plat Principal</h4>
+                <div class="dish">
+                  <p class="dish-name">Tajine aux saveurs orientales</p>
+                  <p class="dish-description">Semoule, amandes, abricots, raisins secs et légumes</p>
+                  
+                  <div class="dish-options">
+                    <div class="option">
+                      <span class="option-label">Option Végétarienne</span>
+                      <span class="option-detail">Protéine de soja</span>
+                    </div>
+                    
+                    <div class="option">
+                      <span class="option-label">Option Carnée</span>
+                      <span class="option-detail">Poulet fermier</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="menu-section">
+                <h4 class="course-title">Dessert</h4>
+                <div class="dish">
+                  <p class="dish-name">Assortiment de desserts maison</p>
+                  <p class="dish-description">Disponibles sur place uniquement</p>
+                </div>
+              </div>
+              
+              <div class="menu-footer">
+                <p class="menu-note">Pensez à apporter vos contenants propres pour les repas à emporter</p>
+                <a href={`/events/${nextCantine.slug}/`} class="menu-button">
+                  Détails et réservation
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Section événement principal */}
+      {nextEvent && (
+        <div class="mb-10">
+          <h2 class="mb-6 border-b pb-2">À venir : {nextEvent.data.title}</h2>
+          <article>
+            <header class="mb-6">
+              <p class="text-lg mb-2">
+                <strong>Date :</strong> <time datetime={nextEvent.data.date.toISOString()}>
+                  {formatDate(nextEvent.data.date)}
+                </time>
+              </p>
+              <p class="mb-2"><strong>Lieu :</strong> {nextEvent.data.location}</p>
+              <p><strong>Horaires :</strong> {nextEvent.data.time}</p>
+            </header>
+
+            {nextEvent.data.image && (
+              <div class="mb-6">
+                <img 
+                  src={nextEvent.data.image} 
+                  alt={nextEvent.data.title} 
+                  class="w-full h-auto rounded-lg shadow-md"
+                />
+              </div>
+            )}
+
+            {Content && (
+              <div class="event-content prose mb-8">
+                <Content />
+              </div>
+            )}
+
+            <div class="text-center mt-6">
+              <a href={`/events/${nextEvent.slug}/`} class="btn">
+                Voir la page complète
+              </a>
+            </div>
+          </article>
+        </div>
+      )}
+      
+      <div class="mt-12 mb-6">
+        <p class="mb-4">
+          <strong>Contact :</strong> 
+          <a href="#" class="email-copy hover:underline">briec2000@emailasso.net</a>
+        </p>
+        <div class="text-center mt-6">
+          <a href="/about/" class="btn">En savoir plus sur l'association</a>
+        </div>
+      </div>
+    </div>
     
-    <p class="text-lg mb-6">
-      Association locale à Briec-de-l'Odet (29510) organisant des événements communautaires et culturels.
-    </p>
-    
-    {nextEvent && (
-      <div class="mt-8 mb-10">
-        <h2 class="mb-6 border-b pb-2">À venir : {nextEvent.data.title}</h2>
-        <div class="border border-black p-8 bg-gray-50">
-          <p class="mb-4"><strong>Date :</strong> {formatDate(nextEvent.data.date)}</p>
-          <p class="mb-4"><strong>Lieu :</strong> {nextEvent.data.location}</p>
-          <p class="mb-4"><strong>Horaires :</strong> {nextEvent.data.time}</p>
+    {/* Menu du mois en version desktop - s'affiche à droite */}
+    {nextCantine && (
+      <div class="hidden lg:flex lg:flex-col lg:items-center lg:justify-end lg:w-80 xl:w-96 shrink-0">
+        <div class="restaurant-menu sticky top-8">
+          <div class="menu-heading">
+            <div class="menu-title">
+              <h3>La Cantine Solidaire</h3>
+              <p class="menu-subtitle">Menu de {getMonthName(nextCantine.data.date)}</p>
+            </div>
+          </div>
           
-          {nextEvent.data.price && nextEvent.data.price.length > 0 && (
-            <>
-              <p class="mb-4"><strong>Tarifs :</strong></p>
-              <ul class="list-disc ml-6 mb-6">
-                {nextEvent.data.price.map((price: Price) => (
-                  <li>{price.name}: {price.amount > 0 ? `${price.amount}€` : 'Gratuit'}</li>
-                ))}
-              </ul>
-            </>
-          )}
-          
-          <p class="mb-4">
-            <a href={`/events/${nextEvent.slug}/`} class="btn inline-block mt-2">
-              Voir les détails
-            </a>
-          </p>
+          <div class="menu-body">
+            <div class="menu-section">
+              <h4 class="course-title">Entrée</h4>
+              <div class="dish">
+                <p class="dish-name">Petite salade fraîche de saison</p>
+              </div>
+            </div>
+            
+            <div class="menu-section">
+              <h4 class="course-title">Plat Principal</h4>
+              <div class="dish">
+                <p class="dish-name">Tajine aux saveurs orientales</p>
+                <p class="dish-description">Semoule, amandes, abricots, raisins secs et légumes</p>
+                
+                <div class="dish-options">
+                  <div class="option">
+                    <span class="option-label">Option Végétarienne</span>
+                    <span class="option-detail">Protéine de soja</span>
+                  </div>
+                  
+                  <div class="option">
+                    <span class="option-label">Option Carnée</span>
+                    <span class="option-detail">Poulet fermier</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="menu-section">
+              <h4 class="course-title">Dessert</h4>
+              <div class="dish">
+                <p class="dish-name">Assortiment de desserts maison</p>
+                <p class="dish-description">Disponibles sur place uniquement</p>
+              </div>
+            </div>
+            
+            <div class="menu-footer">
+              <p class="menu-note">Pensez à apporter vos contenants propres pour les repas à emporter</p>
+              <a href={`/events/${nextCantine.slug}/`} class="menu-button">
+                Détails et réservation
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     )}
-    
-    <div class="mt-12 mb-6">
-      <p class="mb-4">
-        <strong>Contact :</strong> 
-        <a href="#" class="email-copy hover:underline">briec2000@emailasso.net</a>
-      </p>
-      <div class="text-center mt-6">
-        <a href="/about/" class="btn">En savoir plus sur l'association</a>
-      </div>
-    </div>
-  </section>
+  </div>
 </Layout>
+
+<style>
+  /* Styles pour le menu de restaurant */
+  .restaurant-menu {
+    border: 1px solid #2d3748;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    background-color: #f8f7f2;
+    margin: 0 auto;
+    font-family: var(--font-champ);
+  }
+  
+  .menu-heading {
+    background-color: #5885a9;
+    color: white;
+    text-align: center;
+    padding: 18px;
+  }
+  
+  .menu-title h3 {
+    font-size: 2rem;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+  
+  .menu-subtitle {
+    font-size: 1.2rem;
+    margin-top: 4px;
+    font-style: italic;
+    opacity: 0.9;
+  }
+  
+  .menu-body {
+    padding: 28px;
+    background-color: #f8f7f2;
+  }
+  
+  .menu-section {
+    margin-bottom: 30px;
+  }
+  
+  .course-title {
+    font-size: 1.5rem;
+    color: #2d3748;
+    margin: 0 0 16px 0;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 8px;
+    font-weight: 500;
+    position: relative;
+  }
+  
+  .course-title::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background-color: #5885a9;
+  }
+  
+  .dish {
+    margin-bottom: 15px;
+    padding: 0 8px;
+  }
+  
+  .dish-name {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #1a202c;
+    margin: 0 0 8px 0;
+  }
+  
+  .dish-description {
+    font-size: 1.1rem;
+    color: #4a5568;
+    margin: 0 0 15px 0;
+    font-style: italic;
+    line-height: 1.4;
+  }
+  
+  .dish-options {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+    padding: 10px 15px;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .option-label {
+    font-weight: 500;
+  }
+  
+  .option-detail {
+    color: #4a5568;
+    font-style: italic;
+  }
+  
+  .menu-footer {
+    margin-top: 30px;
+    text-align: center;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+  }
+  
+  .menu-note {
+    font-size: 1rem;
+    color: #718096;
+    margin-bottom: 20px;
+    font-style: italic;
+    line-height: 1.4;
+  }
+  
+  .menu-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #5885a9;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    transition: background-color 0.2s;
+  }
+  
+  .menu-button:hover {
+    background-color: #4a7598;
+  }
+  
+  /* Styles spécifiques pour le contenu Markdown rendu */
+  .event-content :global(h1) {
+    display: none; /* Cacher le premier titre H1 car nous avons déjà un H1 dans la page */
+  }
+  
+  .event-content :global(h2) {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0.5rem;
+  }
+  
+  .event-content :global(h3) {
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .event-content :global(p) {
+    margin-bottom: 1rem;
+  }
+  
+  .event-content :global(ul) {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+    list-style-type: disc;
+  }
+  
+  .event-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+  
+  .event-content :global(strong) {
+    font-weight: 600;
+  }
+  
+  .event-content :global(em) {
+    font-style: italic;
+  }
+  
+  /* Style pour rendre le menu "sticky" en desktop */
+  @media (min-width: 1024px) {
+    .sticky {
+      position: sticky;
+      top: 2rem;
+    }
+  }
+</style>
