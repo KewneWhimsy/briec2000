@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 
 import tailwindcss from "@tailwindcss/vite";
 
@@ -76,6 +76,21 @@ export default defineConfig({
             ],
           },
         ],
+      },
+      {
+        provider: fontProviders.google(),
+        name: "Andika",
+        cssVariable: "--font-andika"
+      },
+      {
+        provider: fontProviders.google(),
+        name: "Atkinson Hyperlegible",
+        cssVariable: "--font-atkinson"
+      },
+      {
+        provider: fontProviders.google(),
+        name: "Lexend",
+        cssVariable: "--font-lexend"
       },
     ],
   },

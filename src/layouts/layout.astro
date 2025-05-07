@@ -1,9 +1,9 @@
 ---
 // Importez uniquement le footer et le menu latéral
-import Footer from './footer.astro';
-import SidebarMenu from '../components/sidebar_menu.astro';
-import '../styles/global.css';
-import { Font } from 'astro:assets';
+import Footer from "./footer.astro";
+import SidebarMenu from "../components/sidebar_menu.astro";
+import "../styles/global.css";
+import { Font } from "astro:assets";
 
 // Définissez les props que vous souhaitez passer à votre layout
 interface Props {
@@ -13,14 +13,14 @@ interface Props {
 }
 
 // Récupérez les props avec des valeurs par défaut
-const { 
-  title, 
-  description = "Briec2000 - Site de l'Association", 
-  image = "/images/default-og.png" 
+const {
+  title,
+  description = "Briec2000 - Site de l'Association",
+  image = "/images/default-og.png",
 } = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
@@ -29,40 +29,69 @@ const {
     <meta property="og:image" content={image} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
-    <Font cssVariable='--font-champ' preload />
-    <Font cssVariable='--font-luciole' preload />
-    <style>
+    <Font name="Champagne" cssVariable="--font-champ" preload />
+    <Font name="Luciole" cssVariable="--font-luciole" preload />
+    <Font name="Andika" cssVariable="--font-andika" preload />
+    <Font name="Atkinson Hyperlegible" cssVariable="--font-atkinson" preload />
+    <Font name="Lexend" cssVariable="--font-lexend" preload />
+
+    <style is:global>
       /* Styles globaux */
+      :root {
+        font-family: var(--font-atkinson);
+      }
+
+      h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-champ);
+        font-weight: 700;
+      }
+
+      h1, h2 {
+        font-weight: 400;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+      }
+      @media (min-width: 768px) {
+        h1 {
+          font-size: 3.5rem;
+        }
+      }
+
+      h2 {
+        font-size: 1.875rem;
+      }
+      @media (min-width: 768px) {
+        h2 {
+          font-size: 2.25rem;
+        }
+      }
+
       html {
         scroll-behavior: smooth;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-
       }
+
       @view-transition {
         navigation: auto; /* enabled! */
       }
-      body {
-        font-family: var(--font-luciole);
-      }
-      h1, h2, h3, h4, h5 {
-  font-family: var(--font-champ) !important;
-}
-
     </style>
   </head>
   <body class="min-h-screen flex flex-col bg-white text-black">
     <header class="border-b border-gray-200 py-4 px-4 md:hidden">
       <div class="flex justify-between items-center">
         <h1 class="text-xl font-normal">Briec2000</h1>
-        <button id="menuToggle" class="text-black">
-          ☰
-        </button>
+        <button id="menuToggle" class="text-black"> ☰ </button>
       </div>
     </header>
-    
+
     <!-- Menu mobile -->
-    <div id="mobileMenu" class="md:hidden bg-white border-b border-gray-200 py-4 px-6 hidden">
+    <div
+      id="mobileMenu"
+      class="md:hidden bg-white border-b border-gray-200 py-4 px-6 hidden"
+    >
       <nav>
         <ul class="space-y-4">
           <li><a href="/" class="text-lg">Accueil</a></li>
@@ -70,59 +99,63 @@ const {
         </ul>
       </nav>
     </div>
-    
+
     <main class="flex-grow container mx-auto px-4 py-6 md:py-12 flex">
       <!-- Menu latéral pour desktop uniquement -->
       <div class="hidden md:block">
         <SidebarMenu />
       </div>
-      
+
       <!-- Contenu principal -->
       <div class="md:ml-12 w-full max-w-3xl mx-auto">
         <slot />
       </div>
     </main>
-    
+
     <Footer />
-    
+
     <script>
       // Script pour le menu mobile
-      document.addEventListener('DOMContentLoaded', () => {
-        const menuToggle = document.getElementById('menuToggle');
-        const mobileMenu = document.getElementById('mobileMenu');
-        
+      document.addEventListener("DOMContentLoaded", () => {
+        const menuToggle = document.getElementById("menuToggle");
+        const mobileMenu = document.getElementById("mobileMenu");
+
         if (menuToggle && mobileMenu) {
-          menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+          menuToggle.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
           });
         }
-        
+
         // Script pour tous les liens de copie d'email
-        const emailCopyLinks: NodeListOf<HTMLElement> = document.querySelectorAll('.email-copy');
-        
-        emailCopyLinks.forEach(link => {
-          link.addEventListener('click', (e: Event) => {
+        const emailCopyLinks: NodeListOf<HTMLElement> =
+          document.querySelectorAll(".email-copy");
+
+        emailCopyLinks.forEach((link) => {
+          link.addEventListener("click", (e: Event) => {
             e.preventDefault();
-            const email: string = 'briec2000@emailasso.net';
+            const email: string = "briec2000@emailasso.net";
             navigator.clipboard.writeText(email).then(() => {
               // Créer ou récupérer la notification
-              let notification = document.getElementById('floating-notification');
-              
+              let notification = document.getElementById(
+                "floating-notification"
+              );
+
               if (!notification) {
                 // Créer une notification flottante si elle n'existe pas
-                notification = document.createElement('div');
-                notification.id = 'floating-notification';
-                notification.className = 'fixed top-4 right-4 bg-green-100 border border-green-500 text-green-700 px-4 py-2 rounded shadow-md hidden';
-                notification.textContent = 'Email copié !';
+                notification = document.createElement("div");
+                notification.id = "floating-notification";
+                notification.className =
+                  "fixed top-4 right-4 bg-green-100 border border-green-500 text-green-700 px-4 py-2 rounded shadow-md hidden";
+                notification.textContent = "Email copié !";
                 document.body.appendChild(notification);
               }
-              
+
               // Afficher la notification
-              notification.classList.remove('hidden');
-              
+              notification.classList.remove("hidden");
+
               // Cacher la notification après 2 secondes
               setTimeout(() => {
-                notification.classList.add('hidden');
+                notification.classList.add("hidden");
               }, 2000);
             });
           });
