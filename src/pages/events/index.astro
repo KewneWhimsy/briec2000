@@ -1,12 +1,10 @@
 ---
 import Layout from '../../layouts/layout.astro';
-import { getCollection, type CollectionEntry } from 'astro:content';
-
-// Type pour les entrées de collection
-type EventEntry = CollectionEntry<'events'>;
+import { getCollection } from 'astro:content';
+import type { EventEntry } from '../../../types';
 
 // Récupérer tous les événements non brouillons
-const allEvents = await getCollection('events');
+const allEvents = await getCollection('events') as EventEntry[];
 
 // Trier les événements par date (du plus récent au plus ancien)
 const sortedEvents = allEvents

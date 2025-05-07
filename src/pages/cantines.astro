@@ -1,19 +1,10 @@
 ---
 import Layout from '../layouts/layout.astro';
-import { getCollection, type CollectionEntry } from 'astro:content';
-
-// Types pour les entrées de collection
-type CantineEntry = CollectionEntry<'cantines'>;
-type EventEntry = CollectionEntry<'events'>;
-
-// Type pour les prix
-interface Price {
-  name: string;
-  amount: number;
-}
+import { getCollection } from 'astro:content';
+import type { CantineEntry, EventEntry, Price } from '../../types';
 
 // Récupérer les informations sur les cantines
-const cantinesCollection = await getCollection('cantines');
+const cantinesCollection = await getCollection('cantines') as CantineEntry[];
 const cantineInfo = cantinesCollection.filter((entry: CantineEntry) => 
   entry.data.title === "Cantines Solidaires"
 );
@@ -24,7 +15,7 @@ const contentRender = cantineEntry ? await cantineEntry.render() : null;
 const Content = contentRender ? contentRender.Content : null;
 
 // Récupérer les prochains événements de type cantine
-const allEvents = await getCollection('events');
+const allEvents = await getCollection('events') as EventEntry[];
 const currentDate = new Date();
 
 // Filtrer pour ne montrer que les événements à venir liés aux cantines

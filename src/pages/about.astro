@@ -1,12 +1,10 @@
 ---
 import Layout from '../layouts/layout.astro';
-import { getCollection, type CollectionEntry } from 'astro:content';
-
-// Type pour les entrées de collection
-type PageEntry = CollectionEntry<'pages'>;
+import { getCollection } from 'astro:content';
+import type { PageEntry } from '../../types';
 
 // Récupérer la page "À propos"
-const aboutPagesCollection = await getCollection('pages');
+const aboutPagesCollection = await getCollection('pages') as PageEntry[];
 const aboutPages = aboutPagesCollection.filter((entry: PageEntry) => 
   entry.data.title === "À propos de Briec2000"
 );

@@ -1,19 +1,11 @@
 ---
 import Layout from '../../layouts/layout.astro';
-import { getCollection, type CollectionEntry } from 'astro:content';
-
-// Type pour les entrées de collection
-type EventEntry = CollectionEntry<'events'>;
-
-// Type pour les prix
-interface Price {
-  name: string;
-  amount: number;
-}
+import { getCollection } from 'astro:content';
+import type { EventEntry, Price } from '../../../types';
 
 // Générer toutes les routes pour les événements
 export async function getStaticPaths() {
-  const eventsEntries = await getCollection('events');
+  const eventsEntries = await getCollection('events') as EventEntry[];
   return eventsEntries.map((entry: EventEntry) => ({
     params: { slug: entry.slug },
     props: { entry },

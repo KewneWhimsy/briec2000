@@ -43,54 +43,9 @@ export default defineConfig({
         ],
       },
       {
-        provider: "local",
-        name: "Luciole",
-        cssVariable: "--font-luciole",
-        variants: [
-          {
-            weight: 400,
-            style: "normal",
-            src: [
-              "src/assets/fonts/luciole/luciole_regular.ttf",
-            ],
-          },
-          {
-            weight: 700,
-            style: "normal",
-            src: [
-              "src/assets/fonts/luciole/luciole_bold.ttf",
-            ],
-          },
-          {
-            weight: 400,
-            style: "italic",
-            src: [
-              "src/assets/fonts/luciole/luciole_regular_italic.ttf",
-            ],
-          },
-          {
-            weight: 700,
-            style: "italic",
-            src: [
-              "src/assets/fonts/luciole/luciole_bold_italic.ttf",
-            ],
-          },
-        ],
-      },
-      {
         provider: fontProviders.google(),
         name: "Andika",
         cssVariable: "--font-andika"
-      },
-      {
-        provider: fontProviders.google(),
-        name: "Atkinson Hyperlegible",
-        cssVariable: "--font-atkinson"
-      },
-      {
-        provider: fontProviders.google(),
-        name: "Lexend",
-        cssVariable: "--font-lexend"
       },
     ],
   },
