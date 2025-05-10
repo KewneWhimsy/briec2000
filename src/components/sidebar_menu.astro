@@ -1,4 +1,7 @@
 ---
+// Ajoutez Astro.url pour accéder au chemin actuel
+const currentPath = Astro.url.pathname;
+
 // Définissez les liens de votre menu ici
 const menuItems = [
   { title: 'Accueil', url: '/' },
@@ -8,6 +11,14 @@ const menuItems = [
   { title: 'L\'association', url: '/about/' },
   { title: 'Archives', url: '/archives/' },
 ];
+
+// Fonction pour déterminer si un lien est actif
+function isActive(itemUrl: string): boolean {
+  if (itemUrl === '/') {
+    return currentPath === '/';
+  }
+  return currentPath.endsWith(itemUrl);
+}
 ---
 
 <aside class="sidebar-menu">
@@ -15,7 +26,8 @@ const menuItems = [
     <ul class="space-y-6">
       {menuItems.map((item) => (
         <li>
-          <a href={item.url} class="sidebar-link text-lg hover:text-gray-500 transition-colors">
+          <a href={item.url} 
+            class={`sidebar-link text-lg hover:text-gray-500 transition-colors ${isActive(item.url) ? 'active' : ''}`}>
             {item.title}
           </a>
         </li>
@@ -48,18 +60,3 @@ const menuItems = [
     font-weight: 500;
   }
 </style>
-
-<script>
-  // Script pour marquer le lien actif dans le menu
-  document.addEventListener('DOMContentLoaded', () => {
-    const currentPath = window.location.pathname;
-    const menuLinks = document.querySelectorAll('.sidebar-link');
-
-    menuLinks.forEach(link => {
-      const href = link.getAttribute('href');
-      if (href && (href === currentPath || (href !== '/' && currentPath.startsWith(href)))) {
-        link.classList.add('active');
-      }
-    });
-  });
-</script>

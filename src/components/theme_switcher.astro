@@ -55,20 +55,6 @@ const themes = [
   // Script côté client pour changer le thème
   document.addEventListener("DOMContentLoaded", () => {
     const themeButtons = document.querySelectorAll(".theme-btn");
-    
-    // Récupérer le thème actuel depuis l'attribut data-theme sur html
-    const currentTheme = document.documentElement.getAttribute("data-theme");
-    
-    // Mettre à jour l'UI pour montrer le thème actif
-    if (currentTheme) {
-      themeButtons.forEach((btn) => {
-        if (btn.getAttribute("data-theme") === currentTheme) {
-          btn.classList.add("active");
-        } else {
-          btn.classList.remove("active");
-        }
-      });
-    }
 
     // Ajouter les écouteurs d'événements pour le changement de thème
     themeButtons.forEach((button) => {
@@ -120,4 +106,11 @@ const themes = [
     transform: scale(1.1);
     box-shadow: 0 0 0 2px var(--color-accent);
   }
+  html[data-theme="ocean"] ~ body .theme-btn[data-theme="ocean"],
+html[data-theme="nature"] ~ body .theme-btn[data-theme="nature"],
+html[data-theme="midnight"] ~ body .theme-btn[data-theme="midnight"],
+html[data-theme="forest"] ~ body .theme-btn[data-theme="forest"] {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 2px var(--color-accent);
+}
 </style>

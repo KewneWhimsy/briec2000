@@ -17,6 +17,9 @@ const {
   description = "Briec2000 - Site de l'Association",
   image = "/images/default-og.png",
 } = Astro.props;
+
+// Pour vérifier les liens actifs exacts et éviter les faux positifs
+const currentPath = Astro.url.pathname;
 ---
 
 <!doctype html>
@@ -106,7 +109,7 @@ const {
         text-decoration: none;
       }
 
-      a:hover {
+      .email-copy{
         text-decoration: underline;
       }
 
@@ -130,6 +133,31 @@ const {
       @view-transition {
         navigation: auto;
       }
+      
+      /* Style pour le menu simplifié */
+      .simple-nav {
+        width: 100%;
+      }
+      
+      .nav-link {
+        color: var(--color-primary);
+        font-size: 0.95rem;
+        text-decoration: none;
+        padding: 0.25rem 0;
+      }
+      
+      .nav-link:hover {
+        text-decoration: none;
+        opacity: 0.8;
+      }
+      
+      /* Adaptation pour les différentes tailles d'écran */
+      @media (min-width: 768px) {
+        /* Sur desktop, cacher ce menu et utiliser le sidebar */
+        header .simple-nav {
+          display: none;
+        }
+      }
     </style>
   </head>
   <body class="min-h-screen flex flex-col">
@@ -137,27 +165,23 @@ const {
       class="border-b py-4 px-4 md:hidden"
       style="border-color: var(--color-border);"
     >
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-center mb-2">
         <ThemeSwitcher />
-        <button id="menuToggle" aria-label="Menu" class="ml-3" style="color: var(--color-primary);"> ☰ </button>
+        <span class="text-lg font-medium" style="color: var(--color-primary);">Briec2000</span>
       </div>
-    </header>
-
-    <!-- Menu mobile -->
-    <div
-      id="mobileMenu"
-      class="md:hidden border-b py-4 px-6 hidden"
-      style="border-color: var(--color-border);"
-    >
-      <nav>
-        <ul class="space-y-4">
-          <li><a href="/" class="text-lg">Accueil</a></li>
-          <li><a href="/about" class="text-lg">À propos</a></li>
-          <li><a href="/events/" class="text-lg">Événements</a></li>
-          <li><a href="/cantines/" class="text-lg">Cantines</a></li>
+      
+      <!-- Menu simplifié avec flex-wrap et les mêmes liens que sidebar_menu.astro -->
+      <nav class="simple-nav py-2">
+        <ul class="flex flex-wrap gap-x-4 gap-y-2">
+          <li><a href="/" class="nav-link">Accueil</a></li>
+          <li><a href="/events/" class="nav-link">À venir</a></li>
+          <li><a href="/cantines/" class="nav-link">Les cantines</a></li>
+          <li><a href="/events/2025-10-31-carnabal/" class="nav-link">Le carnabal</a></li>
+          <li><a href="/about/" class="nav-link">L'association</a></li>
+          <li><a href="/archives/" class="nav-link">Archives</a></li>
         </ul>
       </nav>
-    </div>
+    </header>
 
     <main class="flex-grow container mx-auto px-4 py-6 md:py-12 flex">
       <!-- Menu latéral pour desktop -->
@@ -177,18 +201,8 @@ const {
     <Footer />
 
     <script>
-      // Script pour le menu mobile
+      // Script pour les liens d'email
       document.addEventListener("DOMContentLoaded", () => {
-        const menuToggle = document.getElementById("menuToggle");
-        const mobileMenu = document.getElementById("mobileMenu");
-
-        if (menuToggle && mobileMenu) {
-          menuToggle.addEventListener("click", () => {
-            mobileMenu.classList.toggle("hidden");
-          });
-        }
-
-        // Script pour les liens d'email
         const emailCopyLinks = document.querySelectorAll(".email-copy");
 
         emailCopyLinks.forEach((link) => {
