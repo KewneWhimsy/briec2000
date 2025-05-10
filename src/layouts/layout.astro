@@ -1,7 +1,8 @@
 ---
-// Importez uniquement le footer et le menu latéral
+// Importez le footer, le menu latéral et le sélecteur de thème
 import Footer from "./footer.astro";
 import SidebarMenu from "../components/sidebar_menu.astro";
+import ThemeSwitcher from "../components/theme_switcher.astro";
 import "../styles/global.css";
 import { Font } from "astro:assets";
 
@@ -33,14 +34,57 @@ const {
     <Font name="Andika" cssVariable="--font-andika" preload />
 
     <style is:global>
-      /* Styles globaux */
+      /* Système de couleurs simple avec 3 variables par thème */
       :root {
+        /* Thème par défaut (Bleu océan) */
+        --color-primary: #1a4d7c;
+        --color-secondary: #5885a9;
+        --color-accent: #f58a42;
+        
+        /* Couleurs neutres */
+        --bg-color: #ffffff;
+        --text-color: #2d3748;
+      }
+      
+      /* Thème Nature */
+      html[data-theme="nature"] {
+        --color-primary: #2e6b4a;
+        --color-secondary: #6ea87c;
+        --color-accent: #e63946;
+        --bg-color: #ffffff;
+        --text-color: #2d3748;
+      }
+      
+      /* Thème Sombre */
+      html[data-theme="dark"] {
+        --color-primary: #6889c2;
+        --color-secondary: #415a89;
+        --color-accent: #f7a046;
+        --bg-color: #1a202c;
+        --text-color: #e2e8f0;
+      }
+      
+      /* Support des préférences système pour le mode sombre */
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="default"]):not([data-theme="nature"]) {
+          --color-primary: #6889c2;
+          --color-secondary: #415a89;
+          --color-accent: #f7a046;
+          --bg-color: #1a202c;
+          --text-color: #e2e8f0;
+        }
+      }
+      
+      /* Styles de base */
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
         font-family: var(--font-andika);
       }
 
       h1, h2, h3, h4, h5, h6 {
         font-family: var(--font-champ);
-        font-weight: 700;
+        color: var(--color-primary);
       }
 
       h1, h2 {
@@ -69,37 +113,51 @@ const {
         scroll-behavior: smooth;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
       @view-transition {
-        navigation: auto; /* enabled! */
+        navigation: auto;
+      }
+      
+      /* Style pour le titre du site */
+      .site-title {
+        color: var(--color-primary);
       }
     </style>
   </head>
-  <body class="min-h-screen flex flex-col bg-white text-black">
-    <header class="border-b border-gray-200 py-4 px-4 md:hidden">
+  <body class="min-h-screen flex flex-col">
+    <header class="border-b py-4 px-4 md:hidden" style="border-color: var(--color-secondary);">
       <div class="flex justify-between items-center">
-        <h1 class="text-xl font-normal">Briec2000</h1>
-        <button id="menuToggle" class="text-black"> ☰ </button>
+        <h1 class="text-xl font-normal site-title">Briec2000</h1>
+        <ThemeSwitcher />
+        <button id="menuToggle" aria-label="Menu" class="ml-3"> ☰ </button>
       </div>
     </header>
 
     <!-- Menu mobile -->
     <div
       id="mobileMenu"
-      class="md:hidden bg-white border-b border-gray-200 py-4 px-6 hidden"
+      class="md:hidden border-b py-4 px-6 hidden"
+      style="border-color: var(--color-secondary);"
     >
       <nav>
         <ul class="space-y-4">
           <li><a href="/" class="text-lg">Accueil</a></li>
           <li><a href="/about" class="text-lg">À propos</a></li>
+          <li><a href="/events/" class="text-lg">Événements</a></li>
+          <li><a href="/cantines/" class="text-lg">Cantines</a></li>
         </ul>
       </nav>
     </div>
 
     <main class="flex-grow container mx-auto px-4 py-6 md:py-12 flex">
-      <!-- Menu latéral pour desktop uniquement -->
+      <!-- Menu latéral pour desktop -->
       <div class="hidden md:block">
+        <div class="flex items-center justify-between mb-8">
+          <h3 class="text-xl font-normal site-title">Briec2000</h3>
+          <ThemeSwitcher />
+        </div>
         <SidebarMenu />
       </div>
 
@@ -124,13 +182,12 @@ const {
         }
 
         // Script pour tous les liens de copie d'email
-        const emailCopyLinks: NodeListOf<HTMLElement> =
-          document.querySelectorAll(".email-copy");
+        const emailCopyLinks = document.querySelectorAll(".email-copy");
 
         emailCopyLinks.forEach((link) => {
-          link.addEventListener("click", (e: Event) => {
+          link.addEventListener("click", (e) => {
             e.preventDefault();
-            const email: string = "briec2000@emailasso.net";
+            const email = "briec2000@emailasso.net";
             navigator.clipboard.writeText(email).then(() => {
               // Créer ou récupérer la notification
               let notification = document.getElementById(

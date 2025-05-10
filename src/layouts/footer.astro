@@ -2,17 +2,33 @@
 const year = new Date().getFullYear();
 ---
 
-<footer class="bg-white border-t border-gray-200 mt-20">
-  <div class="container mx-auto px-4 py-8">
+<footer>
+  <div class="container mx-auto px-4 py-6">
     <div class="flex flex-col md:flex-row justify-between items-center">
       <p class="text-sm mb-4 md:mb-0">
         <strong>Contact:</strong> 
         <a href="#" class="email-copy hover:underline">briec2000@emailasso.net</a>
       </p>
 
-      <p class="text-sm text-gray-600">
+      <p class="text-sm">
         &copy; {year} Briec2000 - Tous droits réservés
       </p>
     </div>
   </div>
 </footer>
+
+<style>
+  footer {
+    background-color: var(--color-secondary);
+    color: white;
+  }
+  
+  footer a {
+    color: white !important;
+    border-color: white !important;
+  }
+  
+  footer a:hover {
+    opacity: 0.8;
+  }
+</style>

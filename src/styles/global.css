@@ -1,32 +1,35 @@
 /* Import Tailwind CSS */
 @import "tailwindcss";
 
-/* Classes de boutons minimalistes */
+/* Classes de boutons minimalistes avec variables de couleur */
 .btn {
   padding: 0.75rem 1.5rem;
-  border: 1px solid black;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
   display: inline-block;
-  transition-property: opacity;
-  transition-duration: 150ms;
+  transition: all 0.2s ease;
   text-decoration: none;
   font-size: 0.875rem;
+  background-color: transparent;
 }
 
 .btn:hover {
-  opacity: 0.7;
+  background-color: var(--color-primary);
+  color: var(--bg-color);
+  opacity: 0.9;
 }
 
+/* Liens avec variables de couleur */
 a {
-  color: inherit;
+  color: var(--color-primary);
   text-decoration: none;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--color-primary);
   padding-bottom: 0.125rem;
-  transition-property: opacity;
-  transition-duration: 150ms;
+  transition: opacity 0.15s ease;
 }
 
 a:hover {
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 /* Exception pour les boutons et les liens de menu */
@@ -34,9 +37,40 @@ a:hover {
   border-bottom: none;
 }
 
-/* Ajouter une transition fluide au menu sur petits écrans */
-@media (max-width: 768px) {
-  .mobile-menu {
-    transition: transform 0.3s ease;
-  }
+/* Menu mobile */
+.mobile-menu {
+  transition: transform 0.3s ease;
+}
+
+/* Adaptation au thème sombre */
+html[data-theme="dark"] .btn {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+html[data-theme="dark"] .btn:hover {
+  background-color: var(--color-primary);
+  color: var(--bg-color);
+}
+
+html[data-theme="dark"] a {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* Styles pour le menu de la barre latérale */
+.sidebar-menu {
+  min-width: 180px;
+  border-right: 1px solid var(--color-secondary);
+  padding-right: 1.5rem;
+}
+
+.sidebar-link {
+  color: var(--text-color);
+  transition: color 0.2s ease;
+}
+
+.sidebar-link:hover, 
+.sidebar-link.active {
+  color: var(--color-primary);
 }

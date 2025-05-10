@@ -1,0 +1,136 @@
+---
+// src/components/ThemeSwitcher.astro
+// Un composant compact pour changer entre différents thèmes de couleurs
+
+// Définir les thèmes disponibles - juste 3 couleurs par thème
+const themes = [
+  {
+    id: "default",
+    name: "Clair",
+    colors: {
+      primary: "#1a4d7c",
+      secondary: "#5885a9",
+      accent: "#f58a42",
+    },
+  },
+  {
+    id: "nature",
+    name: "Nature",
+    colors: {
+      primary: "#2e6b4a",
+      secondary: "#6ea87c",
+      accent: "#e63946",
+    },
+  },
+  {
+    id: "dark",
+    name: "Sombre",
+    colors: {
+      primary: "#6889c2",
+      secondary: "#415a89",
+      accent: "#f7a046",
+    },
+  },
+];
+---
+
+<div class="theme-switcher">
+  {
+    themes.map((theme) => (
+      <button
+        class="theme-option"
+        data-theme={theme.id}
+        title={theme.name}
+        aria-label={`Thème ${theme.name}`}
+      >
+        <span
+          class="color-preview"
+          style={`background-color: ${theme.colors.primary};`}
+        />
+      </button>
+    ))
+  }
+</div>
+
+<script>
+  // Script côté client pour changer le thème
+  document.addEventListener("DOMContentLoaded", () => {
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+    const savedTheme =
+      localStorage.getItem("selected-theme") ||
+      (prefersDark ? "dark" : "default");
+    document.documentElement.setAttribute("data-theme", savedTheme);
+
+    const themeButtons = document.querySelectorAll(".theme-option");
+
+    themeButtons.forEach((button) => {
+      const themeId = button.getAttribute("data-theme");
+
+      // Vérifier si themeId n'est pas null
+      if (themeId !== null) {
+        if (themeId === savedTheme) {
+          button.classList.add("active");
+        }
+
+        button.addEventListener("click", () => {
+          themeButtons.forEach((btn) => btn.classList.remove("active"));
+          button.classList.add("active");
+          document.documentElement.setAttribute("data-theme", themeId);
+          localStorage.setItem("selected-theme", themeId);
+        });
+      }
+    });
+
+    window
+      .matchMedia("(prefers-color-scheme: dark)")
+      .addEventListener("change", (e) => {
+        if (!localStorage.getItem("selected-theme")) {
+          const newTheme = e.matches ? "dark" : "default";
+          document.documentElement.setAttribute("data-theme", newTheme);
+
+          themeButtons.forEach((btn) => {
+            const btnThemeId = btn.getAttribute("data-theme");
+            if (btnThemeId !== null) {
+              btn.classList.remove("active");
+              if (btnThemeId === newTheme) {
+                btn.classList.add("active");
+              }
+            }
+          });
+        }
+      });
+  });
+</script>
+
+<style>
+  .theme-switcher {
+    display: flex;
+    gap: 8px;
+  }
+
+  .theme-option {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--color-secondary);
+    border-radius: 50%;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .theme-option.active {
+    border-color: var(--color-accent);
+    transform: scale(1.1);
+  }
+
+  .color-preview {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+</style>

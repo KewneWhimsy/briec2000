@@ -7,7 +7,6 @@ const menuItems = [
   { title: 'Le carnabal', url: '/events/2025-10-31-carnabal/' },
   { title: 'L\'association', url: '/about/' },
   { title: 'Archives', url: '/archives/' },
-
 ];
 ---
 
@@ -28,7 +27,7 @@ const menuItems = [
 <style>
   .sidebar-menu {
     min-width: 180px;
-    border-right: 1px solid #e5e7eb;
+    border-right: 1px solid var(--color-border);
     padding-right: 1.5rem;
   }
   
@@ -36,5 +35,31 @@ const menuItems = [
     border-bottom: none;
     padding-bottom: 0;
     font-weight: 300;
+    transition: color 0.2s ease;
+  }
+  
+  .sidebar-link:hover {
+    color: var(--color-primary) !important;
+  }
+  
+  /* Effet visuel pour indiquer la page active */
+  .sidebar-link.active {
+    color: var(--color-primary) !important;
+    font-weight: 500;
   }
 </style>
+
+<script>
+  // Script pour marquer le lien actif dans le menu
+  document.addEventListener('DOMContentLoaded', () => {
+    const currentPath = window.location.pathname;
+    const menuLinks = document.querySelectorAll('.sidebar-link');
+
+    menuLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && (href === currentPath || (href !== '/' && currentPath.startsWith(href)))) {
+        link.classList.add('active');
+      }
+    });
+  });
+</script>
