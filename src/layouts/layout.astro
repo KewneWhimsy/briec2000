@@ -40,12 +40,12 @@ const {
         --color-primary: #1a4d7c;
         --color-secondary: #5885a9;
         --color-accent: #f58a42;
-        
+
         /* Couleurs neutres */
         --bg-color: #ffffff;
         --text-color: #2d3748;
       }
-      
+
       /* Thème Nature */
       html[data-theme="nature"] {
         --color-primary: #2e6b4a;
@@ -54,7 +54,7 @@ const {
         --bg-color: #ffffff;
         --text-color: #2d3748;
       }
-      
+
       /* Thème Sombre */
       html[data-theme="dark"] {
         --color-primary: #6889c2;
@@ -63,7 +63,7 @@ const {
         --bg-color: #1a202c;
         --text-color: #e2e8f0;
       }
-      
+
       /* Support des préférences système pour le mode sombre */
       @media (prefers-color-scheme: dark) {
         :root:not([data-theme="default"]):not([data-theme="nature"]) {
@@ -74,7 +74,7 @@ const {
           --text-color: #e2e8f0;
         }
       }
-      
+
       /* Styles de base */
       body {
         background-color: var(--bg-color);
@@ -82,12 +82,18 @@ const {
         font-family: var(--font-andika);
       }
 
-      h1, h2, h3, h4, h5, h6 {
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
         font-family: var(--font-champ);
         color: var(--color-primary);
       }
 
-      h1, h2 {
+      h1,
+      h2 {
         font-weight: 400;
       }
 
@@ -113,21 +119,23 @@ const {
         scroll-behavior: smooth;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        transition: background-color 0.3s ease, color 0.3s ease;
       }
 
       @view-transition {
         navigation: auto;
       }
-      
+
       /* Style pour le titre du site */
       .site-title {
         color: var(--color-primary);
       }
     </style>
   </head>
-  <body class="min-h-screen flex flex-col">
-    <header class="border-b py-4 px-4 md:hidden" style="border-color: var(--color-secondary);">
+  <body class="min-h-screen transition-colors flex flex-col">
+    <header
+      class="border-b py-4 px-4 md:hidden"
+      style="border-color: var(--color-secondary);"
+    >
       <div class="flex justify-between items-center">
         <h1 class="text-xl font-normal site-title">Briec2000</h1>
         <ThemeSwitcher />
