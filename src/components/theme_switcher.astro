@@ -1,35 +1,28 @@
 ---
-// src/components/ThemeSwitcher.astro
-// Un composant compact pour changer entre différents thèmes de couleurs
+// src/components/theme_switcher.astro
+// Un composant minimaliste pour basculer entre 4 thèmes
 
-// Définir les thèmes disponibles - juste 3 couleurs par thème
+// Définir les thèmes disponibles
 const themes = [
   {
-    id: "default",
-    name: "Clair",
-    colors: {
-      primary: "#1a4d7c",
-      secondary: "#5885a9",
-      accent: "#f58a42",
-    },
+    id: "ocean",
+    name: "Océan",
+    type: "light"
   },
   {
     id: "nature",
     name: "Nature",
-    colors: {
-      primary: "#2e6b4a",
-      secondary: "#6ea87c",
-      accent: "#e63946",
-    },
+    type: "light"
   },
   {
-    id: "dark",
-    name: "Sombre",
-    colors: {
-      primary: "#6889c2",
-      secondary: "#415a89",
-      accent: "#f7a046",
-    },
+    id: "midnight",
+    name: "Minuit",
+    type: "dark"
+  },
+  {
+    id: "forest",
+    name: "Forêt",
+    type: "dark"
   },
 ];
 ---
@@ -38,99 +31,86 @@ const themes = [
   {
     themes.map((theme) => (
       <button
-        class="theme-option"
+        class={`theme-btn ${theme.type}`}
         data-theme={theme.id}
         title={theme.name}
         aria-label={`Thème ${theme.name}`}
       >
-        <span
-          class="color-preview"
-          style={`background-color: ${theme.colors.primary};`}
-        />
+        {theme.id.charAt(0).toUpperCase()}
       </button>
     ))
   }
 </div>
 
 <script>
-  // Script côté client pour changer le thème
+  // Script côté client pour changer le thème (sans réinitialisation à chaque chargement)
   document.addEventListener("DOMContentLoaded", () => {
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches;
-    const savedTheme =
-      localStorage.getItem("selected-theme") ||
-      (prefersDark ? "dark" : "default");
-    document.documentElement.setAttribute("data-theme", savedTheme);
+    const themeButtons = document.querySelectorAll(".theme-btn");
+    
+    // Récupérer le thème actuel depuis l'attribut data-theme sur html
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+    
+    // Mettre à jour l'UI pour montrer le thème actif
+    if (currentTheme) {
+      themeButtons.forEach((btn) => {
+        if (btn.getAttribute("data-theme") === currentTheme) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+    }
 
-    const themeButtons = document.querySelectorAll(".theme-option");
-
+    // Ajouter les écouteurs d'événements pour le changement de thème
     themeButtons.forEach((button) => {
       const themeId = button.getAttribute("data-theme");
 
-      // Vérifier si themeId n'est pas null
       if (themeId !== null) {
-        if (themeId === savedTheme) {
-          button.classList.add("active");
-        }
-
         button.addEventListener("click", () => {
+          // Mettre à jour la classe active
           themeButtons.forEach((btn) => btn.classList.remove("active"));
           button.classList.add("active");
+          
+          // Appliquer le thème
           document.documentElement.setAttribute("data-theme", themeId);
           localStorage.setItem("selected-theme", themeId);
         });
       }
     });
-
-    window
-      .matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", (e) => {
-        if (!localStorage.getItem("selected-theme")) {
-          const newTheme = e.matches ? "dark" : "default";
-          document.documentElement.setAttribute("data-theme", newTheme);
-
-          themeButtons.forEach((btn) => {
-            const btnThemeId = btn.getAttribute("data-theme");
-            if (btnThemeId !== null) {
-              btn.classList.remove("active");
-              if (btnThemeId === newTheme) {
-                btn.classList.add("active");
-              }
-            }
-          });
-        }
-      });
   });
 </script>
 
 <style>
   .theme-switcher {
     display: flex;
-    gap: 8px;
+    gap: 4px;
   }
 
-  .theme-option {
+  .theme-btn {
     width: 24px;
     height: 24px;
-    border: 2px solid var(--color-secondary);
     border-radius: 50%;
-    padding: 0;
+    font-weight: bold;
+    font-size: 11px;
     cursor: pointer;
-    overflow: hidden;
-    transition:
-      transform 0.2s ease,
-      border-color 0.2s ease;
+    border: 1px solid var(--color-border);
+    background-color: var(--bg-color);
+    color: var(--color-primary);
+    transition: all 0.2s ease;
   }
 
-  .theme-option.active {
+  .theme-btn.active {
     border-color: var(--color-accent);
     transform: scale(1.1);
   }
-
-  .color-preview {
-    display: block;
-    width: 100%;
-    height: 100%;
+  
+  .theme-btn.light {
+    background-color: #f0f4f8;
+    color: #1a4d7c;
+  }
+  
+  .theme-btn.dark {
+    background-color: #1f2937;
+    color: #6889c2;
   }
 </style>

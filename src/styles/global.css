@@ -1,9 +1,9 @@
 /* Import Tailwind CSS */
 @import "tailwindcss";
 
-/* Classes de boutons minimalistes avec variables de couleur */
+/* Classes de base */
 .btn {
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1rem;
   border: 1px solid var(--color-primary);
   color: var(--color-primary);
   display: inline-block;
@@ -11,30 +11,24 @@
   text-decoration: none;
   font-size: 0.875rem;
   background-color: transparent;
+  border-radius: 0.25rem;
 }
 
 .btn:hover {
   background-color: var(--color-primary);
   color: var(--bg-color);
-  opacity: 0.9;
-}
-
-/* Liens avec variables de couleur */
-a {
-  color: var(--color-primary);
   text-decoration: none;
-  border-bottom: 1px solid var(--color-primary);
-  padding-bottom: 0.125rem;
-  transition: opacity 0.15s ease;
 }
 
-a:hover {
-  opacity: 0.8;
+/* Adaptation au thème */
+html[data-theme="midnight"] .card,
+html[data-theme="forest"] .card {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
-/* Exception pour les boutons et les liens de menu */
-.btn, .sidebar-link {
-  border-bottom: none;
+html[data-theme="ocean"] .card,
+html[data-theme="nature"] .card {
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 /* Menu mobile */
@@ -42,26 +36,10 @@ a:hover {
   transition: transform 0.3s ease;
 }
 
-/* Adaptation au thème sombre */
-html[data-theme="dark"] .btn {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-}
-
-html[data-theme="dark"] .btn:hover {
-  background-color: var(--color-primary);
-  color: var(--bg-color);
-}
-
-html[data-theme="dark"] a {
-  color: var(--color-primary);
-  border-color: var(--color-primary);
-}
-
 /* Styles pour le menu de la barre latérale */
 .sidebar-menu {
   min-width: 180px;
-  border-right: 1px solid var(--color-secondary);
+  border-right: 1px solid var(--color-border);
   padding-right: 1.5rem;
 }
 
