@@ -1,28 +1,36 @@
 ---
 // src/components/theme_switcher.astro
-// Un composant minimaliste pour basculer entre 4 thèmes
+// Un composant amélioré pour basculer entre 4 thèmes avec des représentations visuelles
 
-// Définir les thèmes disponibles
+// Définir les thèmes disponibles avec leurs couleurs caractéristiques
 const themes = [
   {
     id: "ocean",
     name: "Océan",
-    type: "light"
+    type: "light",
+    bgColor: "#edf2f7",
+    primaryColor: "#1a4d7c"
   },
   {
     id: "nature",
     name: "Nature",
-    type: "light"
+    type: "light",
+    bgColor: "#eef5ee",
+    primaryColor: "#2e6b4a"
   },
   {
     id: "midnight",
     name: "Minuit",
-    type: "dark"
+    type: "dark",
+    bgColor: "#1f2937",
+    primaryColor: "#6889c2"
   },
   {
     id: "forest",
     name: "Forêt",
-    type: "dark"
+    type: "dark",
+    bgColor: "#1a2721",
+    primaryColor: "#8fb996"
   },
 ];
 ---
@@ -31,19 +39,20 @@ const themes = [
   {
     themes.map((theme) => (
       <button
-        class={`theme-btn ${theme.type}`}
+        class="theme-btn"
         data-theme={theme.id}
         title={theme.name}
         aria-label={`Thème ${theme.name}`}
+        style={`background-color: ${theme.bgColor}; border-color: ${theme.primaryColor};`}
       >
-        {theme.id.charAt(0).toUpperCase()}
+        <span class="theme-accent" style={`background-color: ${theme.primaryColor};`}></span>
       </button>
     ))
   }
 </div>
 
 <script>
-  // Script côté client pour changer le thème (sans réinitialisation à chaque chargement)
+  // Script côté client pour changer le thème
   document.addEventListener("DOMContentLoaded", () => {
     const themeButtons = document.querySelectorAll(".theme-btn");
     
@@ -83,34 +92,32 @@ const themes = [
 <style>
   .theme-switcher {
     display: flex;
-    gap: 4px;
+    gap: 6px;
   }
 
   .theme-btn {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    font-weight: bold;
-    font-size: 11px;
     cursor: pointer;
-    border: 1px solid var(--color-border);
-    background-color: var(--bg-color);
-    color: var(--color-primary);
+    border: 2px solid transparent;
+    position: relative;
     transition: all 0.2s ease;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .theme-btn .theme-accent {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30%;
+    border-radius: 0 0 50% 50%;
   }
 
   .theme-btn.active {
-    border-color: var(--color-accent);
     transform: scale(1.1);
-  }
-  
-  .theme-btn.light {
-    background-color: #f0f4f8;
-    color: #1a4d7c;
-  }
-  
-  .theme-btn.dark {
-    background-color: #1f2937;
-    color: #6889c2;
+    box-shadow: 0 0 0 2px var(--color-accent);
   }
 </style>
