@@ -57,7 +57,7 @@ function formatDate(date: Date | string): string {
         <h2 class="mb-6 border-b pb-2">Événements à venir</h2>
         <div class="grid gap-8 md:grid-cols-2">
           {upcomingEvents.map((event: EventEntry) => (
-            <div class="flex flex-col border border-black p-6 hover:bg-gray-50 transition-colors">
+            <div class="event-card flex flex-col p-6 transition-colors">
               <h3 class="text-xl mb-2">{event.data.title}</h3>
               <p class="text-sm mb-3">
                 <time datetime={event.data.date.toISOString()}>
@@ -77,9 +77,9 @@ function formatDate(date: Date | string): string {
         <h2 class="mb-6 border-b pb-2">Événements passés</h2>
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {pastEvents.slice(0, 6).map((event: EventEntry) => (
-            <div class="border border-gray-200 p-4 hover:bg-gray-50 transition-colors">
+            <div class="event-card-past p-4 transition-colors">
               <h3 class="text-lg mb-1">{event.data.title}</h3>
-              <p class="text-sm text-gray-600 mb-2">
+              <p class="text-sm event-date mb-2">
                 <time datetime={event.data.date.toISOString()}>
                   {formatDate(event.data.date)}
                 </time>
@@ -102,3 +102,47 @@ function formatDate(date: Date | string): string {
     </div>
   </section>
 </Layout>
+
+<style>
+  /* Styles adaptés aux thèmes */
+  .event-card {
+    border: 1px solid var(--color-border);
+    background-color: var(--bg-color);
+    border-radius: 0.375rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .event-card:hover {
+    background-color: rgba(var(--color-primary-rgb, 0, 0, 0), 0.05);
+  }
+
+  .event-card-past {
+    border: 1px solid var(--color-border);
+    background-color: var(--bg-color);
+    border-radius: 0.25rem;
+  }
+
+  .event-card-past:hover {
+    background-color: rgba(var(--color-primary-rgb, 0, 0, 0), 0.05);
+  }
+
+  .event-date {
+    color: var(--text-color);
+    opacity: 0.7;
+  }
+
+  /* Adaptation aux thèmes sombres */
+  html[data-theme="midnight"] .event-card,
+  html[data-theme="forest"] .event-card,
+  html[data-theme="midnight"] .event-card-past,
+  html[data-theme="forest"] .event-card-past {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  html[data-theme="midnight"] .event-card:hover,
+  html[data-theme="forest"] .event-card:hover,
+  html[data-theme="midnight"] .event-card-past:hover,
+  html[data-theme="forest"] .event-card-past:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+</style>

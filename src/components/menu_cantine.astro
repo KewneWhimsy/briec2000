@@ -73,64 +73,64 @@ function getMonthName(date: Date | string): string {
 </div>
 
 <style>
-  /* Styles pour le menu de restaurant - version plus compacte */
+  /* Styles pour le menu de restaurant avec variables de thème */
   .restaurant-menu {
-    border: 1px solid #2d3748;
+    border: 1px solid var(--color-border);
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    background-color: #f8f7f2;
+    background-color: var(--bg-color);
     margin: 0 auto;
     font-family: var(--font-andika);
-    width: 100%; /* Assure que le menu prend toute la largeur disponible */
+    width: 100%;
   }
   
   /* Fixed sidebar behavior */
   .fixed-sidebar {
     position: fixed;
     top: 2rem;
-    max-height: 90vh; /* Limiter la hauteur à 90% de la hauteur de l'écran */
-    overflow-y: auto; /* Ajouter un défilement si nécessaire */
-    width: calc(100% - 2rem); /* Prend la largeur du conteneur moins un peu de marge */
-    max-width: 24rem; /* Limite la largeur maximale pour les grands écrans */
+    max-height: 90vh;
+    overflow-y: auto;
+    width: calc(100% - 2rem);
+    max-width: 24rem;
   }
   
   .menu-heading {
-    background-color: #5885a9;
+    background-color: var(--color-secondary);
     color: white;
     text-align: center;
-    padding: 12px; /* Réduit */
+    padding: 12px;
   }
   
   .menu-title h3 {
-    font-size: 1.75rem; /* Réduit */
+    font-size: 1.75rem;
     margin: 0;
     font-weight: 400;
     letter-spacing: 1px;
   }
   
   .menu-subtitle {
-    font-size: 1rem; /* Réduit */
-    margin-top: 2px; /* Réduit */
+    font-size: 1rem;
+    margin-top: 2px;
     font-style: italic;
     opacity: 0.9;
   }
   
   .menu-body {
-    padding: 20px; /* Réduit */
-    background-color: #f8f7f2;
+    padding: 20px;
+    background-color: var(--bg-color);
   }
   
   .menu-section {
-    margin-bottom: 18px; /* Réduit */
+    margin-bottom: 18px;
   }
   
   .course-title {
-    font-size: 1.25rem; /* Réduit */
-    color: #2d3748;
-    margin: 0 0 10px 0; /* Réduit */
-    border-bottom: 1px solid #e2e8f0;
-    padding-bottom: 6px; /* Réduit */
+    font-size: 1.25rem;
+    color: var(--color-primary);
+    margin: 0 0 10px 0;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 6px;
     font-weight: 500;
     position: relative;
   }
@@ -140,47 +140,53 @@ function getMonthName(date: Date | string): string {
     position: absolute;
     bottom: -1px;
     left: 0;
-    width: 50px; /* Réduit */
+    width: 50px;
     height: 2px;
-    background-color: #5885a9;
+    background-color: var(--color-secondary);
   }
   
   .dish {
-    margin-bottom: 12px; /* Réduit */
-    padding: 0 6px; /* Réduit */
+    margin-bottom: 12px;
+    padding: 0 6px;
   }
   
   .dish-name {
-    font-size: 1.1rem; /* Réduit */
+    font-size: 1.1rem;
     font-weight: 500;
-    color: #1a202c;
-    margin: 0 0 6px 0; /* Réduit */
+    color: var(--text-color);
+    margin: 0 0 6px 0;
   }
   
   .dish-description {
-    font-size: 0.95rem; /* Réduit */
-    color: #4a5568;
-    margin: 0 0 12px 0; /* Réduit */
+    font-size: 0.95rem;
+    color: var(--text-color);
+    opacity: 0.8;
+    margin: 0 0 12px 0;
     font-style: italic;
     line-height: 1.4;
   }
   
   .dish-options {
-    margin-top: 12px; /* Réduit */
+    margin-top: 12px;
     display: flex;
     flex-direction: column;
-    gap: 8px; /* Réduit */
+    gap: 8px;
   }
   
   .option {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.95rem; /* Réduit */
-    padding: 8px 12px; /* Réduit */
-    background-color: #fff;
+    font-size: 0.95rem;
+    padding: 8px 12px;
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 6px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  html[data-theme="midnight"] .option,
+  html[data-theme="forest"] .option {
+    background-color: rgba(255, 255, 255, 0.1);
   }
   
   .option-label {
@@ -188,37 +194,40 @@ function getMonthName(date: Date | string): string {
   }
   
   .option-detail {
-    color: #4a5568;
+    color: var(--text-color);
+    opacity: 0.8;
     font-style: italic;
   }
   
   .menu-footer {
-    margin-top: 18px; /* Réduit */
+    margin-top: 18px;
     text-align: center;
-    border-top: 1px solid #e2e8f0;
-    padding-top: 16px; /* Réduit */
+    border-top: 1px solid var(--color-border);
+    padding-top: 16px;
   }
   
   .menu-note {
-    font-size: 0.9rem; /* Réduit */
-    color: #718096;
-    margin-bottom: 16px; /* Réduit */
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.7;
+    margin-bottom: 16px;
     font-style: italic;
     line-height: 1.4;
   }
   
   .menu-button {
     display: inline-block;
-    padding: 8px 16px; /* Réduit */
-    background-color: #5885a9;
+    padding: 8px 16px;
+    background-color: var(--color-secondary);
     color: white;
     text-decoration: none;
     border-radius: 6px;
-    font-size: 1rem; /* Réduit */
+    font-size: 1rem;
     transition: background-color 0.2s;
   }
   
   .menu-button:hover {
-    background-color: #4a7598;
+    background-color: var(--color-primary);
+    filter: brightness(1.1);
   }
 </style>

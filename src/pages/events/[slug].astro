@@ -59,7 +59,7 @@ function formatDate(date: Date | string): string {
     )}
 
     {entry.data.price && entry.data.price.length > 0 && (
-      <div class="mb-8 p-4 border border-black bg-gray-50">
+      <div class="price-card mb-8 p-4">
         <h2 class="text-xl mb-4">Tarifs</h2>
         <ul class="list-disc ml-6">
           {entry.data.price.map((price: Price) => (
@@ -81,28 +81,45 @@ function formatDate(date: Date | string): string {
 </Layout>
 
 <style>
+  /* Styles adaptés aux thèmes */
+  .price-card {
+    border: 1px solid var(--color-border);
+    background-color: rgba(var(--color-primary-rgb, 0, 0, 0), 0.05);
+    border-radius: 0.375rem;
+  }
+
+  /* Adaptation aux thèmes sombres */
+  html[data-theme="midnight"] .price-card,
+  html[data-theme="forest"] .price-card {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
   /* Styles spécifiques pour le contenu Markdown rendu */
   .event-content :global(h1) {
     font-size: 2rem;
     margin-bottom: 1.5rem;
+    color: var(--color-primary);
   }
   
   .event-content :global(h2) {
     font-size: 1.5rem;
     margin-top: 2rem;
     margin-bottom: 1rem;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--color-border);
     padding-bottom: 0.5rem;
+    color: var(--color-primary);
   }
   
   .event-content :global(h3) {
     font-size: 1.25rem;
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
+    color: var(--color-primary);
   }
   
   .event-content :global(p) {
     margin-bottom: 1rem;
+    color: var(--text-color);
   }
   
   .event-content :global(ul) {
@@ -113,6 +130,7 @@ function formatDate(date: Date | string): string {
   
   .event-content :global(li) {
     margin-bottom: 0.5rem;
+    color: var(--text-color);
   }
   
   .event-content :global(strong) {

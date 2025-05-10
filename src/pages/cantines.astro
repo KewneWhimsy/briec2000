@@ -64,7 +64,7 @@ function formatDate(date: Date | string): string {
         <h2 class="mb-6 border-b pb-2">Prochaines cantines</h2>
         <div class="grid gap-8 md:grid-cols-2">
           {upcomingCantines.map((event: EventEntry) => (
-            <div class="border border-black p-6 hover:bg-gray-50 transition-colors">
+            <div class="cantine-card p-6 transition-colors">
               <h3 class="text-xl mb-2">{event.data.title}</h3>
               <p class="text-sm mb-3">
                 <time datetime={event.data.date.toISOString()}>
@@ -80,7 +80,7 @@ function formatDate(date: Date | string): string {
     )}
     
     {cantineEntry && cantineEntry.data.price && cantineEntry.data.price.length > 0 && (
-      <div class="mb-8 p-6 border border-black bg-gray-50">
+      <div class="price-card mb-8 p-6">
         <h2 class="text-xl mb-4">Tarifs</h2>
         <ul class="list-disc ml-6 mb-4">
           {cantineEntry.data.price.map((price: Price) => (
@@ -97,7 +97,7 @@ function formatDate(date: Date | string): string {
       </div>
     )}
     
-    <div class="bg-gray-100 p-6 rounded-lg mb-12">
+    <div class="reservation-card p-6 mb-12">
       <h2 class="text-xl mb-4">Comment réserver ?</h2>
       <p class="mb-4">
         Pour réserver votre place à la prochaine cantine solidaire, envoyez un email à : 
@@ -119,6 +119,48 @@ function formatDate(date: Date | string): string {
 </Layout>
 
 <style>
+  /* Styles adaptés aux thèmes */
+  .cantine-card {
+    border: 1px solid var(--color-border);
+    background-color: var(--bg-color);
+    border-radius: 0.375rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .cantine-card:hover {
+    background-color: rgba(var(--color-primary-rgb, 0, 0, 0), 0.05);
+  }
+
+  .price-card {
+    border: 1px solid var(--color-border);
+    background-color: var(--bg-color);
+    border-radius: 0.375rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .reservation-card {
+    background-color: rgba(var(--color-primary-rgb, 0, 0, 0), 0.05);
+    border-radius: 0.375rem;
+  }
+
+  /* Adaptation aux thèmes sombres */
+  html[data-theme="midnight"] .cantine-card,
+  html[data-theme="forest"] .cantine-card,
+  html[data-theme="midnight"] .price-card,
+  html[data-theme="forest"] .price-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  html[data-theme="midnight"] .cantine-card:hover,
+  html[data-theme="forest"] .cantine-card:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  html[data-theme="midnight"] .reservation-card,
+  html[data-theme="forest"] .reservation-card {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
   /* Styles spécifiques pour le contenu Markdown rendu */
   .cantines-content :global(h1) {
     display: none; /* Cacher le premier titre H1 car nous avons déjà un H1 dans la page */
@@ -128,7 +170,7 @@ function formatDate(date: Date | string): string {
     margin-top: 2.5rem;
     margin-bottom: 1.5rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--color-border);
   }
   
   .cantines-content :global(h3) {
