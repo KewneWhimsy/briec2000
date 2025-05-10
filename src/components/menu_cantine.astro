@@ -1,0 +1,224 @@
+---
+// src/components/menu_cantine.astro
+// Composant pour afficher le menu de la cantine
+
+// Types
+export interface Props {
+  cantineEvent: any; // L'événement cantine à afficher
+  isDesktop?: boolean; // Si c'est la version desktop ou mobile
+}
+
+// Props avec destructuration et valeurs par défaut
+const { cantineEvent, isDesktop = false } = Astro.props as Props;
+
+// Extraire le mois pour l'afficher dans le menu
+function getMonthName(date: Date | string): string {
+  const dateObj = date instanceof Date ? date : new Date(date);
+  const options: Intl.DateTimeFormatOptions = { month: 'long' };
+  return dateObj.toLocaleDateString('fr-FR', options);
+}
+---
+
+<div class={`restaurant-menu ${isDesktop ? 'fixed-sidebar' : ''}`}>
+  <div class="menu-heading">
+    <div class="menu-title">
+      <h3>La Cantine Solidaire</h3>
+      <p class="menu-subtitle">Menu de {getMonthName(cantineEvent.data.date)}</p>
+    </div>
+  </div>
+  
+  <div class="menu-body">
+    <div class="menu-section">
+      <h4 class="course-title">Entrée</h4>
+      <div class="dish">
+        <p class="dish-name">Petite salade fraîche de saison</p>
+      </div>
+    </div>
+    
+    <div class="menu-section">
+      <h4 class="course-title">Plat Principal</h4>
+      <div class="dish">
+        <p class="dish-name">Tajine aux saveurs orientales</p>
+        <p class="dish-description">Semoule, amandes, abricots, raisins secs et légumes</p>
+        
+        <div class="dish-options">
+          <div class="option">
+            <span class="option-label">Option Végétarienne</span>
+            <span class="option-detail">Protéine de soja</span>
+          </div>
+          
+          <div class="option">
+            <span class="option-label">Option Carnée</span>
+            <span class="option-detail">Poulet fermier</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="menu-section">
+      <h4 class="course-title">Dessert</h4>
+      <div class="dish">
+        <p class="dish-name">Assortiment de desserts maison</p>
+        <p class="dish-description">Disponibles sur place uniquement</p>
+      </div>
+    </div>
+    
+    <div class="menu-footer">
+      <p class="menu-note">Pensez à apporter vos contenants propres pour les repas à emporter</p>
+      <a href={`/events/${cantineEvent.slug}/`} class="menu-button">
+        Détails et réservation
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Styles pour le menu de restaurant - version plus compacte */
+  .restaurant-menu {
+    border: 1px solid #2d3748;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    background-color: #f8f7f2;
+    margin: 0 auto;
+    font-family: var(--font-andika);
+    width: 100%; /* Assure que le menu prend toute la largeur disponible */
+  }
+  
+  /* Fixed sidebar behavior */
+  .fixed-sidebar {
+    position: fixed;
+    top: 2rem;
+    max-height: 90vh; /* Limiter la hauteur à 90% de la hauteur de l'écran */
+    overflow-y: auto; /* Ajouter un défilement si nécessaire */
+    width: calc(100% - 2rem); /* Prend la largeur du conteneur moins un peu de marge */
+    max-width: 24rem; /* Limite la largeur maximale pour les grands écrans */
+  }
+  
+  .menu-heading {
+    background-color: #5885a9;
+    color: white;
+    text-align: center;
+    padding: 12px; /* Réduit */
+  }
+  
+  .menu-title h3 {
+    font-size: 1.75rem; /* Réduit */
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+  
+  .menu-subtitle {
+    font-size: 1rem; /* Réduit */
+    margin-top: 2px; /* Réduit */
+    font-style: italic;
+    opacity: 0.9;
+  }
+  
+  .menu-body {
+    padding: 20px; /* Réduit */
+    background-color: #f8f7f2;
+  }
+  
+  .menu-section {
+    margin-bottom: 18px; /* Réduit */
+  }
+  
+  .course-title {
+    font-size: 1.25rem; /* Réduit */
+    color: #2d3748;
+    margin: 0 0 10px 0; /* Réduit */
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 6px; /* Réduit */
+    font-weight: 500;
+    position: relative;
+  }
+  
+  .course-title::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 50px; /* Réduit */
+    height: 2px;
+    background-color: #5885a9;
+  }
+  
+  .dish {
+    margin-bottom: 12px; /* Réduit */
+    padding: 0 6px; /* Réduit */
+  }
+  
+  .dish-name {
+    font-size: 1.1rem; /* Réduit */
+    font-weight: 500;
+    color: #1a202c;
+    margin: 0 0 6px 0; /* Réduit */
+  }
+  
+  .dish-description {
+    font-size: 0.95rem; /* Réduit */
+    color: #4a5568;
+    margin: 0 0 12px 0; /* Réduit */
+    font-style: italic;
+    line-height: 1.4;
+  }
+  
+  .dish-options {
+    margin-top: 12px; /* Réduit */
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Réduit */
+  }
+  
+  .option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem; /* Réduit */
+    padding: 8px 12px; /* Réduit */
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .option-label {
+    font-weight: 500;
+  }
+  
+  .option-detail {
+    color: #4a5568;
+    font-style: italic;
+  }
+  
+  .menu-footer {
+    margin-top: 18px; /* Réduit */
+    text-align: center;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 16px; /* Réduit */
+  }
+  
+  .menu-note {
+    font-size: 0.9rem; /* Réduit */
+    color: #718096;
+    margin-bottom: 16px; /* Réduit */
+    font-style: italic;
+    line-height: 1.4;
+  }
+  
+  .menu-button {
+    display: inline-block;
+    padding: 8px 16px; /* Réduit */
+    background-color: #5885a9;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 1rem; /* Réduit */
+    transition: background-color 0.2s;
+  }
+  
+  .menu-button:hover {
+    background-color: #4a7598;
+  }
+</style>
