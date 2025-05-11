@@ -2,7 +2,6 @@
 import Footer from "./footer.astro";
 import SidebarMenu from "../components/sidebar_menu.astro";
 import ThemeSwitcher from "../components/theme_switcher.astro";
-import "../styles/global.css";
 import { Font } from "astro:assets";
 
 // Définissez les props que vous souhaitez passer à votre layout
@@ -54,38 +53,80 @@ const currentPath = Astro.url.pathname;
     <Font name="Champ" cssVariable="--font-champ" preload />
 
     <style is:global>
+      /* Import Tailwind CSS */
+      @import "tailwindcss";
+
+      /* ============== SYSTÈME TYPOGRAPHIQUE =============== */
+      
       /* Styles de base */
       body {
+        font-family: var(--font-andika);
+        font-size: 1rem;
+        line-height: 1.5;
         background-color: var(--bg-color);
         color: var(--text-color);
-        font-family: var(--font-andika);
         transition: background-color 0.3s ease, color 0.3s ease;
       }
 
+      /* Hiérarchie typographique principale */
       h1, h2, h3, h4, h5, h6 {
-        color: var(--color-primary);
-        transition: color 0.3s ease;
         font-family: var(--font-champ);
+        color: var(--color-primary);
+        font-weight: 700;
+        line-height: 1.2;
+        transition: color 0.3s ease;
       }
 
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      h3 {
+        font-size: 1.25rem;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+      }
+
+      h4 {
+        font-size: 1.125rem;
+        margin-top: 1.25rem;
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        margin-bottom: 1rem;
+      }
+
+      /* Liens */
       a {
         color: var(--color-primary);
         text-decoration: none;
       }
 
-      .email-copy{
+      a:hover {
         text-decoration: underline;
       }
 
+      /* Bouton standard - style global car utilisé partout */
       .btn {
+        padding: 0.5rem 1rem;
         border: 1px solid var(--color-primary);
         color: var(--color-primary);
-        background-color: transparent;
-        padding: 0.5rem 1rem;
-        border-radius: 0.25rem;
-        text-decoration: none;
         display: inline-block;
         transition: all 0.2s ease;
+        text-decoration: none;
+        font-size: 0.875rem;
+        background-color: transparent;
+        border-radius: 0.25rem;
       }
 
       .btn:hover {
@@ -94,11 +135,77 @@ const currentPath = Astro.url.pathname;
         text-decoration: none;
       }
 
-      @view-transition {
-        navigation: auto;
+      .email-copy {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+
+      /* ============== STYLES POUR LE CONTENU MARKDOWN =============== */
+      
+      /* Styles pour le contenu Markdown généré (utilisé dans plusieurs composants) */
+      .event-content :global(h1),
+      .cantines-content :global(h1),
+      .about-content :global(h1) {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
       }
       
-      /* Style pour le menu simplifié */
+      /* Pour cacher les H1 dans les contenus inclus dans une page */
+      .event-content-in-page :global(h1) {
+        display: none;
+      }
+      
+      .event-content :global(h2),
+      .cantines-content :global(h2),
+      .about-content :global(h2) {
+        font-size: 1.5rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid var(--color-border);
+        padding-bottom: 0.5rem;
+      }
+      
+      .event-content :global(h3),
+      .cantines-content :global(h3),
+      .about-content :global(h3) {
+        font-size: 1.25rem;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+      }
+      
+      .event-content :global(p),
+      .cantines-content :global(p),
+      .about-content :global(p) {
+        margin-bottom: 1rem;
+      }
+      
+      .event-content :global(ul),
+      .cantines-content :global(ul),
+      .about-content :global(ul) {
+        margin-left: 1.5rem;
+        margin-bottom: 1.5rem;
+        list-style-type: disc;
+      }
+      
+      .event-content :global(li),
+      .cantines-content :global(li),
+      .about-content :global(li) {
+        margin-bottom: 0.5rem;
+      }
+      
+      .event-content :global(strong),
+      .cantines-content :global(strong),
+      .about-content :global(strong) {
+        font-weight: 600;
+      }
+      
+      .event-content :global(em),
+      .cantines-content :global(em),
+      .about-content :global(em) {
+        font-style: italic;
+      }
+
+      /* Style pour le menu mobile simplifié */
       .simple-nav {
         width: 100%;
       }
@@ -114,10 +221,16 @@ const currentPath = Astro.url.pathname;
         text-decoration: none;
         opacity: 0.8;
       }
+
+      /* ============== ANIMATIONS ET UTILITAIRES =============== */
       
-      /* Adaptation pour les différentes tailles d'écran */
+      @view-transition {
+        navigation: auto;
+      }
+      
+      /* Adaptation responsive */
       @media (min-width: 768px) {
-        /* Sur desktop, cacher ce menu et utiliser le sidebar */
+        /* Sur desktop, cacher le menu mobile */
         header .simple-nav {
           display: none;
         }
