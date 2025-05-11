@@ -4,57 +4,151 @@
 
 // Définir les thèmes disponibles avec leurs couleurs caractéristiques
 const themes = [
-  // Thèmes standards
-  {
-    id: "ocean",
-    name: "Océan",
-    type: "light",
-    bgColor: "#edf2f7",
-    primaryColor: "#1a4d7c"
-  },
+  // Thèmes standards clairs
   {
     id: "nature",
     name: "Nature",
     type: "light",
     bgColor: "#eef5ee",
-    primaryColor: "#2e6b4a"
-  },
-  {
-    id: "midnight",
-    name: "Minuit",
-    type: "dark",
-    bgColor: "#1f2937",
-    primaryColor: "#6889c2"
-  },
-  {
-    id: "forest",
-    name: "Forêt",
-    type: "dark",
-    bgColor: "#1a2721",
-    primaryColor: "#8fb996"
-  },
-  {
-    id: "cerise",
-    name: "Cerise",
-    type: "dark",
-    bgColor: "#1f1a1a",
-    primaryColor: "#f87171"
+    primaryColor: "#2e6b4a",
+    secondaryColor: "#3e805c",
   },
   {
     id: "lavande",
     name: "Lavande",
     type: "light",
     bgColor: "#f5f0fa",
-    primaryColor: "#7c5295"
+    primaryColor: "#7c5295",
+    secondaryColor: "#583869",
   },
-  // Thèmes accessibles (fort contraste) améliorés
+
+  // Thèmes standards sombres
+  {
+    id: "midnight",
+    name: "Minuit",
+    type: "dark",
+    bgColor: "#1f2937",
+    primaryColor: "#6889c2",
+    secondaryColor: "#415a89",
+  },
+  {
+    id: "forest",
+    name: "Forêt",
+    type: "dark",
+    bgColor: "#1a2721",
+    primaryColor: "#8fb996",
+    secondaryColor: "#4d7a5a",
+  },
+
+  // Thèmes accessibles
   {
     id: "bleu-jaune",
     name: "Bleu & Jaune",
     type: "dark",
     bgColor: "#0c2b5a",
     primaryColor: "#ffdc00",
-    isAccessible: true
+    secondaryColor: "#c4ad00",
+    isAccessible: true,
+  },
+  {
+    id: "gris-ambre",
+    name: "Gris & Ambre",
+    type: "dark",
+    bgColor: "#27272a",
+    primaryColor: "#fbbf24",
+    secondaryColor: "#d97706",
+    isAccessible: true,
+  },
+  {
+    id: "ardoise-peche",
+    name: "Ardoise & Pêche",
+    type: "dark",
+    bgColor: "#334155",
+    primaryColor: "#fed7aa",
+    secondaryColor: "#fb923c",
+    isAccessible: true,
+  },
+  {
+    id: "prune-menthe",
+    name: "Prune & Menthe",
+    type: "dark",
+    bgColor: "#4a044e",
+    primaryColor: "#a7f3d0",
+    secondaryColor: "#6ee7b7",
+    isAccessible: true,
+  },
+  {
+    id: "aubergine-citron",
+    name: "Aubergine & Citron",
+    type: "dark",
+    bgColor: "#3b0764",
+    primaryColor: "#d9f99d",
+    secondaryColor: "#94c063",
+    isAccessible: true,
+  },
+  {
+    id: "gris-citron",
+    name: "Gris & Citron",
+    type: "dark",
+    bgColor: "#1f2937",
+    primaryColor: "#ecfccb",
+    secondaryColor: "#bef264",
+    isAccessible: true,
+  }, 
+
+  {
+    id: "olive-fuchsia",
+    name: "Olive & Fuchsia",
+    type: "dark",
+    bgColor: "#3f4f3a",
+    primaryColor: "#f472b6",
+    secondaryColor: "#ec4899",
+    isAccessible: true,
+  },
+  {
+    id: "amethyste-or",
+    name: "Améthyste & Or",
+    type: "dark",
+    bgColor: "#6b21a8",
+    primaryColor: "#facc15",
+    secondaryColor: "#eab308",
+    isAccessible: true,
+  },
+  {
+    id: "terre-cuite-turquoise",
+    name: "Terre & Turquoise",
+    type: "dark",
+    bgColor: "#7c2d12",
+    primaryColor: "#2dd4bf",
+    secondaryColor: "#0d9488",
+    isAccessible: true,
+  },
+  {
+    id: "beige-emeraude",
+    name: "Beige & Émeraude",
+    type: "light",
+    bgColor: "#f5f5dc",
+    primaryColor: "#065f46",
+    secondaryColor: "#047857",
+    isAccessible: true,
+  },
+  {
+    id: "brume-marin",
+    name: "Brume & Marin",
+    type: "light",
+    bgColor: "#f8fafc",
+    primaryColor: "#0369a1",
+    secondaryColor: "#075985",
+    isAccessible: true,
+  },
+  {
+    id: "vanille-violet",
+    name: "Vanille & Violet",
+    type: "light",
+    bgColor: "#fff8e1",
+    primaryColor: "#5b21b6",
+    secondaryColor: "#4c1d95",
+    isAccessible: true,
   },
   {
     id: "vert-rose",
@@ -62,8 +156,18 @@ const themes = [
     type: "light",
     bgColor: "#d8f3dc",
     primaryColor: "#9d0191",
-    isAccessible: true
-  }
+    secondaryColor: "#720e9e",
+    isAccessible: true,
+  },
+  {
+    id: "champagne-acier",
+    name: "Champagne & Acier",
+    type: "light",
+    bgColor: "#fdf4ff",
+    primaryColor: "#475569",
+    secondaryColor: "#334155",
+    isAccessible: true,
+  },
 ];
 ---
 
@@ -74,10 +178,17 @@ const themes = [
         class="theme-btn"
         data-theme={theme.id}
         title={theme.isAccessible ? `${theme.name} (accessible)` : theme.name}
-        aria-label={theme.isAccessible ? `Thème accessible ${theme.name}` : `Thème ${theme.name}`}
+        aria-label={
+          theme.isAccessible
+            ? `Thème accessible ${theme.name}`
+            : `Thème ${theme.name}`
+        }
         style={`background-color: ${theme.bgColor}; border-color: ${theme.primaryColor};`}
       >
-        <span class="theme-accent" style={`background-color: ${theme.primaryColor};`}></span>
+        <span
+          class="theme-accent"
+          style={`background-color: ${theme.primaryColor};`}
+        />
         {theme.isAccessible && <span class="a11y-indicator">A+</span>}
       </button>
     ))
@@ -85,26 +196,26 @@ const themes = [
 </div>
 
 <style is:global>
-  /* Thème par défaut - Océan (clair) */
-  :root {
-    --color-primary: #1a4d7c;
-    --color-secondary: #5885a9;
-    --color-accent: #f58a42;
-    --bg-color: #edf2f7;
-    --text-color: #2d3748;
-    --color-border: #d1dce8;
-    --color-primary-rgb: 26, 77, 124;
-  }
-
   /* Thème Nature (clair) */
   html[data-theme="nature"] {
     --color-primary: #2e6b4a;
-    --color-secondary: #6ea87c;
+    --color-secondary: #3e805c;
     --color-accent: #e63946;
     --bg-color: #eef5ee;
     --text-color: #2a3b2d;
     --color-border: #d7e6db;
     --color-primary-rgb: 46, 107, 74;
+  }
+
+  /* Thème Lavande (clair) */
+  html[data-theme="lavande"] {
+    --color-primary: #7c5295;
+    --color-secondary: #9a6db9;
+    --color-accent: #f7ca44;
+    --bg-color: #f5f0fa;
+    --text-color: #2d2235;
+    --color-border: #e5d8f0;
+    --color-primary-rgb: 124, 82, 149;
   }
 
   /* Thème Minuit (sombre) */
@@ -129,31 +240,9 @@ const themes = [
     --color-primary-rgb: 143, 185, 150;
   }
 
-  /* Thème Cerise (sombre) */
-  html[data-theme="cerise"] {
-    --color-primary: #f87171;
-    --color-secondary: #b91c1c;
-    --color-accent: #fbbf24;
-    --bg-color: #1f1a1a;
-    --text-color: #f3f4f6;
-    --color-border: #7f1d1d;
-    --color-primary-rgb: 248, 113, 113;
-  }
-
-  /* Thème Lavande (clair) */
-  html[data-theme="lavande"] {
-    --color-primary: #7c5295;
-    --color-secondary: #9a6db9;
-    --color-accent: #f7ca44;
-    --bg-color: #f5f0fa;
-    --text-color: #2d2235;
-    --color-border: #e5d8f0;
-    --color-primary-rgb: 124, 82, 149;
-  }
-
   /* Thème Bleu & Jaune (accessible, sombre) */
   html[data-theme="bleu-jaune"] {
-    --color-primary: #eeca17;
+    --color-primary: #ffdc00;
     --color-secondary: #dbbe02;
     --color-accent: #00ff00;
     --bg-color: #0c2b5a;
@@ -161,7 +250,118 @@ const themes = [
     --color-border: #ffd60a;
     --color-primary-rgb: 255, 220, 0;
   }
+  /* Thème Gris & Ambre (accessible, sombre) */
+  html[data-theme="gris-ambre"] {
+    --color-primary: #fbbf24;
+    --color-secondary: #d97706;
+    --color-accent: #a5f3fc;
+    --bg-color: #27272a;
+    --text-color: #f8fafc;
+    --color-border: #fbbf24;
+    --color-primary-rgb: 251, 191, 36;
+  }
+  /* Thème Ardoise & Pêche (accessible, sombre) */
+  html[data-theme="ardoise-peche"] {
+    --color-primary: #fed7aa;
+    --color-secondary: #fb923c;
+    --color-accent: #fdba74;
+    --bg-color: #334155;
+    --text-color: #f8fafc;
+    --color-border: #fed7aa;
+    --color-primary-rgb: 254, 215, 170;
+  }
 
+  /* Thème Prune & Menthe (accessible, sombre) */
+  html[data-theme="prune-menthe"] {
+    --color-primary: #9ee6c4;
+    --color-secondary: #65d6a9;
+    --color-accent: #fde047;
+    --bg-color: #4a044e;
+    --text-color: #fdf2ff;
+    --color-border: #a7f3d0;
+    --color-primary-rgb: 167, 243, 208;
+  }
+  /* Thème Aubergine & Citron (accessible, sombre) */
+  html[data-theme="aubergine-citron"] {
+    --color-primary: #d9f99d;
+    --color-secondary: #94c063;
+    --color-accent: #fef08a;
+    --bg-color: #3b0764;
+    --text-color: #f5f5f5;
+    --color-border: #d9f99d;
+    --color-primary-rgb: 217, 249, 157;
+  }
+  /* Thème Gris & Citron (accessible, sombre) */
+  html[data-theme="gris-citron"] {
+    --color-primary: #ecfccb;
+    --color-secondary: #a6d455;
+    --color-accent: #fef08a;
+    --bg-color: #1f2937;
+    --text-color: #f9fafb;
+    --color-border: #ecfccb;
+    --color-primary-rgb: 236, 252, 203;
+  }
+
+  /* Thème Olive & Fuchsia (accessible, sombre) */
+  html[data-theme="olive-fuchsia"] {
+    --color-primary: #f472b6;
+    --color-secondary: #ec4899;
+    --color-accent: #fbcfe8;
+    --bg-color: #3f4f3a;
+    --text-color: #f0f9f0;
+    --color-border: #f472b6;
+    --color-primary-rgb: 244, 114, 182;
+  }
+  /* Thème Améthyste & Or (accessible, sombre) */
+  html[data-theme="amethyste-or"] {
+    --color-primary: #facc15;
+    --color-secondary: #eab308;
+    --color-accent: #a7f3d0;
+    --bg-color: #6b21a8;
+    --text-color: #f5f3ff;
+    --color-border: #facc15;
+    --color-primary-rgb: 250, 204, 21;
+  }
+  /* Thème Terre & Turquoise (accessible, sombre) */
+  html[data-theme="terre-cuite-turquoise"] {
+    --color-primary: #2dd4bf;
+    --color-secondary: #0d9488;
+    --color-accent: #fde68a;
+    --bg-color: #7c2d12;
+    --text-color: #fee2e2;
+    --color-border: #2dd4bf;
+    --color-primary-rgb: 45, 212, 191;
+  }
+  /* Thème Beige & Émeraude (accessible, clair) */
+  html[data-theme="beige-emeraude"] {
+    --color-primary: #065f46;
+    --color-secondary: #047857;
+    --color-accent: #f59e0b;
+    --bg-color: #f5f5dc;
+    --text-color: #1a1a1a;
+    --color-border: #065f46;
+    --color-primary-rgb: 6, 95, 70;
+  }
+  /* Thème Brume & Marin (accessible, clair) */
+  html[data-theme="brume-marin"] {
+    --color-primary: #0369a1;
+    --color-secondary: #075985;
+    --color-accent: #f59e0b;
+    --bg-color: #f8fafc;
+    --text-color: #0f172a;
+    --color-border: #0369a1;
+    --color-primary-rgb: 3, 105, 161;
+  }
+  /* Thème Vanille & Violet (accessible, clair) */
+  html[data-theme="vanille-violet"] {
+    --color-primary: #5b21b6;
+    --color-secondary: #4c1d95;
+    --color-accent: #f97316;
+    --bg-color: #fff8e1;
+    --text-color: #1e1b4b;
+    --color-border: #5b21b6;
+    --color-primary-rgb: 91, 33, 182;
+  }
   /* Thème Vert & Rose (accessible, clair) */
   html[data-theme="vert-rose"] {
     --color-primary: #9d0191;
@@ -172,6 +372,16 @@ const themes = [
     --color-border: #720e9e;
     --color-primary-rgb: 157, 1, 145;
   }
+  /* Thème Champagne & Acier (accessible, clair) */
+  html[data-theme="champagne-acier"] {
+    --color-primary: #475569;
+    --color-secondary: #334155;
+    --color-accent: #f59e0b;
+    --bg-color: #fdf4ff;
+    --text-color: #0f172a;
+    --color-border: #475569;
+    --color-primary-rgb: 71, 85, 105;
+  }
 </style>
 
 <style>
@@ -179,7 +389,8 @@ const themes = [
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    max-width: 160px;
+    width: 100%;
+    max-width: 280px;
   }
 
   .theme-btn {
@@ -193,7 +404,7 @@ const themes = [
     padding: 0;
     overflow: hidden;
   }
-  
+
   .a11y-indicator {
     position: absolute;
     top: 50%;
@@ -218,19 +429,7 @@ const themes = [
     transform: scale(1.1);
     box-shadow: 0 0 0 2px var(--color-accent);
   }
-  
-  /* Sélecteurs pour les thèmes actifs */
-  html[data-theme="ocean"] ~ body .theme-btn[data-theme="ocean"],
-  html[data-theme="nature"] ~ body .theme-btn[data-theme="nature"],
-  html[data-theme="midnight"] ~ body .theme-btn[data-theme="midnight"],
-  html[data-theme="forest"] ~ body .theme-btn[data-theme="forest"],
-  html[data-theme="cerise"] ~ body .theme-btn[data-theme="cerise"],
-  html[data-theme="lavande"] ~ body .theme-btn[data-theme="lavande"],
-  html[data-theme="bleu-jaune"] ~ body .theme-btn[data-theme="bleu-jaune"],
-  html[data-theme="vert-rose"] ~ body .theme-btn[data-theme="vert-rose"] {
-    transform: scale(1.1);
-    box-shadow: 0 0 0 2px var(--color-accent);
-  }
+
 </style>
 
 <script>
@@ -247,7 +446,7 @@ const themes = [
           // Mettre à jour la classe active
           themeButtons.forEach((btn) => btn.classList.remove("active"));
           button.classList.add("active");
-          
+
           // Appliquer le thème
           document.documentElement.setAttribute("data-theme", themeId);
           sessionStorage.setItem("selected-theme", themeId);
