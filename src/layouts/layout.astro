@@ -3,6 +3,7 @@ import Footer from "./footer.astro";
 import SidebarMenu from "../components/sidebar_menu.astro";
 import ThemeSwitcher from "../components/theme_switcher.astro";
 import "../styles/global.css";
+import { Font } from "astro:assets";
 
 // Définissez les props que vous souhaitez passer à votre layout
 interface Props {
@@ -21,6 +22,7 @@ const {
 // Pour vérifier les liens actifs exacts et éviter les faux positifs
 const currentPath = Astro.url.pathname;
 ---
+
 
 <!doctype html>
 <html lang="fr">
@@ -48,19 +50,22 @@ const currentPath = Astro.url.pathname;
         document.documentElement.setAttribute("data-theme", savedTheme);
       })();
     </script>
+    <Font name="Andika" cssVariable="--font-andika" preload />
+    <Font name="Champ" cssVariable="--font-champ" preload />
 
     <style is:global>
       /* Styles de base */
       body {
         background-color: var(--bg-color);
         color: var(--text-color);
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        font-family: var(--font-andika);
         transition: background-color 0.3s ease, color 0.3s ease;
       }
 
       h1, h2, h3, h4, h5, h6 {
         color: var(--color-primary);
         transition: color 0.3s ease;
+        font-family: var(--font-champ);
       }
 
       a {
