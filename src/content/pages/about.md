@@ -41,6 +41,6 @@ Les fonds collectés financent nos projets communautaires comme le CarnaBal des 
 
 ## Contact
 
-Pour nous contacter ou réserver votre place à la prochaine cantine solidaire : <a href="#" class="email-copy hover:underline">briec2000@emailasso.net</a>
+Pour nous contacter ou réserver votre place à la prochaine cantine solidaire : <span class="email-copy">briec2000@emailasso.net</span>
 
 *Pour les réservations, précisez votre nom, le nombre de repas souhaités (végétariens ou carnés), et si vous souhaitez des demi-portions.*

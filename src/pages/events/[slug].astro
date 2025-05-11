@@ -59,7 +59,7 @@ function formatDate(date: Date | string): string {
     )}
 
     {entry.data.price && entry.data.price.length > 0 && (
-      <div class="price-card mb-8 p-4">
+      <div class="card mb-8 p-4">
         <h2 class="text-xl mb-4">Tarifs</h2>
         <ul class="list-disc ml-6">
           {entry.data.price.map((price: Price) => (
@@ -79,18 +79,3 @@ function formatDate(date: Date | string): string {
     </div>
   </article>
 </Layout>
-
-<style>
-  /* Styles adaptés aux thèmes */
-  .price-card {
-    border: 1px solid var(--color-border);
-    background-color: rgba(var(--color-primary-rgb, 0, 0, 0), 0.05);
-    border-radius: 0.375rem;
-  }
-
-  /* Adaptation aux thèmes sombres */
-  html[data-theme="midnight"] .price-card,
-  html[data-theme="forest"] .price-card {
-    background-color: rgba(255, 255, 255, 0.05);
-  }
-</style>
