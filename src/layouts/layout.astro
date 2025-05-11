@@ -37,7 +37,7 @@ const currentPath = Astro.url.pathname;
     <script is:inline>
       (function() {
         // Récupérer le thème sauvegardé
-        var savedTheme = localStorage.getItem("selected-theme");
+        var savedTheme = sessionStorage.getItem("selected-theme");
         
         // Si pas de thème sauvegardé, utiliser la préférence système
         if (!savedTheme) {

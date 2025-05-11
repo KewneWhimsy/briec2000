@@ -250,7 +250,7 @@ const themes = [
           
           // Appliquer le thème
           document.documentElement.setAttribute("data-theme", themeId);
-          localStorage.setItem("selected-theme", themeId);
+          sessionStorage.setItem("selected-theme", themeId);
         });
       }
     });
