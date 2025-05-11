@@ -3,6 +3,7 @@ import Footer from "./footer.astro";
 import SidebarMenu from "../components/sidebar_menu.astro";
 import ThemeSwitcher from "../components/theme_switcher.astro";
 import { Font } from "astro:assets";
+import "../styles/global.css";
 
 // Définissez les props que vous souhaitez passer à votre layout
 interface Props {
@@ -53,8 +54,6 @@ const currentPath = Astro.url.pathname;
     <Font name="Champ" cssVariable="--font-champ" preload />
 
     <style is:global>
-      /* Import Tailwind CSS */
-      @import "tailwindcss";
 
       /* ============== SYSTÈME TYPOGRAPHIQUE =============== */
       
