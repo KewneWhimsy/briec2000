@@ -1,9 +1,10 @@
 ---
 // src/components/theme_switcher.astro
-// Un composant amélioré pour basculer entre 4 thèmes avec des représentations visuelles
+// Un composant simple pour basculer entre des thèmes, incluant des options accessibles améliorées
 
 // Définir les thèmes disponibles avec leurs couleurs caractéristiques
 const themes = [
+  // Thèmes standards
   {
     id: "ocean",
     name: "Océan",
@@ -32,6 +33,37 @@ const themes = [
     bgColor: "#1a2721",
     primaryColor: "#8fb996"
   },
+  {
+    id: "cerise",
+    name: "Cerise",
+    type: "dark",
+    bgColor: "#1f1a1a",
+    primaryColor: "#f87171"
+  },
+  {
+    id: "lavande",
+    name: "Lavande",
+    type: "light",
+    bgColor: "#f5f0fa",
+    primaryColor: "#7c5295"
+  },
+  // Thèmes accessibles (fort contraste) améliorés
+  {
+    id: "bleu-jaune",
+    name: "Bleu & Jaune",
+    type: "dark",
+    bgColor: "#0c2b5a",
+    primaryColor: "#ffdc00",
+    isAccessible: true
+  },
+  {
+    id: "vert-rose",
+    name: "Vert & Rose",
+    type: "light",
+    bgColor: "#d8f3dc",
+    primaryColor: "#9d0191",
+    isAccessible: true
+  }
 ];
 ---
 
@@ -41,15 +73,165 @@ const themes = [
       <button
         class="theme-btn"
         data-theme={theme.id}
-        title={theme.name}
-        aria-label={`Thème ${theme.name}`}
+        title={theme.isAccessible ? `${theme.name} (accessible)` : theme.name}
+        aria-label={theme.isAccessible ? `Thème accessible ${theme.name}` : `Thème ${theme.name}`}
         style={`background-color: ${theme.bgColor}; border-color: ${theme.primaryColor};`}
       >
         <span class="theme-accent" style={`background-color: ${theme.primaryColor};`}></span>
+        {theme.isAccessible && <span class="a11y-indicator">A+</span>}
       </button>
     ))
   }
 </div>
+
+<style is:global>
+  /* Thème par défaut - Océan (clair) */
+  :root {
+    --color-primary: #1a4d7c;
+    --color-secondary: #5885a9;
+    --color-accent: #f58a42;
+    --bg-color: #edf2f7;
+    --text-color: #2d3748;
+    --color-border: #d1dce8;
+    --color-primary-rgb: 26, 77, 124;
+  }
+
+  /* Thème Nature (clair) */
+  html[data-theme="nature"] {
+    --color-primary: #2e6b4a;
+    --color-secondary: #6ea87c;
+    --color-accent: #e63946;
+    --bg-color: #eef5ee;
+    --text-color: #2a3b2d;
+    --color-border: #d7e6db;
+    --color-primary-rgb: 46, 107, 74;
+  }
+
+  /* Thème Minuit (sombre) */
+  html[data-theme="midnight"] {
+    --color-primary: #6889c2;
+    --color-secondary: #415a89;
+    --color-accent: #f7a046;
+    --bg-color: #1f2937;
+    --text-color: #e2e8f0;
+    --color-border: #374151;
+    --color-primary-rgb: 104, 137, 194;
+  }
+
+  /* Thème Forêt (sombre) */
+  html[data-theme="forest"] {
+    --color-primary: #8fb996;
+    --color-secondary: #4d7a5a;
+    --color-accent: #e9b44c;
+    --bg-color: #1a2721;
+    --text-color: #e2e8d5;
+    --color-border: #2d433a;
+    --color-primary-rgb: 143, 185, 150;
+  }
+
+  /* Thème Cerise (sombre) */
+  html[data-theme="cerise"] {
+    --color-primary: #f87171;
+    --color-secondary: #b91c1c;
+    --color-accent: #fbbf24;
+    --bg-color: #1f1a1a;
+    --text-color: #f3f4f6;
+    --color-border: #7f1d1d;
+    --color-primary-rgb: 248, 113, 113;
+  }
+
+  /* Thème Lavande (clair) */
+  html[data-theme="lavande"] {
+    --color-primary: #7c5295;
+    --color-secondary: #9a6db9;
+    --color-accent: #f7ca44;
+    --bg-color: #f5f0fa;
+    --text-color: #2d2235;
+    --color-border: #e5d8f0;
+    --color-primary-rgb: 124, 82, 149;
+  }
+
+  /* Thème Bleu & Jaune (accessible, sombre) */
+  html[data-theme="bleu-jaune"] {
+    --color-primary: #ffdc00;
+    --color-secondary: #ffd60a;
+    --color-accent: #00ff00;
+    --bg-color: #0c2b5a;
+    --text-color: #ffffff;
+    --color-border: #ffd60a;
+    --color-primary-rgb: 255, 220, 0;
+  }
+
+  /* Thème Vert & Rose (accessible, clair) */
+  html[data-theme="vert-rose"] {
+    --color-primary: #9d0191;
+    --color-secondary: #720e9e;
+    --color-accent: #4cc9f0;
+    --bg-color: #d8f3dc;
+    --text-color: #2d0030;
+    --color-border: #720e9e;
+    --color-primary-rgb: 157, 1, 145;
+  }
+</style>
+
+<style>
+  .theme-switcher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-width: 160px;
+  }
+
+  .theme-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    position: relative;
+    transition: all 0.2s ease;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .a11y-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 9px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 2px #000;
+  }
+
+  .theme-btn .theme-accent {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30%;
+    border-radius: 0 0 50% 50%;
+  }
+
+  .theme-btn.active {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 2px var(--color-accent);
+  }
+  
+  /* Sélecteurs pour les thèmes actifs */
+  html[data-theme="ocean"] ~ body .theme-btn[data-theme="ocean"],
+  html[data-theme="nature"] ~ body .theme-btn[data-theme="nature"],
+  html[data-theme="midnight"] ~ body .theme-btn[data-theme="midnight"],
+  html[data-theme="forest"] ~ body .theme-btn[data-theme="forest"],
+  html[data-theme="cerise"] ~ body .theme-btn[data-theme="cerise"],
+  html[data-theme="lavande"] ~ body .theme-btn[data-theme="lavande"],
+  html[data-theme="bleu-jaune"] ~ body .theme-btn[data-theme="bleu-jaune"],
+  html[data-theme="vert-rose"] ~ body .theme-btn[data-theme="vert-rose"] {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 2px var(--color-accent);
+  }
+</style>
 
 <script>
   // Script côté client pour changer le thème
@@ -74,43 +256,3 @@ const themes = [
     });
   });
 </script>
-
-<style>
-  .theme-switcher {
-    display: flex;
-    gap: 6px;
-  }
-
-  .theme-btn {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid transparent;
-    position: relative;
-    transition: all 0.2s ease;
-    padding: 0;
-    overflow: hidden;
-  }
-
-  .theme-btn .theme-accent {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 30%;
-    border-radius: 0 0 50% 50%;
-  }
-
-  .theme-btn.active {
-    transform: scale(1.1);
-    box-shadow: 0 0 0 2px var(--color-accent);
-  }
-  html[data-theme="ocean"] ~ body .theme-btn[data-theme="ocean"],
-html[data-theme="nature"] ~ body .theme-btn[data-theme="nature"],
-html[data-theme="midnight"] ~ body .theme-btn[data-theme="midnight"],
-html[data-theme="forest"] ~ body .theme-btn[data-theme="forest"] {
-  transform: scale(1.1);
-  box-shadow: 0 0 0 2px var(--color-accent);
-}
-</style>

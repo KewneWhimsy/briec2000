@@ -50,47 +50,6 @@ const currentPath = Astro.url.pathname;
     </script>
 
     <style is:global>
-      /* Thèmes simples : 2 clairs, 2 sombres */
-      :root {
-        /* Thème par défaut - Océan (clair) */
-        --color-primary: #1a4d7c;
-        --color-secondary: #5885a9;
-        --color-accent: #f58a42;
-        --bg-color: #edf2f7;
-        --text-color: #2d3748;
-        --color-border: #d1dce8;
-      }
-
-      /* Thème Nature (clair) */
-      html[data-theme="nature"] {
-        --color-primary: #2e6b4a;
-        --color-secondary: #6ea87c;
-        --color-accent: #e63946;
-        --bg-color: #eef5ee;
-        --text-color: #2a3b2d;
-        --color-border: #d7e6db;
-      }
-
-      /* Thème Minuit (sombre) */
-      html[data-theme="midnight"] {
-        --color-primary: #6889c2;
-        --color-secondary: #415a89;
-        --color-accent: #f7a046;
-        --bg-color: #1f2937;
-        --text-color: #e2e8f0;
-        --color-border: #374151;
-      }
-
-      /* Thème Forêt (sombre) */
-      html[data-theme="forest"] {
-        --color-primary: #8fb996;
-        --color-secondary: #4d7a5a;
-        --color-accent: #e9b44c;
-        --bg-color: #1a2721;
-        --text-color: #e2e8d5;
-        --color-border: #2d433a;
-      }
-
       /* Styles de base */
       body {
         background-color: var(--bg-color);
