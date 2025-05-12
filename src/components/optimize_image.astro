@@ -1,0 +1,53 @@
+---
+// src/components/optimize_image.astro
+import { Picture } from 'astro:assets';
+
+// Props du composant
+export interface Props {
+  src: string;
+  alt: string;
+  widths?: number[];
+  sizes?: string;
+  class?: string;
+  loading?: "eager" | "lazy";
+  [key: string]: any;
+}
+
+// Récupération des props avec des valeurs par défaut
+const { 
+  src, 
+  alt, 
+  widths = [400, 800, 1200],
+  sizes = "(max-width: 767px) 100vw, 800px",
+  class: className = "w-full h-auto rounded-lg",
+  loading = "lazy",
+  ...props 
+} = Astro.props;
+
+// Charger dynamiquement l'image
+let imageSrc;
+if (src && typeof src === 'string' && src.startsWith('/src/')) {
+  try {
+    const imagePath = src.replace(/^\/src\//, '../');
+    const imageModule = await import(imagePath);
+    imageSrc = imageModule.default;
+  } catch (error) {
+    console.error(`Erreur lors du chargement de l'image: ${src}`, error);
+  }
+} else {
+  imageSrc = src;
+}
+---
+
+{imageSrc && (
+  <Picture 
+    src={imageSrc} 
+    alt={alt} 
+    widths={widths}
+    sizes={sizes}
+    formats={['avif', 'webp', 'png']} 
+    class={className}
+    loading={loading}
+    {...props}
+  />
+)}

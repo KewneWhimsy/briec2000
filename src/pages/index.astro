@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/layout.astro';
+import OptimizeImage from '../components/optimize_image.astro';
 import { getCollection } from 'astro:content';
 import type { EventEntry, CantineEntry, Price } from '../../types';
 import MenuCantine from '../components/menu_cantine.astro';
@@ -93,7 +94,7 @@ function formatDate(date: Date | string): string {
 
             {nextEvent.data.image && (
               <div class="mb-6">
-                <img 
+                <OptimizeImage 
                   src={nextEvent.data.image} 
                   alt={nextEvent.data.title} 
                   class="w-full h-auto rounded-lg shadow-md"

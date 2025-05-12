@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/layout.astro';
 import { getCollection } from 'astro:content';
+import OptimizeImage from '../../components/optimize_image.astro';
 import type { EventEntry } from '../../../types';
 
 // Récupérer tous les événements non brouillons
@@ -64,6 +65,19 @@ function formatDate(date: Date | string): string {
                   {formatDate(event.data.date)}
                 </time>
               </p>
+              
+              {event.data.image && (
+                <div class="mb-4 overflow-hidden" style="height: 180px;">
+                  <OptimizeImage 
+                    src={event.data.image} 
+                    alt={event.data.title} 
+                    widths={[300, 600]}
+                    sizes="(max-width: 767px) 100vw, 300px"
+                    class="w-full h-full object-cover rounded-lg shadow-sm"
+                  />
+                </div>
+              )}
+              
               <p class="mb-4 grow">{event.data.description}</p>
               <a href={`/events/${event.slug}/`} class="btn inline-block">Voir les détails</a>
             </div>
@@ -78,6 +92,17 @@ function formatDate(date: Date | string): string {
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {pastEvents.slice(0, 6).map((event: EventEntry) => (
             <div class="card p-4">
+              {event.data.image && (
+                <div class="mb-2 overflow-hidden" style="height: 120px;">
+                  <OptimizeImage 
+                    src={event.data.image} 
+                    alt={event.data.title} 
+                    widths={[200, 400]}
+                    sizes="(max-width: 1023px) 100vw, 200px"
+                    class="w-full h-full object-cover rounded-lg shadow-sm"
+                  />
+                </div>
+              )}
               <h3 class="text-lg mb-1">{event.data.title}</h3>
               <p class="text-sm event-date mb-2">
                 <time datetime={event.data.date.toISOString()}>
@@ -102,4 +127,3 @@ function formatDate(date: Date | string): string {
     </div>
   </section>
 </Layout>
-
