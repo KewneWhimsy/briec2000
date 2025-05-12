@@ -6,12 +6,12 @@
 const themes = [
   // Thèmes standards clairs
   {
-    id: "nature",
-    name: "Nature",
+    id: "rouge",
+    name: "Rouge",
     type: "light",
-    bgColor: "#eef5ee",
-    primaryColor: "#2e6b4a",
-    secondaryColor: "#3e805c",
+    bgColor: "#f5eeee",
+    primaryColor: "#a40101",
+    secondaryColor: "#a90202",
   },
   {
     id: "lavande",
@@ -83,7 +83,7 @@ const themes = [
     type: "dark",
     bgColor: "#0e3165",
     primaryColor: "#ffdc00",
-    secondaryColor: "#c4ad00",
+    secondaryColor: "#e2c504",
     isAccessible: true,
   },
   {
@@ -92,7 +92,7 @@ const themes = [
     type: "dark",
     bgColor: "#27272a",
     primaryColor: "#fbbf24",
-    secondaryColor: "#d97706",
+    secondaryColor: "#d9ab06",
     isAccessible: true,
   },
   {
@@ -101,7 +101,7 @@ const themes = [
     type: "dark",
     bgColor: "#334155",
     primaryColor: "#fed7aa",
-    secondaryColor: "#fb923c",
+    secondaryColor: "#d78039",
     isAccessible: true,
   },
   {
@@ -119,7 +119,7 @@ const themes = [
     type: "dark",
     bgColor: "#3b0764",
     primaryColor: "#d9f99d",
-    secondaryColor: "#94c063",
+    secondaryColor: "#a6d455",
     isAccessible: true,
   },
   {
@@ -130,7 +130,7 @@ const themes = [
     primaryColor: "#ecfccb",
     secondaryColor: "#bef264",
     isAccessible: true,
-  }, 
+  },
 
   {
     id: "olive-fuchsia",
@@ -150,54 +150,17 @@ const themes = [
     secondaryColor: "#eab308",
     isAccessible: true,
   },
-// Thèmes clairs accessibles (avec couleurs de texte distinctives)
-{
-  id: "coquille-cardinal",
-  name: "Coquille & Cardinal",
-  type: "light",
-  bgColor: "#eae2d6",
-  primaryColor: "#8c1c13",
-  secondaryColor: "#70160f",
-  isAccessible: true,
-},
-{
-  id: "abricot-marine",
-  name: "Abricot & Marine",
-  type: "light",
-  bgColor: "#ffdfbf",
-  primaryColor: "#003559",
-  secondaryColor: "#002a45",
-  isAccessible: true,
-},
-{
-  id: "aigue-cerise",
-  name: "Aigue & Cerise",
-  type: "light",
-  bgColor: "#d9f1e3",
-  primaryColor: "#ad2e24",
-  secondaryColor: "#8e251c",
-  isAccessible: true,
-},
 
-// Thèmes sombres accessibles (avec couleurs de texte distinctives)
-{
-  id: "terre-orange",
-  name: "Terre & Orange", 
-  type: "dark",
-  bgColor: "#453028",
-  primaryColor: "#ff8c42",
-  secondaryColor: "#e67d39",
-  isAccessible: true,
-},
-{
-  id: "marron-chartreuse",
-  name: "Marron & Chartreuse",
-  type: "dark",
-  bgColor: "#583c2e",
-  primaryColor: "#c5e063",
-  secondaryColor: "#a2c836",
-  isAccessible: true,
-},
+  // Thèmes sombres accessibles (avec couleurs de texte distinctives)
+  {
+    id: "terre-orange",
+    name: "Terre & Orange",
+    type: "dark",
+    bgColor: "#453028",
+    primaryColor: "#ff8c42",
+    secondaryColor: "#e67d39",
+    isAccessible: true,
+  },
 ];
 ---
 
@@ -219,20 +182,22 @@ const themes = [
           class="theme-accent"
           style={`background-color: ${theme.primaryColor};`}
         />
-        {theme.isAccessible && <span class="a11y-indicator select-none">A+</span>}
+        {theme.isAccessible && (
+          <span class="a11y-indicator select-none">A+</span>
+        )}
       </button>
     ))
   }
 </div>
 
 <style is:global>
-  /* Thème Nature (clair) */
-  html[data-theme="nature"] {
-    --color-primary: #2e6b4a;
-    --color-secondary: #3e805c;
-    --color-accent: #e63946;
-    --bg-color: #eef5ee;
-    --text-color: #2a3b2d;
+  /* Thème Rouge (clair) */
+  html[data-theme="rouge"] {
+    --color-primary: #a40101;
+    --color-secondary: #a90202;
+    --color-accent: #803e3e;
+    --bg-color: #f5eeee;
+    --text-color: #2b3b2a;
     --color-border: #d7e6db;
     --color-primary-rgb: 46, 107, 74;
   }
@@ -312,7 +277,7 @@ const themes = [
   /* Thème Bleu & Jaune (accessible, sombre) */
   html[data-theme="bleu-jaune"] {
     --color-primary: #ffdc00;
-    --color-secondary: #dbbe02;
+    --color-secondary: #e2c504;
     --color-accent: #00ff00;
     --bg-color: #0e3165;
     --text-color: #ffffff;
@@ -322,7 +287,7 @@ const themes = [
   /* Thème Gris & Ambre (accessible, sombre) */
   html[data-theme="gris-ambre"] {
     --color-primary: #fbbf24;
-    --color-secondary: #d97706;
+    --color-secondary: #d9ab06;
     --color-accent: #a5f3fc;
     --bg-color: #27272a;
     --text-color: #f8fafc;
@@ -332,7 +297,7 @@ const themes = [
   /* Thème Ardoise & Pêche (accessible, sombre) */
   html[data-theme="ardoise-peche"] {
     --color-primary: #fed7aa;
-    --color-secondary: #e88636;
+    --color-secondary: #d78039;
     --color-accent: #fdba74;
     --bg-color: #334155;
     --text-color: #f8fafc;
@@ -343,7 +308,7 @@ const themes = [
   /* Thème Prune & Menthe (accessible, sombre) */
   html[data-theme="prune-menthe"] {
     --color-primary: #9ee6c4;
-    --color-secondary: #5fcba0;
+    --color-secondary: #5ac097;
     --color-accent: #fde047;
     --bg-color: #4a044e;
     --text-color: #fdf2ff;
@@ -364,7 +329,7 @@ const themes = [
   html[data-theme="gris-citron"] {
     --color-primary: #ecfccb;
     --color-secondary: #a6d455;
-    --color-accent: #fef08a;
+    --color-accent: #96c348;
     --bg-color: #1f2937;
     --text-color: #f9fafb;
     --color-border: #ecfccb;
@@ -391,60 +356,17 @@ const themes = [
     --color-border: #facc15;
     --color-primary-rgb: 250, 204, 21;
   }
-/* Thème Coquille & Cardinal (accessible, clair) */
-html[data-theme="coquille-cardinal"] {
-  --color-primary: #8c1c13;
-  --color-secondary: #70160f;
-  --color-accent: #46b1c9;
-  --bg-color: #eae2d6;
-  --text-color: #3d5a73;  /* Bleu-gris moyen - Contraste ~5:1 */
-  --color-border: #8c1c13;
-  --color-primary-rgb: 140, 28, 19;
-}
 
-/* Thème Abricot & Marine (accessible, clair) */
-html[data-theme="abricot-marine"] {
-  --color-primary: #003559;
-  --color-secondary: #002a45;
-  --color-accent: #cc5a71;
-  --bg-color: #ffdfbf;
-  --text-color: #4b3a50;  /* Violet-brun - Contraste ~6:1 */
-  --color-border: #003559;
-  --color-primary-rgb: 0, 53, 89;
-}
-
-/* Thème Aigue & Cerise (accessible, clair) */
-html[data-theme="aigue-cerise"] {
-  --color-primary: #ad2e24;
-  --color-secondary: #8e251c;
-  --color-accent: #51a3a3;
-  --bg-color: #d9f1e3;
-  --text-color: #354f3e;  /* Vert-forêt - Contraste ~5:1 */
-  --color-border: #ad2e24;
-  --color-primary-rgb: 173, 46, 36;
-}
-
-/* Thème Terre & Orange (accessible, sombre) */
-html[data-theme="terre-orange"] {
-  --color-primary: #ff8c42;
-  --color-secondary: #e67d39;
-  --color-accent: #4fb0c6;
-  --bg-color: #453028;
-  --text-color: #c4dbd0;  /* Vert d'eau pâle - Contraste ~7:1 */
-  --color-border: #ff8c42;
-  --color-primary-rgb: 255, 140, 66;
-}
-
-/* Thème Marron & Chartreuse (accessible, sombre) */
-html[data-theme="marron-chartreuse"] {
-  --color-primary: #c5e063;
-  --color-secondary: #a2c836;
-  --color-accent: #f591a0;
-  --bg-color: #583c2e;
-  --text-color: #d8ccb8;  /* Beige-doré - Contraste ~7:1 */
-  --color-border: #c5e063;
-  --color-primary-rgb: 197, 224, 99;
-}
+  /* Thème Terre & Orange (accessible, sombre) */
+  html[data-theme="terre-orange"] {
+    --color-primary: #ff8c42;
+    --color-secondary: #d47435;
+    --color-accent: #4fb0c6;
+    --bg-color: #453028;
+    --text-color: #c4dbd0; /* Vert d'eau pâle - Contraste ~7:1 */
+    --color-border: #ff8c42;
+    --color-primary-rgb: 255, 140, 66;
+  }
 </style>
 
 <style>
@@ -496,7 +418,6 @@ html[data-theme="marron-chartreuse"] {
     height: 30%;
     border-radius: 0 0 50% 50%;
   }
-
 </style>
 
 <script>
