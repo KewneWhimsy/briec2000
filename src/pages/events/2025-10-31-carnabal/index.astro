@@ -1,0 +1,98 @@
+---
+// src/pages/events/2025-10-31-carnabal/index.astro
+// Page de l'événement CarnaBal utilisant le composant PdfViewer
+
+import Layout from '../../../layouts/layout.astro';
+import PdfViewer from '../../../components/pdf_viewer.astro';
+import { getCollection } from 'astro:content';
+import type { EventEntry, Price } from '../../../../types';
+
+// Récupérer l'événement CarnaBal
+const eventsEntries = await getCollection('events') as EventEntry[];
+const carnaBal = eventsEntries.find((entry: EventEntry) => entry.slug === '2025-10-31-carnabal');
+
+if (!carnaBal) {
+  return Astro.redirect('/events/');
+}
+
+// Récupérer le contenu
+const contentRender = await carnaBal.render();
+const { Content } = contentRender;
+
+// Formater la date en français
+function formatDate(date: Date | string): string {
+  const dateObj = date instanceof Date ? date : new Date(date);
+  const options: Intl.DateTimeFormatOptions = { 
+    weekday: 'long', 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  };
+  return dateObj.toLocaleDateString('fr-FR', options);
+}
+
+// Configurer les paramètres pour le composant PDF Viewer
+const pdfPath = '/pdf/carnabal-des-monstres.pdf';
+const previewPages = [
+  '/pdf/preview/carnabal-page1.jpg',
+  '/pdf/preview/carnabal-page2.jpg',
+  '/pdf/preview/carnabal-page3.jpg',
+  '/pdf/preview/carnabal-page4.jpg'
+];
+---
+
+<Layout title={`${carnaBal.data.title} - Briec2000`}>
+  <article class="max-w-3xl">
+    <header class="mb-8">
+      <h1 class="mb-4">{carnaBal.data.title}</h1>
+      <p class="text-lg mb-2">
+        <time datetime={carnaBal.data.date.toISOString()}>
+          {formatDate(carnaBal.data.date)}
+        </time>
+      </p>
+      <p class="mb-2"><strong>Lieu :</strong> {carnaBal.data.location}</p>
+      <p class="mb-6"><strong>Horaires :</strong> {carnaBal.data.time}</p>
+      
+      <!-- Bouton de téléchargement du PDF (version grand) -->
+      <div class="mt-6">
+        <a href={pdfPath} download="CarnaBal_des_monstres_2025.pdf" class="btn inline-flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Télécharger le flyer
+        </a>
+      </div>
+    </header>
+    <!-- Utilisation du composant PdfViewer -->
+    <PdfViewer 
+      pdfPath={pdfPath}
+      previewPages={previewPages}
+      downloadFileName="CarnaBal_des_monstres_2025.pdf"
+      title="Aperçu du flyer"
+      description="Parcourez notre flyer pour découvrir tous les détails du CarnaBal des monstres et créatures 2025 !"
+    />
+    <!-- Tarifs -->
+    {carnaBal.data.price && carnaBal.data.price.length > 0 && (
+      <div class="card mb-8 p-6">
+        <h2 class="text-xl mb-4">Tarifs</h2>
+        <ul class="list-disc ml-6">
+          {carnaBal.data.price.map((price: Price) => (
+            <li>{price.name}: {price.amount > 0 ? `${price.amount}€` : 'Gratuit'}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    <!-- Description complète de l'événement -->
+    <div class="event-content prose mb-12">
+      <Content />
+    </div>
+
+    <div class="flex justify-between items-center mt-12">
+      <a href="/events/" class="btn">Tous les événements</a>
+      <a href="/" class="btn">Retour à l'accueil</a>
+    </div>
+  </article>
+</Layout>

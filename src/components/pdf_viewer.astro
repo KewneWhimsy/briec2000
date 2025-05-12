@@ -1,0 +1,378 @@
+---
+// src/components/pdf_viewer.astro
+// Composant réutilisable pour visualiser des PDFs - version optimisée CSS moderne avec swipe
+
+export interface Props {
+  pdfPath: string;             // Chemin vers le fichier PDF pour téléchargement
+  previewPages: string[];      // Chemins vers les images de prévisualisation
+  downloadFileName?: string;   // Nom du fichier pour le téléchargement (facultatif)
+  title?: string;              // Titre du visualiseur (facultatif)
+  description?: string;        // Description facultative
+}
+
+const {
+  pdfPath,
+  previewPages,
+  downloadFileName = "document.pdf",
+  title = "Aperçu du document",
+  description = "Naviguez entre les pages pour découvrir le document. Vous pouvez également le télécharger pour le partager ou l'imprimer."
+} = Astro.props;
+---
+
+<div class="pdf-viewer-component card p-6 mb-6">
+  {title && <h2 class="text-xl mb-4">{title}</h2>}
+  
+  {description && (
+    <p class="mb-6 text-sm opacity-80">
+      {description}
+    </p>
+  )}
+
+  <!-- Viewer optimisé avec CSS scroll-snap et swipe mobile -->
+  <div class="pdf-viewer">
+    <div class="pdf-scroller-container">
+      <!-- Bouton de navigation gauche -->
+      <button class="nav-btn-large prev-btn" aria-label="Page précédente">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      
+      <!-- Container avec scroll horizontal et scroll-snap -->
+      <div class="pdf-scroller" tabindex="0">
+        {previewPages.map((src, index) => (
+          <div class="pdf-page-wrapper" id={`page-${index + 1}`} data-index={index}>
+            <img 
+              src={src} 
+              alt={`Page ${index+1} du document`} 
+              class="pdf-page" 
+              loading={index === 0 ? "eager" : "lazy"}
+            />
+          </div>
+        ))}
+      </div>
+      
+      <!-- Bouton de navigation droite -->
+      <button class="nav-btn-large next-btn" aria-label="Page suivante">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Barre de pagination avec Intersection Observer -->
+    <div class="pagination-container mt-4 flex items-center justify-center gap-2">
+      {previewPages.map((_, index) => (
+        <button 
+          class="pagination-dot" 
+          data-index={index}
+          aria-label={`Aller à la page ${index + 1}`}
+          aria-current={index === 0 ? "true" : "false"}
+        ></button>
+      ))}
+    </div>
+    
+    <!-- Compteur de page et bouton de téléchargement -->
+    <div class="flex justify-between items-center mt-3">
+      <div class="page-counter text-sm opacity-70">
+        Page <span id="current-page">1</span> sur {previewPages.length}
+      </div>
+      
+      <a href={pdfPath} download={downloadFileName} class="btn-download inline-flex items-center gap-1 text-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Télécharger
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Script minimal pour gérer les interactions et l'observation des pages
+  document.addEventListener('DOMContentLoaded', () => {
+    const pdfViewers = document.querySelectorAll('.pdf-viewer-component');
+    
+    pdfViewers.forEach((viewer) => {
+      // Éléments du viewer
+      const scroller = viewer.querySelector('.pdf-scroller') as HTMLElement;
+      const pages = viewer.querySelectorAll('.pdf-page-wrapper');
+      const dots = viewer.querySelectorAll('.pagination-dot');
+      const prevBtn = viewer.querySelector('.prev-btn') as HTMLButtonElement;
+      const nextBtn = viewer.querySelector('.next-btn') as HTMLButtonElement;
+      const currentPageEl = viewer.querySelector('#current-page') as HTMLElement;
+      
+      // État actuel
+      let currentIndex = 0;
+      const totalPages = pages.length;
+      
+      // Fonction utilitaire pour scroller à une page spécifique
+      const scrollToPage = (index: number) => {
+        if (index < 0 || index >= totalPages) return;
+        
+        // Utiliser scrollTo avec behavior: smooth pour une animation native
+        const targetPage = pages[index] as HTMLElement;
+        scroller.scrollTo({
+          left: targetPage.offsetLeft,
+          behavior: 'smooth'
+        });
+        
+        // Mettre à jour l'état actuel
+        currentIndex = index;
+        updateUI();
+      };
+      
+      // Fonction pour mettre à jour l'UI en fonction de l'index actuel
+      const updateUI = () => {
+        // Mettre à jour le compteur de page
+        if (currentPageEl) {
+          currentPageEl.textContent = (currentIndex + 1).toString();
+        }
+        
+        // Mettre à jour les dots de pagination
+        dots.forEach((dot, i) => {
+          if (i === currentIndex) {
+            dot.setAttribute('aria-current', 'true');
+            dot.classList.add('active');
+          } else {
+            dot.setAttribute('aria-current', 'false');
+            dot.classList.remove('active');
+          }
+        });
+        
+        // Mettre à jour l'état des boutons
+        prevBtn.disabled = currentIndex === 0;
+        prevBtn.classList.toggle('disabled', currentIndex === 0);
+        
+        nextBtn.disabled = currentIndex === totalPages - 1;
+        nextBtn.classList.toggle('disabled', currentIndex === totalPages - 1);
+      };
+      
+      // Initialiser Intersection Observer pour détecter la page visible
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            const index = parseInt((entry.target as HTMLElement).dataset.index || '0', 10);
+            currentIndex = index;
+            updateUI();
+          }
+        });
+      }, {
+        root: scroller,
+        threshold: 0.5, // Élément considéré visible quand 50% est visible
+        rootMargin: '0px'
+      });
+      
+      // Observer chaque page
+      pages.forEach(page => {
+        observer.observe(page);
+      });
+      
+      // Attacher les événements de clic aux boutons de navigation
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          scrollToPage(currentIndex - 1);
+        });
+      }
+      
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          scrollToPage(currentIndex + 1);
+        });
+      }
+      
+      // Attacher les événements aux dots de pagination
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          scrollToPage(index);
+        });
+      });
+      
+      // Navigation par touches clavier
+      scroller.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+          scrollToPage(currentIndex - 1);
+          e.preventDefault();
+        } else if (e.key === 'ArrowRight') {
+          scrollToPage(currentIndex + 1);
+          e.preventDefault();
+        }
+      });
+      
+      // Initialiser l'UI
+      updateUI();
+    });
+  });
+</script>
+
+<style>
+  /* Styles optimisés avec CSS moderne pour le visualiseur de PDF */
+  .pdf-viewer-component {
+    max-width: 100%;
+    margin: 0 auto;
+    overflow: hidden; /* Éviter les débordements */
+  }
+  
+  .pdf-viewer {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    max-width: 600px;
+  }
+  
+  /* Conteneur principal avec navigation */
+  .pdf-scroller-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  /* Scroller avec scroll-snap */
+  .pdf-scroller {
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* Pour un meilleur scroll sur iOS */
+    scrollbar-width: none; /* Masquer les scrollbars sur Firefox */
+    -ms-overflow-style: none; /* Masquer les scrollbars sur IE/Edge */
+    width: 100%;
+    aspect-ratio: 1 / 1.414; /* Ratio A4 */
+    background-color: rgba(var(--color-primary-rgb), 0.05);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Masquer la scrollbar sur Chrome/Safari */
+  .pdf-scroller::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Rendre le scroller focusable pour la navigation au clavier */
+  .pdf-scroller:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+  }
+  
+  .pdf-page-wrapper {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+  
+  .pdf-page {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  /* Boutons de navigation latéraux */
+  .nav-btn-large {
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    opacity: 0.9;
+    z-index: 2;
+  }
+  
+  .nav-btn-large:hover {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  
+  .nav-btn-large.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  /* Pagination */
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .pagination-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--color-border);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .pagination-dot.active,
+  .pagination-dot[aria-current="true"] {
+    background-color: var(--color-primary);
+    transform: scale(1.2);
+  }
+  
+  .btn-download {
+    color: var(--color-primary);
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    padding: 0.25rem 0.5rem;
+  }
+  
+  .btn-download:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+  }
+  
+  /* Styles spécifiques pour les modes sombres */
+  html[data-theme="midnight"] .pdf-scroller,
+  html[data-theme="forest"] .pdf-scroller,
+  html[data-theme="bleu-jaune"] .pdf-scroller,
+  html[data-theme="gris-ambre"] .pdf-scroller {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Media queries pour le responsive */
+  @media (max-width: 640px) {
+    .nav-btn-large {
+      width: 36px;
+      height: 36px;
+    }
+    
+    /* Sur mobile, les boutons peuvent être plus petits mais plus contrastés */
+    .pdf-scroller-container {
+      gap: 0.5rem;
+    }
+  }
+  
+  /* Support pour prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    .pdf-scroller {
+      scroll-behavior: auto;
+    }
+    
+    .nav-btn-large:hover {
+      transform: none;
+    }
+    
+    .pagination-dot.active,
+    .pagination-dot[aria-current="true"] {
+      transform: none;
+    }
+  }
+</style>
