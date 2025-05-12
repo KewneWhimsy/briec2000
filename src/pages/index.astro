@@ -102,15 +102,26 @@ function formatDate(date: Date | string): string {
               </div>
             )}
 
+            {nextEvent.data.price && nextEvent.data.price.length > 0 && (
+              <div class="card mb-8 p-4">
+                <h2 class="text-xl mb-4">Tarifs</h2>
+                <ul class="list-disc ml-6">
+                  {nextEvent.data.price.map((price: Price) => (
+                    <li>{price.name}: {price.amount > 0 ? `${price.amount}€` : 'Gratuit'}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             {Content && (
-              <div class="event-content prose mb-8">
+              <div class="event-content-in-page event-content prose mb-8">
                 <Content />
               </div>
             )}
 
             <div class="text-center mt-6">
-              <a href={`/events/${nextEvent.slug}/`} class="btn">
-                Voir la page complète
+              <a href="/events/" class="btn">
+                Voir tous les événements à venir
               </a>
             </div>
           </article>
