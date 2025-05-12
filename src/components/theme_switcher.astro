@@ -42,6 +42,42 @@ const themes = [
 
   // Thèmes accessibles
   {
+    id: "beige-emeraude",
+    name: "Beige & Émeraude",
+    type: "light",
+    bgColor: "#f5f5dc",
+    primaryColor: "#065f46",
+    secondaryColor: "#047857",
+    isAccessible: true,
+  },
+  {
+    id: "vanille-violet",
+    name: "Vanille & Violet",
+    type: "light",
+    bgColor: "#fff8e1",
+    primaryColor: "#5b21b6",
+    secondaryColor: "#4c1d95",
+    isAccessible: true,
+  },
+  {
+    id: "vert-rose",
+    name: "Vert & Rose",
+    type: "light",
+    bgColor: "#d8f3dc",
+    primaryColor: "#9d0191",
+    secondaryColor: "#720e9e",
+    isAccessible: true,
+  },
+  {
+    id: "champagne-acier",
+    name: "Champagne & Acier",
+    type: "light",
+    bgColor: "#fdf4ff",
+    primaryColor: "#475569",
+    secondaryColor: "#334155",
+    isAccessible: true,
+  },
+  {
     id: "bleu-jaune",
     name: "Bleu & Jaune",
     type: "dark",
@@ -112,60 +148,6 @@ const themes = [
     bgColor: "#6b21a8",
     primaryColor: "#facc15",
     secondaryColor: "#eab308",
-    isAccessible: true,
-  },
-  {
-    id: "terre-cuite-turquoise",
-    name: "Terre & Turquoise",
-    type: "dark",
-    bgColor: "#7c2d12",
-    primaryColor: "#2dd4bf",
-    secondaryColor: "#0d9488",
-    isAccessible: true,
-  },
-  {
-    id: "beige-emeraude",
-    name: "Beige & Émeraude",
-    type: "light",
-    bgColor: "#f5f5dc",
-    primaryColor: "#065f46",
-    secondaryColor: "#047857",
-    isAccessible: true,
-  },
-  {
-    id: "brume-marin",
-    name: "Brume & Marin",
-    type: "light",
-    bgColor: "#f8fafc",
-    primaryColor: "#0369a1",
-    secondaryColor: "#075985",
-    isAccessible: true,
-  },
-  {
-    id: "vanille-violet",
-    name: "Vanille & Violet",
-    type: "light",
-    bgColor: "#fff8e1",
-    primaryColor: "#5b21b6",
-    secondaryColor: "#4c1d95",
-    isAccessible: true,
-  },
-  {
-    id: "vert-rose",
-    name: "Vert & Rose",
-    type: "light",
-    bgColor: "#d8f3dc",
-    primaryColor: "#9d0191",
-    secondaryColor: "#720e9e",
-    isAccessible: true,
-  },
-  {
-    id: "champagne-acier",
-    name: "Champagne & Acier",
-    type: "light",
-    bgColor: "#fdf4ff",
-    primaryColor: "#475569",
-    secondaryColor: "#334155",
     isAccessible: true,
   },
 ];
@@ -239,7 +221,46 @@ const themes = [
     --color-border: #2d433a;
     --color-primary-rgb: 143, 185, 150;
   }
-
+  /* Thème Beige & Émeraude (accessible, clair) */
+  html[data-theme="beige-emeraude"] {
+    --color-primary: #065f46;
+    --color-secondary: #047857;
+    --color-accent: #f59e0b;
+    --bg-color: #f5f5dc;
+    --text-color: #1a1a1a;
+    --color-border: #065f46;
+    --color-primary-rgb: 6, 95, 70;
+  }
+  /* Thème Vanille & Violet (accessible, clair) */
+  html[data-theme="vanille-violet"] {
+    --color-primary: #5b21b6;
+    --color-secondary: #4c1d95;
+    --color-accent: #f97316;
+    --bg-color: #fff8e1;
+    --text-color: #1e1b4b;
+    --color-border: #5b21b6;
+    --color-primary-rgb: 91, 33, 182;
+  }
+  /* Thème Vert & Rose (accessible, clair) */
+  html[data-theme="vert-rose"] {
+    --color-primary: #9d0191;
+    --color-secondary: #720e9e;
+    --color-accent: #4cc9f0;
+    --bg-color: #d8f3dc;
+    --text-color: #2d0030;
+    --color-border: #720e9e;
+    --color-primary-rgb: 157, 1, 145;
+  }
+  /* Thème Champagne & Acier (accessible, clair) */
+  html[data-theme="champagne-acier"] {
+    --color-primary: #475569;
+    --color-secondary: #334155;
+    --color-accent: #f59e0b;
+    --bg-color: #fdf4ff;
+    --text-color: #0f172a;
+    --color-border: #475569;
+    --color-primary-rgb: 71, 85, 105;
+  }
   /* Thème Bleu & Jaune (accessible, sombre) */
   html[data-theme="bleu-jaune"] {
     --color-primary: #ffdc00;
@@ -321,66 +342,6 @@ const themes = [
     --text-color: #f5f3ff;
     --color-border: #facc15;
     --color-primary-rgb: 250, 204, 21;
-  }
-  /* Thème Terre & Turquoise (accessible, sombre) */
-  html[data-theme="terre-cuite-turquoise"] {
-    --color-primary: #2dd4bf;
-    --color-secondary: #0d9488;
-    --color-accent: #fde68a;
-    --bg-color: #7c2d12;
-    --text-color: #fee2e2;
-    --color-border: #2dd4bf;
-    --color-primary-rgb: 45, 212, 191;
-  }
-  /* Thème Beige & Émeraude (accessible, clair) */
-  html[data-theme="beige-emeraude"] {
-    --color-primary: #065f46;
-    --color-secondary: #047857;
-    --color-accent: #f59e0b;
-    --bg-color: #f5f5dc;
-    --text-color: #1a1a1a;
-    --color-border: #065f46;
-    --color-primary-rgb: 6, 95, 70;
-  }
-  /* Thème Brume & Marin (accessible, clair) */
-  html[data-theme="brume-marin"] {
-    --color-primary: #0369a1;
-    --color-secondary: #075985;
-    --color-accent: #f59e0b;
-    --bg-color: #f8fafc;
-    --text-color: #0f172a;
-    --color-border: #0369a1;
-    --color-primary-rgb: 3, 105, 161;
-  }
-  /* Thème Vanille & Violet (accessible, clair) */
-  html[data-theme="vanille-violet"] {
-    --color-primary: #5b21b6;
-    --color-secondary: #4c1d95;
-    --color-accent: #f97316;
-    --bg-color: #fff8e1;
-    --text-color: #1e1b4b;
-    --color-border: #5b21b6;
-    --color-primary-rgb: 91, 33, 182;
-  }
-  /* Thème Vert & Rose (accessible, clair) */
-  html[data-theme="vert-rose"] {
-    --color-primary: #9d0191;
-    --color-secondary: #720e9e;
-    --color-accent: #4cc9f0;
-    --bg-color: #d8f3dc;
-    --text-color: #2d0030;
-    --color-border: #720e9e;
-    --color-primary-rgb: 157, 1, 145;
-  }
-  /* Thème Champagne & Acier (accessible, clair) */
-  html[data-theme="champagne-acier"] {
-    --color-primary: #475569;
-    --color-secondary: #334155;
-    --color-accent: #f59e0b;
-    --bg-color: #fdf4ff;
-    --text-color: #0f172a;
-    --color-border: #475569;
-    --color-primary-rgb: 71, 85, 105;
   }
 </style>
 

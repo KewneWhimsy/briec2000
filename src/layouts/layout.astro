@@ -122,7 +122,7 @@ const currentPath = Astro.url.pathname;
       .btn {
         padding: 0.5rem 1rem;
         border: 1px solid var(--color-primary);
-        color: var(--color-primary);card
+        color: var(--color-primary);
         display: inline-block;
         transition: all 0.2s ease;
         text-decoration: none;
@@ -236,6 +236,13 @@ const currentPath = Astro.url.pathname;
         opacity: 0.8;
       }
 
+      /* Styles pour l'en-tête mobile sticky */
+      .mobile-header-sticky {
+        z-index: 50;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+
       /* ============== ANIMATIONS ET UTILITAIRES =============== */
 
       @view-transition {
@@ -248,13 +255,18 @@ const currentPath = Astro.url.pathname;
         header .simple-nav {
           display: none;
         }
+        
+        /* Ajuster le padding pour tenir compte du header sticky sur mobile */
+        body {
+          padding-top: 0;
+        }
       }
     </style>
   </head>
   <body class="min-h-screen flex flex-col">
     <header
-      class="border-b py-4 px-4 md:hidden"
-      style="border-color: var(--color-border);"
+      class="border-b py-3 px-4 md:hidden sticky top-0 bg-opacity-95 mobile-header-sticky z-50"
+      style="border-color: var(--color-border); background-color: var(--bg-color);"
     >
       <div class="flex justify-between items-center mb-2">
         <ThemeSwitcher />
@@ -264,7 +276,7 @@ const currentPath = Astro.url.pathname;
       </div>
 
       <!-- Menu simplifié avec flex-wrap et les mêmes liens que sidebar_menu.astro -->
-      <nav class="simple-nav py-2">
+      <nav class="simple-nav py-1">
         <ul class="flex flex-wrap gap-x-4 gap-y-2">
           <li><a href="/" class="nav-link">Accueil</a></li>
           <li><a href="/events/" class="nav-link">À venir</a></li>
@@ -280,8 +292,8 @@ const currentPath = Astro.url.pathname;
     </header>
 
     <main class="flex-grow container mx-auto px-4 py-6 md:py-12 flex">
-      <!-- Menu latéral pour desktop -->
-      <div class="hidden md:block">
+      <!-- Menu latéral pour desktop - sticky -->
+      <div class="hidden md:block sticky top-6 self-start h-auto max-h-[calc(100vh-3rem)] overflow-y-auto pb-6">
         <div class="flex items-center justify-between mb-8">
           <ThemeSwitcher />
         </div>
