@@ -6,7 +6,7 @@ import type { CantineEntry, EventEntry, Price } from '../../types';
 // Récupérer les informations sur les cantines
 const cantinesCollection = await getCollection('cantines') as CantineEntry[];
 const cantineInfo = cantinesCollection.filter((entry: CantineEntry) => 
-  entry.data.title === "Cantines Solidaires"
+  entry.data.title === "Cantines Mensuelles"
 );
 
 // Récupérer le contenu Markdown s'il existe
@@ -49,9 +49,9 @@ function formatDate(date: Date | string): string {
 }
 ---
 
-<Layout title="Cantines Solidaires - Briec2000">
+<Layout title="Cantines Mensuelles - Briec2000">
   <section class="max-w-3xl">
-    <h1 class="mb-8">Cantines Solidaires</h1>
+    <h1 class="mb-8">Cantines Mensuelles</h1>
     
     {cantineEntry && (
       <div class="mb-8">
@@ -100,7 +100,7 @@ function formatDate(date: Date | string): string {
     <div class="card p-6 mb-12">
       <h2 class="text-xl mb-4">Comment réserver ?</h2>
       <p class="mb-4">
-        Pour réserver votre place à la prochaine cantine solidaire, envoyez un email à : 
+        Pour réserver votre place à la prochaine cantine, envoyez un email à : 
         <span class="email-copy font-medium">briec2000@emailasso.net</span>
       </p>
       <p class="mb-2">Dans votre message, précisez :</p>

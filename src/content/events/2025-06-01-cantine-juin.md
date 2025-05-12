@@ -1,7 +1,7 @@
 ---
 title: "Cantine du dimanche 1er Juin"
 date: 2025-06-01
-description: "Venez découvrir notre cantine solidaire du mois de juin avec un menu spécial façon tajine."
+description: "Venez découvrir notre cantine du mois de juin avec un menu spécial façon tajine."
 location: "Ti Glazik, Place de Ruthin, 29510 Briec"
 time: "Retrait des plats entre 18h et 20h"
 image: "/src/assets/events/repas.png"
@@ -35,4 +35,4 @@ Notre menu de juin propose :
 
 ## Soutenir l'association
 
-L'intégralité des bénéfices de nos cantines solidaires finance nos projets communautaires, notamment le CarnaBal des monstres et créatures. Merci pour votre soutien !
+L'intégralité des bénéfices de nos cantines mensuelles financent nos projets communautaires, notamment le CarnaBal des monstres et créatures. Merci pour votre soutien !

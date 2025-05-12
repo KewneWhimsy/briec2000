@@ -35,7 +35,7 @@ const nextCantine = upcomingEvents.find((event: EventEntry) =>
 // Récupérer les informations générales sur les cantines
 const cantinesCollection = await getCollection('cantines') as CantineEntry[];
 const cantineInfo = cantinesCollection.find((entry: CantineEntry) => 
-  entry.data.title === "Cantines Solidaires"
+  entry.data.title === "Cantines Mensuelles"
 );
 
 // Préparer le contenu Markdown pour l'affichage si un événement existe

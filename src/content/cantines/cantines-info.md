@@ -1,6 +1,6 @@
 ---
-title: "Cantines Solidaires"
-description: "Tous les premiers dimanches du mois, notre association organise une cantine solidaire à Ti Glazik."
+title: "Cantines Mensuelles"
+description: "Tous les premiers dimanches du mois, notre association organise une cantine mensuelle à Ti Glazik."
 location: "Ti Glazik, Place de Ruthin, 29510 Briec"
 time: "Retrait des plats entre 18h et 20h"
 price:
@@ -19,9 +19,9 @@ reservation: "Par mail à briec2000@emailasso.net"
 updated: 2025-04-01
 ---
 
-# Cantines Solidaires
+# Cantines Mensuelles
 
-Chaque premier dimanche du mois, Briec2000 organise une cantine solidaire à Ti Glazik. C'est l'occasion de partager un repas convivial tout en soutenant nos actions communautaires.
+Chaque premier dimanche du mois, Briec2000 organise une cantine mensuel à Ti Glazik. C'est l'occasion de partager un repas convivial tout en soutenant nos actions communautaires.
 
 ## Pourquoi participer?
 

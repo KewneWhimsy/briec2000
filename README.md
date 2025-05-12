@@ -9,8 +9,8 @@ Site officiel de l'association Briec2000, basé sur Astro et Tailwind CSS.
 
 Briec2000 est une association locale basée à Briec-de-l'Odet (29510) qui organise des événements communautaires et culturels. Parmi nos activités :
 
-- **Cantines solidaires** : repas mensuels le premier dimanche du mois à Ti Glazik
-- **CarnaBal des monstres et créatures** : événement festif financé par les cantines solidaires
+- **Cantines mensuelles** : repas mensuelles le premier dimanche du mois à Ti Glazik
+- **CarnaBal des monstres et créatures** : événement festif financé par les cantines mensuelles
 - **Événements culturels** : diverses animations pour la communauté locale
 
 ## ✨ Fonctionnalités du site
@@ -79,9 +79,9 @@ Chaque fichier Markdown est composé de deux parties :
 
 ## 📅 Nos événements
 
-### Cantine solidaire à Ti Glazik
+### Cantine mensuelle à Ti Glazik
 
-Chaque premier dimanche du mois, nous proposons une cantine solidaire :
+Chaque premier dimanche du mois, nous proposons une cantine mensuelle :
 
 - **Lieu** : Ti Glazik, Place de Ruthin, 29510 Briec
 - **Horaires** : Retrait des plats entre 18h et 20h
@@ -110,7 +110,7 @@ Chaque premier dimanche du mois, nous proposons une cantine solidaire :
 ## 🤝 Soutenir l'association
 
 Vous pouvez soutenir nos actions de différentes façons :
-- Participer à nos cantines solidaires
+- Participer à nos cantines mensuelles
 - Devenir bénévole lors de nos événements
 - Faire un don à l'association
 
