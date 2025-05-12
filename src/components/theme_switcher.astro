@@ -150,6 +150,54 @@ const themes = [
     secondaryColor: "#eab308",
     isAccessible: true,
   },
+// Thèmes clairs accessibles (avec couleurs de texte distinctives)
+{
+  id: "coquille-cardinal",
+  name: "Coquille & Cardinal",
+  type: "light",
+  bgColor: "#eae2d6",
+  primaryColor: "#8c1c13",
+  secondaryColor: "#70160f",
+  isAccessible: true,
+},
+{
+  id: "abricot-marine",
+  name: "Abricot & Marine",
+  type: "light",
+  bgColor: "#ffdfbf",
+  primaryColor: "#003559",
+  secondaryColor: "#002a45",
+  isAccessible: true,
+},
+{
+  id: "aigue-cerise",
+  name: "Aigue & Cerise",
+  type: "light",
+  bgColor: "#d9f1e3",
+  primaryColor: "#ad2e24",
+  secondaryColor: "#8e251c",
+  isAccessible: true,
+},
+
+// Thèmes sombres accessibles (avec couleurs de texte distinctives)
+{
+  id: "terre-orange",
+  name: "Terre & Orange", 
+  type: "dark",
+  bgColor: "#453028",
+  primaryColor: "#ff8c42",
+  secondaryColor: "#e67d39",
+  isAccessible: true,
+},
+{
+  id: "marron-chartreuse",
+  name: "Marron & Chartreuse",
+  type: "dark",
+  bgColor: "#583c2e",
+  primaryColor: "#c5e063",
+  secondaryColor: "#a2c836",
+  isAccessible: true,
+},
 ];
 ---
 
@@ -343,6 +391,60 @@ const themes = [
     --color-border: #facc15;
     --color-primary-rgb: 250, 204, 21;
   }
+/* Thème Coquille & Cardinal (accessible, clair) */
+html[data-theme="coquille-cardinal"] {
+  --color-primary: #8c1c13;
+  --color-secondary: #70160f;
+  --color-accent: #46b1c9;
+  --bg-color: #eae2d6;
+  --text-color: #3d5a73;  /* Bleu-gris moyen - Contraste ~5:1 */
+  --color-border: #8c1c13;
+  --color-primary-rgb: 140, 28, 19;
+}
+
+/* Thème Abricot & Marine (accessible, clair) */
+html[data-theme="abricot-marine"] {
+  --color-primary: #003559;
+  --color-secondary: #002a45;
+  --color-accent: #cc5a71;
+  --bg-color: #ffdfbf;
+  --text-color: #4b3a50;  /* Violet-brun - Contraste ~6:1 */
+  --color-border: #003559;
+  --color-primary-rgb: 0, 53, 89;
+}
+
+/* Thème Aigue & Cerise (accessible, clair) */
+html[data-theme="aigue-cerise"] {
+  --color-primary: #ad2e24;
+  --color-secondary: #8e251c;
+  --color-accent: #51a3a3;
+  --bg-color: #d9f1e3;
+  --text-color: #354f3e;  /* Vert-forêt - Contraste ~5:1 */
+  --color-border: #ad2e24;
+  --color-primary-rgb: 173, 46, 36;
+}
+
+/* Thème Terre & Orange (accessible, sombre) */
+html[data-theme="terre-orange"] {
+  --color-primary: #ff8c42;
+  --color-secondary: #e67d39;
+  --color-accent: #4fb0c6;
+  --bg-color: #453028;
+  --text-color: #c4dbd0;  /* Vert d'eau pâle - Contraste ~7:1 */
+  --color-border: #ff8c42;
+  --color-primary-rgb: 255, 140, 66;
+}
+
+/* Thème Marron & Chartreuse (accessible, sombre) */
+html[data-theme="marron-chartreuse"] {
+  --color-primary: #c5e063;
+  --color-secondary: #a2c836;
+  --color-accent: #f591a0;
+  --bg-color: #583c2e;
+  --text-color: #d8ccb8;  /* Beige-doré - Contraste ~7:1 */
+  --color-border: #c5e063;
+  --color-primary-rgb: 197, 224, 99;
+}
 </style>
 
 <style>
