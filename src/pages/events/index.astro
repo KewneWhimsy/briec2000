@@ -7,30 +7,22 @@ import type { EventEntry } from '../../../types';
 // Récupérer tous les événements non brouillons
 const allEvents = await getCollection('events') as EventEntry[];
 
-// Trier les événements par date (du plus récent au plus ancien)
-const sortedEvents = allEvents
-  .filter((event: EventEntry) => event.data.draft !== true)
+// Date actuelle pour comparer
+const now = new Date();
+
+// Filtrer pour ne montrer QUE les événements à venir
+const upcomingEvents = allEvents
+  .filter((event: EventEntry) => {
+    const eventDate = event.data.date instanceof Date ? 
+      event.data.date : 
+      new Date(event.data.date);
+    return eventDate >= now && event.data.draft !== true;
+  })
   .sort((a: EventEntry, b: EventEntry) => {
     const dateA = a.data.date instanceof Date ? a.data.date : new Date(a.data.date);
     const dateB = b.data.date instanceof Date ? b.data.date : new Date(b.data.date);
-    return dateB.getTime() - dateA.getTime();
+    return dateA.getTime() - dateB.getTime(); // Chronologique (du plus proche au plus lointain)
   });
-
-// Diviser en événements à venir et passés
-const now = new Date();
-const upcomingEvents = sortedEvents.filter((event: EventEntry) => {
-  const eventDate = event.data.date instanceof Date ? 
-    event.data.date : 
-    new Date(event.data.date);
-  return eventDate >= now;
-});
-
-const pastEvents = sortedEvents.filter((event: EventEntry) => {
-  const eventDate = event.data.date instanceof Date ? 
-    event.data.date : 
-    new Date(event.data.date);
-  return eventDate < now;
-});
 
 // Formater la date en français
 function formatDate(date: Date | string): string {
@@ -45,17 +37,16 @@ function formatDate(date: Date | string): string {
 }
 ---
 
-<Layout title="Événements - Briec2000">
+<Layout title="Événements à venir - Briec2000">
   <section class="max-w-3xl">
-    <h1 class="mb-8">Nos événements</h1>
+    <h1 class="mb-8">Événements à venir</h1>
     
     <p class="text-lg mb-6">
-      Découvrez les événements organisés par l'association Briec2000.
+      Découvrez les prochains événements organisés par l'association Briec2000.
     </p>
     
-    {upcomingEvents.length > 0 && (
+    {upcomingEvents.length > 0 ? (
       <div class="mb-12">
-        <h2 class="mb-6 border-b pb-2">Événements à venir</h2>
         <div class="grid gap-8 md:grid-cols-2">
           {upcomingEvents.map((event: EventEntry) => (
             <div class="card flex flex-col p-6">
@@ -84,46 +75,16 @@ function formatDate(date: Date | string): string {
           ))}
         </div>
       </div>
-    )}
-    
-    {pastEvents.length > 0 && (
-      <div>
-        <h2 class="mb-6 border-b pb-2">Événements passés</h2>
-        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {pastEvents.slice(0, 6).map((event: EventEntry) => (
-            <div class="card p-4">
-              {event.data.image && (
-                <div class="mb-2 overflow-hidden" style="height: 120px;">
-                  <OptimizeImage 
-                    src={event.data.image} 
-                    alt={event.data.title} 
-                    widths={[200, 400]}
-                    sizes="(max-width: 1023px) 100vw, 200px"
-                    class="w-full h-full object-cover rounded-lg shadow-sm"
-                  />
-                </div>
-              )}
-              <h3 class="text-lg mb-1">{event.data.title}</h3>
-              <p class="text-sm event-date mb-2">
-                <time datetime={event.data.date.toISOString()}>
-                  {formatDate(event.data.date)}
-                </time>
-              </p>
-              <a href={`/events/${event.slug}/`} class="text-sm hover:underline">Voir plus →</a>
-            </div>
-          ))}
-        </div>
-        
-        {pastEvents.length > 6 && (
-          <div class="text-center mt-6">
-            <a href="/events/archives/" class="btn">Voir tous les événements passés</a>
-          </div>
-        )}
+    ) : (
+      <div class="card p-6 text-center mb-12">
+        <p class="mb-4">Il n'y a pas d'événements prévus pour le moment.</p>
+        <p>Revenez bientôt ou consultez nos <a href="/archives/" class="hover:underline">archives</a> pour découvrir nos événements passés.</p>
       </div>
     )}
     
-    <div class="text-center mt-12">
+    <div class="flex justify-between items-center mt-12">
       <a href="/" class="btn">Retour à l'accueil</a>
+      <a href="/archives/" class="btn">Voir les archives</a>
     </div>
   </section>
 </Layout>
