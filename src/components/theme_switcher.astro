@@ -4,15 +4,7 @@
 
 // Définir les thèmes disponibles avec leurs couleurs caractéristiques
 const themes = [
-  // Thèmes standards clairs
-  {
-    id: "rouge",
-    name: "Rouge",
-    type: "light",
-    bgColor: "#f5eeee",
-    primaryColor: "#a40101",
-    secondaryColor: "#a90202",
-  },
+  // Thèmes standard clair
   {
     id: "lavande",
     name: "Lavande",
@@ -22,7 +14,7 @@ const themes = [
     secondaryColor: "#583869",
   },
 
-  // Thèmes standards sombres
+  // Thèmes standard sombre
   {
     id: "midnight",
     name: "Minuit",
@@ -30,14 +22,6 @@ const themes = [
     bgColor: "#1f2937",
     primaryColor: "#6889c2",
     secondaryColor: "#415a89",
-  },
-  {
-    id: "forest",
-    name: "Forêt",
-    type: "dark",
-    bgColor: "#1a2721",
-    primaryColor: "#8fb996",
-    secondaryColor: "#4d7a5a",
   },
 
   // Thèmes accessibles
@@ -133,15 +117,6 @@ const themes = [
   },
 
   {
-    id: "olive-fuchsia",
-    name: "Olive & Fuchsia",
-    type: "dark",
-    bgColor: "#3f4f3a",
-    primaryColor: "#f472b6",
-    secondaryColor: "#ec4899",
-    isAccessible: true,
-  },
-  {
     id: "amethyste-or",
     name: "Améthyste & Or",
     type: "dark",
@@ -191,17 +166,6 @@ const themes = [
 </div>
 
 <style is:global>
-  /* Thème Rouge (clair) */
-  html[data-theme="rouge"] {
-    --color-primary: #a40101;
-    --color-secondary: #a90202;
-    --color-accent: #803e3e;
-    --bg-color: #f5eeee;
-    --text-color: #2b3b2a;
-    --color-border: #d7e6db;
-    --color-primary-rgb: 46, 107, 74;
-  }
-
   /* Thème Lavande (clair) */
   html[data-theme="lavande"] {
     --color-primary: #7c5295;
@@ -224,16 +188,6 @@ const themes = [
     --color-primary-rgb: 104, 137, 194;
   }
 
-  /* Thème Forêt (sombre) */
-  html[data-theme="forest"] {
-    --color-primary: #8fb996;
-    --color-secondary: #4d7a5a;
-    --color-accent: #e9b44c;
-    --bg-color: #1a2721;
-    --text-color: #e2e8d5;
-    --color-border: #2d433a;
-    --color-primary-rgb: 143, 185, 150;
-  }
   /* Thème Beige & Émeraude (accessible, clair) */
   html[data-theme="beige-emeraude"] {
     --color-primary: #065f46;
@@ -336,16 +290,6 @@ const themes = [
     --color-primary-rgb: 236, 252, 203;
   }
 
-  /* Thème Olive & Fuchsia (accessible, sombre) */
-  html[data-theme="olive-fuchsia"] {
-    --color-primary: #f472b6;
-    --color-secondary: #ec4899;
-    --color-accent: #fbcfe8;
-    --bg-color: #3f4f3a;
-    --text-color: #f0f9f0;
-    --color-border: #f472b6;
-    --color-primary-rgb: 244, 114, 182;
-  }
   /* Thème Améthyste & Or (accessible, sombre) */
   html[data-theme="amethyste-or"] {
     --color-primary: #facc15;
