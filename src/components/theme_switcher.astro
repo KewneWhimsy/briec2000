@@ -171,7 +171,7 @@ const themes = [
           class="theme-accent"
           style={`background-color: ${theme.primaryColor};`}
         />
-        {theme.isAccessible && <span class="a11y-indicator">A+</span>}
+        {theme.isAccessible && <span class="a11y-indicator select-none">A+</span>}
       </button>
     ))
   }
@@ -284,7 +284,7 @@ const themes = [
   /* Thème Ardoise & Pêche (accessible, sombre) */
   html[data-theme="ardoise-peche"] {
     --color-primary: #fed7aa;
-    --color-secondary: #fb923c;
+    --color-secondary: #e88636;
     --color-accent: #fdba74;
     --bg-color: #334155;
     --text-color: #f8fafc;
@@ -295,7 +295,7 @@ const themes = [
   /* Thème Prune & Menthe (accessible, sombre) */
   html[data-theme="prune-menthe"] {
     --color-primary: #9ee6c4;
-    --color-secondary: #65d6a9;
+    --color-secondary: #5fcba0;
     --color-accent: #fde047;
     --bg-color: #4a044e;
     --text-color: #fdf2ff;
@@ -352,6 +352,8 @@ const themes = [
     gap: 6px;
     width: 100%;
     max-width: 280px;
+    padding: 4px; /* Ajouter un padding pour permettre l'expansion */
+    overflow: visible; /* Important: permettre aux éléments de déborder */
   }
 
   .theme-btn {
@@ -364,6 +366,13 @@ const themes = [
     transition: all 0.2s ease;
     padding: 0;
     overflow: hidden;
+    margin: 1px; /* Ajouter une petite marge pour l'espace d'expansion */
+  }
+
+  .theme-btn.active {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 2px var(--color-accent);
+    z-index: 10; /* Assurez-vous que le bouton actif apparaît au-dessus des autres */
   }
 
   .a11y-indicator {
@@ -384,11 +393,6 @@ const themes = [
     width: 100%;
     height: 30%;
     border-radius: 0 0 50% 50%;
-  }
-
-  .theme-btn.active {
-    transform: scale(1.1);
-    box-shadow: 0 0 0 2px var(--color-accent);
   }
 
 </style>

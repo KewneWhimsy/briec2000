@@ -15,7 +15,7 @@ const {
   previewPages,
   downloadFileName = "document.pdf",
   title = "Aperçu du document",
-  description = "Naviguez entre les pages pour découvrir le document. Vous pouvez également le télécharger pour le partager ou l'imprimer."
+  description = "Naviguez entre les pages pour découvrir le document. Vous pouvez également ouvrir le PDF pour le visualiser en plein écran."
 } = Astro.props;
 ---
 
@@ -72,19 +72,19 @@ const {
       ))}
     </div>
     
-    <!-- Compteur de page et bouton de téléchargement -->
+    <!-- Compteur de page et bouton d'ouverture du PDF -->
     <div class="flex justify-between items-center mt-3">
       <div class="page-counter text-sm opacity-70">
         Page <span id="current-page">1</span> sur {previewPages.length}
       </div>
       
-      <a href={pdfPath} download={downloadFileName} class="btn-download inline-flex items-center gap-1 text-sm">
+      <a href={pdfPath} class="btn-open-pdf inline-flex items-center gap-1 text-sm">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="7 10 12 15 17 10"></polyline>
-          <line x1="12" y1="15" x2="12" y2="3"></line>
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
         </svg>
-        Télécharger
+        Ouvrir le PDF
       </a>
     </div>
   </div>
@@ -326,7 +326,7 @@ const {
     transform: scale(1.2);
   }
   
-  .btn-download {
+  .btn-open-pdf {
     color: var(--color-primary);
     font-weight: 500;
     text-decoration: none;
@@ -334,7 +334,7 @@ const {
     padding: 0.25rem 0.5rem;
   }
   
-  .btn-download:hover {
+  .btn-open-pdf:hover {
     opacity: 0.8;
     text-decoration: underline;
   }
