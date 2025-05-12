@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/layout.astro';
 import { getCollection } from 'astro:content';
+import OptimizeImage from '../components/optimize_image.astro';
 import type { CantineEntry, EventEntry, Price } from '../../types';
 
 // Récupérer les informations sur les cantines
@@ -53,24 +54,42 @@ function formatDate(date: Date | string): string {
   <section class="max-w-3xl">
     <h1 class="mb-8">Cantines Mensuelles</h1>
     
-    {cantineEntry && (
-      <div class="mb-8">
-        <p class="text-lg mb-6">{cantineEntry.data.description}</p>
+    <!-- Entête visuel avec image -->
+    <div class="mb-8 flex flex-col md:flex-row md:items-center gap-6">
+      <div class="md:w-1/2">
+        {cantineEntry && (
+          <p class="text-lg mb-4">{cantineEntry.data.description}</p>
+        )}
+        <p class="text-md italic">Chaque premier dimanche du mois à Ti Glazik</p>
       </div>
-    )}
+      <div class="md:w-1/2">
+        <OptimizeImage 
+          src="/src/assets/events/repas.png" 
+          alt="Repas de la cantine mensuelle" 
+          class="w-full h-auto rounded-lg shadow-md"
+        />
+      </div>
+    </div>
     
     {upcomingCantines.length > 0 && (
       <div class="mb-12">
         <h2 class="mb-6 border-b pb-2">Prochaines cantines</h2>
         <div class="grid gap-8 md:grid-cols-2">
           {upcomingCantines.map((event: EventEntry) => (
-            <div class="card p-6">
+            <div class="card p-6 hover:shadow-lg transition-shadow">
               <h3 class="text-xl mb-2">{event.data.title}</h3>
               <p class="text-sm mb-3">
                 <time datetime={event.data.date.toISOString()}>
                   {formatDate(event.data.date)}
                 </time>
               </p>
+              <div class="mb-4 overflow-hidden rounded-lg" style="height: 160px;">
+                <OptimizeImage 
+                  src="/src/assets/events/repas.png" 
+                  alt={event.data.title} 
+                  class="w-full h-full object-cover"
+                />
+              </div>
               <p class="mb-4">{event.data.description}</p>
               <a href={`/events/${event.slug}/`} class="btn inline-block">Voir les détails</a>
             </div>
@@ -97,19 +116,32 @@ function formatDate(date: Date | string): string {
       </div>
     )}
     
+    <!-- Section réservation avec mise en valeur de la date limite -->
     <div class="card p-6 mb-12">
       <h2 class="text-xl mb-4">Comment réserver ?</h2>
       <p class="mb-4">
         Pour réserver votre place à la prochaine cantine, envoyez un email à : 
         <span class="email-copy font-medium">briec2000@emailasso.net</span>
       </p>
+      
       <p class="mb-2">Dans votre message, précisez :</p>
       <ul class="list-disc ml-6 mb-4">
         <li>Votre nom</li>
         <li>Le nombre de repas souhaités (végétariens ou carnés)</li>
         <li>Si vous souhaitez des demi-portions</li>
       </ul>
-      <p class="text-sm italic">Pensez à apporter vos contenants propres pour les repas à emporter !</p>
+      
+      <div class="border border-current rounded-lg p-4 mt-4">
+        <p class="italic">Pensez à apporter vos contenants propres pour les repas à emporter !</p>
+      </div>
+      
+      <!-- Bloc pour mettre en évidence le délai de réservation -->
+      <div class="mt-6 flex items-center justify-center">
+        <div class="text-center border-2 border-current px-6 py-3 rounded-lg">
+          <p class="font-bold">⏰ IMPORTANT</p>
+          <p class="font-medium text-lg">Réservation jusqu'au samedi avant midi</p>
+        </div>
+      </div>
     </div>
     
     <div class="text-center mt-12">
