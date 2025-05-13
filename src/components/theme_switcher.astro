@@ -26,15 +26,6 @@ const themes = [
 
   // Thèmes accessibles
   {
-    id: "beige-emeraude",
-    name: "Beige & Émeraude",
-    type: "light",
-    bgColor: "#f5f5dc",
-    primaryColor: "#065f46",
-    secondaryColor: "#047857",
-    isAccessible: true,
-  },
-  {
     id: "vanille-violet",
     name: "Vanille & Violet",
     type: "light",
@@ -44,21 +35,21 @@ const themes = [
     isAccessible: true,
   },
   {
-    id: "vert-rose",
-    name: "Vert & Rose",
-    type: "light",
-    bgColor: "#d8f3dc",
-    primaryColor: "#9d0191",
-    secondaryColor: "#720e9e",
-    isAccessible: true,
-  },
-  {
     id: "champagne-acier",
     name: "Champagne & Acier",
     type: "light",
     bgColor: "#fdf4ff",
     primaryColor: "#475569",
     secondaryColor: "#334155",
+    isAccessible: true,
+  },
+  {
+    id: "amethyste-or",
+    name: "Améthyste & Or",
+    type: "dark",
+    bgColor: "#6b21a8",
+    primaryColor: "#facc15",
+    secondaryColor: "#eab308",
     isAccessible: true,
   },
   {
@@ -115,27 +106,6 @@ const themes = [
     secondaryColor: "#bef264",
     isAccessible: true,
   },
-
-  {
-    id: "amethyste-or",
-    name: "Améthyste & Or",
-    type: "dark",
-    bgColor: "#6b21a8",
-    primaryColor: "#facc15",
-    secondaryColor: "#eab308",
-    isAccessible: true,
-  },
-
-  // Thèmes sombres accessibles (avec couleurs de texte distinctives)
-  {
-    id: "terre-orange",
-    name: "Terre & Orange",
-    type: "dark",
-    bgColor: "#453028",
-    primaryColor: "#ff8c42",
-    secondaryColor: "#e67d39",
-    isAccessible: true,
-  },
 ];
 ---
 
@@ -187,17 +157,7 @@ const themes = [
     --color-border: #374151;
     --color-primary-rgb: 104, 137, 194;
   }
-
-  /* Thème Beige & Émeraude (accessible, clair) */
-  html[data-theme="beige-emeraude"] {
-    --color-primary: #065f46;
-    --color-secondary: #047857;
-    --color-accent: #f59e0b;
-    --bg-color: #f5f5dc;
-    --text-color: #1a1a1a;
-    --color-border: #065f46;
-    --color-primary-rgb: 6, 95, 70;
-  }
+  
   /* Thème Vanille & Violet (accessible, clair) */
   html[data-theme="vanille-violet"] {
     --color-primary: #5b21b6;
@@ -208,16 +168,6 @@ const themes = [
     --color-border: #5b21b6;
     --color-primary-rgb: 91, 33, 182;
   }
-  /* Thème Vert & Rose (accessible, clair) */
-  html[data-theme="vert-rose"] {
-    --color-primary: #9d0191;
-    --color-secondary: #720e9e;
-    --color-accent: #4cc9f0;
-    --bg-color: #d8f3dc;
-    --text-color: #2d0030;
-    --color-border: #720e9e;
-    --color-primary-rgb: 157, 1, 145;
-  }
   /* Thème Champagne & Acier (accessible, clair) */
   html[data-theme="champagne-acier"] {
     --color-primary: #475569;
@@ -227,6 +177,16 @@ const themes = [
     --text-color: #0f172a;
     --color-border: #475569;
     --color-primary-rgb: 71, 85, 105;
+  }
+  /* Thème Améthyste & Or (accessible, sombre) */
+  html[data-theme="amethyste-or"] {
+    --color-primary: #facc15;
+    --color-secondary: #debd02;
+    --color-accent: #a7f3d0;
+    --bg-color: #6b21a8;
+    --text-color: #f5f3ff;
+    --color-border: #facc15;
+    --color-primary-rgb: 250, 204, 21;
   }
   /* Thème Bleu & Jaune (accessible, sombre) */
   html[data-theme="bleu-jaune"] {
@@ -251,7 +211,7 @@ const themes = [
   /* Thème Ardoise & Pêche (accessible, sombre) */
   html[data-theme="ardoise-peche"] {
     --color-primary: #fed7aa;
-    --color-secondary: #d78039;
+    --color-secondary: #e7983d;
     --color-accent: #fdba74;
     --bg-color: #334155;
     --text-color: #f8fafc;
@@ -282,34 +242,12 @@ const themes = [
   /* Thème Gris & Citron (accessible, sombre) */
   html[data-theme="gris-citron"] {
     --color-primary: #ecfccb;
-    --color-secondary: #a6d455;
+    --color-secondary: #8cb447;
     --color-accent: #96c348;
     --bg-color: #1f2937;
     --text-color: #f9fafb;
     --color-border: #ecfccb;
     --color-primary-rgb: 236, 252, 203;
-  }
-
-  /* Thème Améthyste & Or (accessible, sombre) */
-  html[data-theme="amethyste-or"] {
-    --color-primary: #facc15;
-    --color-secondary: #eab308;
-    --color-accent: #a7f3d0;
-    --bg-color: #6b21a8;
-    --text-color: #f5f3ff;
-    --color-border: #facc15;
-    --color-primary-rgb: 250, 204, 21;
-  }
-
-  /* Thème Terre & Orange (accessible, sombre) */
-  html[data-theme="terre-orange"] {
-    --color-primary: #ff8c42;
-    --color-secondary: #d47435;
-    --color-accent: #4fb0c6;
-    --bg-color: #453028;
-    --text-color: #c4dbd0; /* Vert d'eau pâle - Contraste ~7:1 */
-    --color-border: #ff8c42;
-    --color-primary-rgb: 255, 140, 66;
   }
 </style>
 

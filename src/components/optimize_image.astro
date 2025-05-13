@@ -6,6 +6,10 @@ import type { ImageMetadata } from 'astro';
 // Importer les images individuellement
 import repasImage from '../assets/events/repas.png';
 import carnabalImage from '../assets/events/carnabal.jpg';
+// Importer les nouvelles silhouettes
+import silhouette1Image from '../assets/silhouettes/silhouette1.png';
+import silhouette2Image from '../assets/silhouettes/silhouette2.png';
+import silhouette3Image from '../assets/silhouettes/silhouette3.png';
 // Ajoutez d'autres imports selon vos besoins
 
 // Définir le type pour l'objet imageMap avec index signature
@@ -17,6 +21,10 @@ interface ImageMap {
 const imageMap: ImageMap = {
   '/src/assets/events/repas.png': repasImage,
   '/src/assets/events/carnabal.jpg': carnabalImage,
+  // Ajouter les silhouettes au mapping
+  '/src/assets/silhouettes/silhouette1.png': silhouette1Image,
+  '/src/assets/silhouettes/silhouette2.png': silhouette2Image,
+  '/src/assets/silhouettes/silhouette3.png': silhouette3Image,
   // Ajoutez d'autres mappings selon vos besoins
 };
 
