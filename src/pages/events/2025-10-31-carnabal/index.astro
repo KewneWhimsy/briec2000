@@ -1,6 +1,6 @@
 ---
 // src/pages/events/2025-10-31-carnabal/index.astro
-// Page de l'événement CarnaBal avec contenu enrichi et silhouettes
+// Page de l'événement CarnaBal avec une meilleure présentation visuelle
 
 import Layout from '../../../layouts/layout.astro';
 import PdfViewer from '../../../components/pdf_viewer.astro';
@@ -13,7 +13,7 @@ const eventsEntries = await getCollection('events') as EventEntry[];
 const carnaBal = eventsEntries.find((entry: EventEntry) => entry.slug === '2025-10-31-carnabal');
 
 if (!carnaBal) {
-return Astro.redirect('/events/');
+  return Astro.redirect('/events/');
 }
 
 // Récupérer le contenu
@@ -22,265 +22,246 @@ const { Content } = contentRender;
 
 // Chemins des silhouettes
 const silhouettes = [
-'/src/assets/silhouettes/silhouette1.png',
-'/src/assets/silhouettes/silhouette2.png',
-'/src/assets/silhouettes/silhouette3.png'
+  '/src/assets/silhouettes/silhouette1.png',
+  '/src/assets/silhouettes/silhouette2.png',
+  '/src/assets/silhouettes/silhouette3.png'
 ];
 
 // Paramètres PDF
 const pdfPath = '/pdf/carnabal-des-monstres.pdf';
 const previewPages = [
-'/pdf/preview/carnabal-page1.jpg',
-'/pdf/preview/carnabal-page2.jpg',
-'/pdf/preview/carnabal-page3.jpg',
-'/pdf/preview/carnabal-page4.jpg'
+  '/pdf/preview/carnabal-page1.jpg',
+  '/pdf/preview/carnabal-page2.jpg',
+  '/pdf/preview/carnabal-page3.jpg',
+  '/pdf/preview/carnabal-page4.jpg'
 ];
 ---
 
 <Layout title={`${carnaBal.data.title} - Briec2000`}>
-<article class="max-w-3xl">
-  <!-- Section d'introduction avec silhouettes -->
-  <div class="event-hero mb-10 relative overflow-hidden">
-    <div class="silhouettes-container">
-      {silhouettes.map((silhouette, index) => (
-        <OptimizeImage 
-          src={silhouette} 
-          alt={`Silhouette monstrueuse ${index + 1}`} 
-          class={`silhouette silhouette-${index + 1}`}
-          widths={[200, 400]}
-          sizes="(max-width: 767px) 200px, 400px"
-          loading={index === 0 ? "eager" : "lazy"}
-        />
-      ))}
-    </div>
-    
-    <div class="event-content-wrapper">
-      <div class="event-badge">31 Octobre 2025</div>
-      <h1 class="event-title mb-4">{carnaBal.data.title}</h1>
-      <p class="event-tagline text-lg mb-6">
-        Entre dans la saison sombre en célébrant notre nature sauvage et monstrueuse !
-      </p>
-      <div class="event-meta flex flex-wrap gap-4 mb-8">
-        <div class="event-meta-item">
-          <strong>Date:</strong> vendredi 31 octobre 2025
-        </div>
-        <div class="event-meta-item">
-          <strong>Lieu:</strong> {carnaBal.data.location}
-        </div>
-        <div class="event-meta-item">
-          <strong>Horaires:</strong> {carnaBal.data.time}
-        </div>
-      </div>
-      
-      <!-- Boutons d'action -->
-      <div class="flex flex-wrap gap-4 mb-10">
-        <a href="#histoire" class="btn inline-flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="8" x2="12" y2="16"></line>
-            <line x1="8" y1="12" x2="16" y2="12"></line>
-          </svg>
-          Plus d'infos
-        </a>
-        <a href="#ateliers" class="btn inline-flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-          </svg>
-          Ateliers
-        </a>
-        <a href={pdfPath} download="CarnaBal_des_monstres_2025.pdf" class="btn inline-flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
-          Télécharger le flyer
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Histoire et origine -->
-  <section id="histoire" class="card p-8 mb-10 origin-story">
-    <h2 class="text-2xl mb-4">Les origines du CarnaBal</h2>
-    <div class="prose">
-      <p>Alors que dans la fraicheur de l'hiver la nature hiberne encore, c'est autour d'un feu au solstice qu'un groupe de personnes commence à imaginer accueillir ensemble, et avec d'autres, la saison froide l'année suivante.</p>
-      
-      <p>À la levée des dormances, cette discussion prend corps, et se mue en une association : <strong class="whitespace-nowrap">Briec 2000</strong>. Son idée ? Rassembler les énergies créatives et joyeuses, et provoquer la rencontre entre les gens.</p>
-      
-      <p>Et pour cela, ce premier projet : l'organisation d'un <strong>CarnaBal de monstres et de créatures</strong>, pour célébrer ensemble l'entrée dans la « saison sombre » à l'automne 2025.</p>
-      
-      <p>Inspiré·e·s par les anciennes fêtes et les carnavals sauvages, ce CarnaBal propose à tous·tes celles et ceux qui le souhaitent de se bricoler un habit, de faire disparaître leurs formes d'humain·e·s sous les tissus, les fougères, les objets récupérés, et de retrouver leurs congénères monstrueux·es dans les rues du bourg, dans une procession joyeuse jusqu'à l'Arthémuse, où se poursuivront les festivités.</p>
-    </div>
-  </section>
-
-  <!-- Galerie de silhouettes pour mobile -->
-  <div class="silhouettes-gallery mb-10 md:hidden">
-    <h2 class="text-xl mb-4">Inspirations monstrueuses</h2>
-    <div class="flex gap-2 overflow-x-auto pb-4 snap-x">
-      {silhouettes.map((silhouette, index) => (
-        <div class="silhouette-card snap-center">
+  <article class="max-w-3xl">
+    <!-- Section d'introduction avec silhouettes -->
+    <div class="event-hero mb-10 relative overflow-hidden">
+      <div class="silhouettes-container">
+        {silhouettes.map((silhouette, index) => (
           <OptimizeImage 
             src={silhouette} 
             alt={`Silhouette monstrueuse ${index + 1}`} 
-            class="silhouette-mobile" 
-            widths={[160, 320]}
-            sizes="160px"
-            loading="lazy"
+            class={`silhouette silhouette-${index + 1}`}
+            widths={[200, 400]}
+            sizes="(max-width: 767px) 200px, 400px"
+            loading={index === 0 ? "eager" : "lazy"}
           />
-        </div>
-      ))}
-    </div>
-  </div>
-
-  <!-- Utilisation du composant PdfViewer -->
-  <PdfViewer 
-    pdfPath={pdfPath}
-    previewPages={previewPages}
-    downloadFileName="CarnaBal_des_monstres_2025.pdf"
-    title="Flyer du CarnaBal"
-    description="Téléchargez le flyer pour découvrir tous les détails du CarnaBal des monstres et créatures 2025."
-  />
-
-  <!-- Détails de l'événement -->
-  <section id="details" class="mb-10 mt-12">
-    <h2 class="text-2xl mb-6 border-b pb-2">Détails de l'événement</h2>
-    
-    <div class="card p-8 event-details-card">
-      <div class="mb-6 event-description">
-        <p class="text-lg leading-relaxed">
-          Inspiré·e·s par les anciennes fêtes et les carnavals sauvages, ce CarnaBal propose à tous·tes celles et ceux qui le souhaitent de se bricoler un habit, de faire disparaître leurs formes d'humain·e·s sous les tissus, les fougères, les objets récupérés, et de retrouver leurs congénères monstrueux·es dans les rues du bourg, dans une procession joyeuse jusqu'à l'Arthémuse, où se poursuivront les festivités.
+        ))}
+      </div>
+      
+      <div class="event-content-wrapper">
+        <div class="event-badge">31 Octobre 2025</div>
+        <h1 class="event-title mb-4">{carnaBal.data.title}</h1>
+        <p class="event-tagline text-lg mb-6">
+          Entre dans la saison sombre en célébrant notre nature sauvage et monstrueuse !
         </p>
-      </div>
-      
-      <div class="event-info-grid">
-        <div class="event-info-item">
-          <div class="event-info-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="16" y1="2" x2="16" y2="6"></line>
-              <line x1="8" y1="2" x2="8" y2="6"></line>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
+        <div class="event-meta flex flex-wrap gap-4 mb-8">
+          <div class="event-meta-item">
+            <strong>Date:</strong> vendredi 31 octobre 2025
           </div>
-          <div class="event-info-content">
-            <div class="event-info-label">Date</div>
-            <div class="event-info-value">vendredi 31 octobre 2025</div>
+          <div class="event-meta-item">
+            <strong>Lieu:</strong> {carnaBal.data.location}
+          </div>
+          <div class="event-meta-item">
+            <strong>Horaires:</strong> {carnaBal.data.time}
           </div>
         </div>
         
-        <div class="event-info-item">
-          <div class="event-info-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-              <circle cx="12" cy="10" r="3"></circle>
-            </svg>
-          </div>
-          <div class="event-info-content">
-            <div class="event-info-label">Lieu</div>
-            <div class="event-info-value">{carnaBal.data.location}</div>
-          </div>
-        </div>
-        
-        <div class="event-info-item">
-          <div class="event-info-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Boutons d'action -->
+        <div class="flex flex-wrap gap-4 mb-10">
+          <a href="#histoire" class="btn inline-flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
+              <line x1="12" y1="8" x2="12" y2="16"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
             </svg>
-          </div>
-          <div class="event-info-content">
-            <div class="event-info-label">Horaires</div>
-            <div class="event-info-value">{carnaBal.data.time}</div>
-          </div>
+            Plus d'infos
+          </a>
+          <a href="#ateliers" class="btn inline-flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            Ateliers
+          </a>
+          <a href={pdfPath} download="CarnaBal_des_monstres_2025.pdf" class="btn inline-flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Télécharger le flyer
+          </a>
         </div>
       </div>
     </div>
-  </section>
-  
-  <!-- Ateliers préparatoires -->
-  <section id="ateliers" class="mb-10">
-    <h2 class="text-2xl mb-6 border-b pb-2">Ateliers préparatoires</h2>
-    
-    <p class="mb-6">Pour celles et ceux qui voudraient s'atteler à la préparation de leur costume, l'association propose des journées d'ateliers de création sur la base de loisirs de Ti Glazik :</p>
-    
-    <div class="timeline mb-8">
-      <div class="timeline-item">
-        <div class="timeline-date">16 juillet 2025</div>
-        <div class="timeline-content">
-          <div class="card p-4">
-            <p>Atelier costumes (matin avec l'espace-jeunes, après-midi ouvert à tous·tes)</p>
-          </div>
-        </div>
-      </div>
-      
-      <div class="timeline-item">
-        <div class="timeline-date">17 juillet 2025</div>
-        <div class="timeline-content">
-          <div class="card p-4">
-            <p>Atelier costumes (matin avec l'espace-jeunes, après-midi ouvert à tous·tes)</p>
-          </div>
-        </div>
-      </div>
-      
-      <div class="timeline-item">
-        <div class="timeline-date">18 juillet 2025</div>
-        <div class="timeline-content">
-          <div class="card p-4">
-            <p>Après-midi collective de déguisement en préparation d'une première soirée festive et monstrueuse</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="card p-6 mb-8 highlight-card">
-      <h3 class="text-xl mb-3">Spectacle "Adieu Meringue"</h3>
-      <p class="mb-4">Le 18 juillet, la soirée accueillera également le spectacle <strong>"Adieu Meringue"</strong> de la compagnie Fil en bulle. Meringue et son acolyte vous présenteront leur fascinant cabaret de monstres, dans un voyage au-delà du réel (tout public).</p>
-    </div>
-  </section>
-  
-  <!-- Cantines financement -->
-  <section id="cantines" class="mb-10">
-    <h2 class="text-2xl mb-6 border-b pb-2">Comment nous soutenons l'événement</h2>
-    
-    <div class="card p-6 mb-8">
-      <h3 class="text-xl mb-4">Les cantines mensuelles</h3>
-      <p class="mb-4">Pour faire naître ces monstres et récolter l'argent nécessaire à l'événement, l'équipe de Briec 2000 propose depuis février, tous les premiers dimanches de chaque mois, des repas à Ti Glazik.</p>
-      
-      <div class="cantine-info p-4 border-l-4 mb-4">
-        <p><strong>Comment participer ?</strong></p>
-        <ol class="list-decimal ml-6 mt-2 space-y-2">
-          <li>Réservez votre repas par email jusqu'au mercredi précédant la cantine</li>
-          <li>Venez chercher votre repas avec vos propres contenants</li>
-          <li>Service assuré par les monstres !</li>
-        </ol>
-      </div>
-      
-      <div class="text-center mt-6">
-        <a href="/cantines/" class="btn">Découvrir les cantines mensuelles</a>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Contact et informations -->
-  <section class="mb-10">
-    <h2 class="text-2xl mb-6 border-b pb-2">Contact et informations</h2>
-    
-    <div class="card p-6 text-center">
-      <p>Pour plus d'informations :</p>
-      <p class="mb-6 mt-2">
-        <span class="email-copy font-medium">briec2000@emailasso.net</span>
-      </p>
-      <p class="mb-2"><a href="https://asso-briec2000.top" target="_blank" rel="noopener" class="hover:underline">https://asso-briec2000.top</a></p>
-    </div>
-  </section>
 
-  <div class="flex justify-between items-center mt-12">
-    <a href="/events/" class="btn">Tous les événements</a>
-    <a href="/" class="btn">Retour à l'accueil</a>
-  </div>
-</article>
+    <!-- Histoire et origine - Design amélioré -->
+    <section id="histoire" class="card event-story-card p-8 mb-10">
+      <h2 class="text-2xl mb-6 text-center border-b pb-2">Le CarnaBal des monstres et créatures</h2>
+      
+      <div class="prose event-story-text mb-10">
+        <p>Alors que dans la fraicheur de l'hiver la nature hiberne encore, c'est autour d'un feu au solstice qu'un groupe de personnes commence à imaginer accueillir ensemble, et avec d'autres, la saison froide l'année suivante.</p>
+        
+        <p>À la levée des dormances, cette discussion prend corps, et se mue en une association : <strong class="whitespace-nowrap">Briec 2000</strong>. Son idée ? Rassembler les énergies créatives et joyeuses, et provoquer la rencontre entre les gens.</p>
+        
+        <p>Et pour cela, ce premier projet : l'organisation d'un <strong>CarnaBal de monstres et de créatures</strong>, pour célébrer ensemble l'entrée dans la « saison sombre » à l'automne 2025.</p>
+        
+        <p>Inspiré·e·s par les anciennes fêtes et les carnavals sauvages, ce CarnaBal propose à tous·tes celles et ceux qui le souhaitent de se bricoler un habit, de faire disparaître leurs formes d'humain·e·s sous les tissus, les fougères, les objets récupérés, et de retrouver leurs congénères monstrueux·es dans les rues du bourg, dans une procession joyeuse jusqu'à l'Arthémuse, où se poursuivront les festivités.</p>
+      </div>
+      
+      <!-- Infos pratiques stylées -->
+      <div class="event-info-wrapper">
+        <h3 class="text-xl mb-4 text-center">Informations pratiques</h3>
+        <div class="event-info-container">
+          <div class="event-info-card">
+            <div class="event-info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+            </div>
+            <h4 class="event-info-title">DATE</h4>
+            <p class="event-info-value">vendredi 31 octobre 2025</p>
+          </div>
+          
+          <div class="event-info-card">
+            <div class="event-info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <h4 class="event-info-title">LIEU</h4>
+            <p class="event-info-value">
+              Départ: Place de Ruthin<br>
+              Arrivée: Salle La Briécoise, 29510 Briec
+            </p>
+          </div>
+          
+          <div class="event-info-card">
+            <div class="event-info-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <h4 class="event-info-title">HORAIRES</h4>
+            <p class="event-info-value">
+              19h00: Rassemblement place de Ruthin<br>
+              19h30: Départ de la procession<br>
+              20h30: Festivités à l'Arthémuse
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Galerie de silhouettes pour mobile -->
+    <div class="silhouettes-gallery mb-10 md:hidden">
+      <h2 class="text-xl mb-4">Inspirations monstrueuses</h2>
+      <div class="flex gap-2 overflow-x-auto pb-4 snap-x justify-center">
+        {silhouettes.map((silhouette, index) => (
+          <div class="silhouette-card snap-center">
+            <OptimizeImage 
+              src={silhouette} 
+              alt={`Silhouette monstrueuse ${index + 1}`} 
+              class="silhouette-mobile" 
+              widths={[160, 320]}
+              sizes="160px"
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Utilisation du composant PdfViewer -->
+    <PdfViewer 
+      pdfPath={pdfPath}
+      previewPages={previewPages}
+      downloadFileName="CarnaBal_des_monstres_2025.pdf"
+      title="Flyer du CarnaBal"
+      description="Téléchargez le flyer pour découvrir tous les détails du CarnaBal des monstres et créatures 2025."
+    />
+  
+    <!-- Ateliers préparatoires -->
+    <section id="ateliers" class="mb-10">
+      <h2 class="text-2xl mb-6 border-b pb-2">Ateliers préparatoires</h2>
+      
+      <p class="mb-6">Pour celles et ceux qui voudraient s'atteler à la préparation de leur costume, l'association propose des journées d'ateliers de création sur la base de loisirs de Ti Glazik :</p>
+      
+      <div class="timeline mb-8">
+        <div class="timeline-item">
+          <div class="timeline-date">16 juillet 2025</div>
+          <div class="timeline-content">
+            <div class="card p-4">
+              <p>Atelier costumes (matin avec l'espace-jeunes, après-midi ouvert à tous·tes)</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="timeline-date">17 juillet 2025</div>
+          <div class="timeline-content">
+            <div class="card p-4">
+              <p>Atelier costumes (matin avec l'espace-jeunes, après-midi ouvert à tous·tes)</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="timeline-item">
+          <div class="timeline-date">18 juillet 2025</div>
+          <div class="timeline-content">
+            <div class="card p-4">
+              <p>Après-midi collective de déguisement en préparation d'une première soirée festive et monstrueuse</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card p-6 mb-8 highlight-card">
+        <h3 class="text-xl mb-3">Spectacle "Adieu Meringue"</h3>
+        <p class="mb-4">Le 18 juillet, la soirée accueillera également le spectacle <strong>"Adieu Meringue"</strong> de la compagnie Fil en bulle. Meringue et son acolyte vous présenteront leur fascinant cabaret de monstres, dans un voyage au-delà du réel (tout public).</p>
+      </div>
+    </section>
+    
+    <!-- Cantines financement -->
+    <section id="cantines" class="mb-10">
+      <h2 class="text-2xl mb-6 border-b pb-2">Comment nous finançons l'événement</h2>
+      
+      <div class="card p-6 mb-8">
+        <h3 class="text-xl mb-4">Les cantines mensuelles</h3>
+        <p class="mb-4">Pour faire naître ces monstres et récolter l'argent nécessaire à l'événement, l'équipe de Briec 2000 propose depuis février, tous les premiers dimanches de chaque mois, des repas à Ti Glazik.</p>
+        
+        <div class="cantine-info p-4 border-l-4 mb-4">
+          <p><strong>Comment participer ?</strong></p>
+          <ol class="list-decimal ml-6 mt-2 space-y-2">
+            <li>Réservez votre repas par email jusqu'au mercredi précédant la cantine</li>
+            <li>Venez chercher votre repas avec vos propres contenants</li>
+            <li>Service assuré par les monstres !</li>
+          </ol>
+        </div>
+        
+        <div class="text-center mt-6">
+          <a href="/cantines/" class="btn">Découvrir les cantines mensuelles</a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Boutons navigation -->
+    <div class="flex justify-between items-center mt-12">
+      <a href="/events/" class="btn">Tous les événements</a>
+      <a href="/" class="btn">Retour à l'accueil</a>
+    </div>
+  </article>
 </Layout>
 
 <style>
@@ -401,13 +382,80 @@ const previewPages = [
   border-left: 4px solid var(--color-primary);
 }
 
-.origin-story p {
+/* Style amélioré pour la section histoire */
+.event-story-card {
+  background-color: rgba(var(--color-primary-rgb), 0.03);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 0.75rem;
+  border-top: 4px solid var(--color-primary);
+}
+
+.event-story-text p {
   line-height: 1.7;
   margin-bottom: 1rem;
 }
 
-.origin-story p:last-child {
+.event-story-text p:last-child {
   margin-bottom: 0;
+}
+
+/* Nouveau style pour les infos pratiques */
+.event-info-wrapper {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(var(--color-primary-rgb), 0.2);
+}
+
+.event-info-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.event-info-card {
+  background-color: rgba(var(--color-primary-rgb), 0.05);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  flex: 1 1 280px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.event-info-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.event-info-icon {
+  background-color: var(--color-primary);
+  color: var(--bg-color);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.event-info-title {
+  font-family: var(--font-champ);
+  color: var(--color-primary);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.event-info-value {
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .cantine-info {
@@ -476,6 +524,16 @@ const previewPages = [
   .silhouettes-container {
     opacity: 0.2;
   }
+  
+  .event-info-card {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .event-info-container {
+    flex-direction: column;
+  }
 }
 
 @media (min-width: 768px) {
@@ -504,58 +562,9 @@ const previewPages = [
   .silhouette {
     transition: none;
   }
-}
-.event-details-card {
-  border-left: 4px solid var(--color-primary);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.event-description {
-  border-bottom: 1px solid var(--color-border);
-  padding-bottom: 1.5rem;
-}
-
-.event-info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
-}
-
-.event-info-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-}
-
-.event-info-icon {
-  background-color: rgba(var(--color-primary-rgb), 0.1);
-  color: var(--color-primary);
-  padding: 0.75rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.event-info-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.event-info-label {
-  font-weight: 500;
-  font-size: 0.9rem;
-  color: var(--color-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.event-info-value {
-  font-size: 1rem;
-  font-weight: 400;
+  
+  .event-info-card:hover {
+    transform: none;
+  }
 }
 </style>
