@@ -13,15 +13,31 @@ const themes = [
     primaryColor: "#7c5295",
     secondaryColor: "#583869",
   },
+  {
+    id: "bleu-canard",
+    name: "Bleu Canard",
+    type: "light",
+    bgColor: "#edf6f9",
+    primaryColor: "#006d77",
+    secondaryColor: "#83c5be",
+  },
 
   // Thèmes standard sombre
   {
-    id: "midnight",
-    name: "Minuit",
+    id: "lavande-sombre",
+    name: "Lavande Sombre",
     type: "dark",
-    bgColor: "#1f2937",
-    primaryColor: "#6889c2",
-    secondaryColor: "#415a89",
+    bgColor: "#2a1f33",
+    primaryColor: "#a57fbb",
+    secondaryColor: "#8460a0",
+  },
+  {
+    id: "ocean-profond",
+    name: "Océan Profond",
+    type: "dark",
+    bgColor: "#0e3b43",
+    primaryColor: "#38a3a5",
+    secondaryColor: "#57cc99",
   },
 
   // Thèmes accessibles
@@ -147,15 +163,37 @@ const themes = [
     --color-primary-rgb: 124, 82, 149;
   }
 
-  /* Thème Minuit (sombre) */
-  html[data-theme="midnight"] {
-    --color-primary: #6889c2;
-    --color-secondary: #415a89;
-    --color-accent: #f7a046;
-    --bg-color: #1f2937;
-    --text-color: #e2e8f0;
-    --color-border: #374151;
-    --color-primary-rgb: 104, 137, 194;
+  /* Thème Lavande Sombre */
+  html[data-theme="lavande-sombre"] {
+    --color-primary: #a57fbb;
+    --color-secondary: #8460a0;
+    --color-accent: #f7ca44;
+    --bg-color: #33263e;
+    --text-color: #e9dff2;
+    --color-border: #483759;
+    --color-primary-rgb: 165, 127, 187;
+  }
+
+  /* Thème Bleu Canard (clair) */
+  html[data-theme="bleu-canard"] {
+    --color-primary: #006d77;
+    --color-secondary: #2fa99c;
+    --color-accent: #e29578;
+    --bg-color: #edf6f9;
+    --text-color: #253c46;
+    --color-border: #c2e7e9;
+    --color-primary-rgb: 0, 109, 119;
+  }
+
+  /* Thème Océan Profond (sombre) */
+  html[data-theme="ocean-profond"] {
+    --color-primary: #38a3a5;
+    --color-secondary: #3eb883;
+    --color-accent: #f8c537;
+    --bg-color: #0e3b43;
+    --text-color: #e0f5f5;
+    --color-border: #145e63;
+    --color-primary-rgb: 56, 163, 165;
   }
   
   /* Thème Vanille & Violet (accessible, clair) */
@@ -203,7 +241,7 @@ const themes = [
     --color-primary: #fbbf24;
     --color-secondary: #d9ab06;
     --color-accent: #a5f3fc;
-    --bg-color: #27272a;
+    --bg-color: #2c2c30;
     --text-color: #f8fafc;
     --color-border: #fbbf24;
     --color-primary-rgb: 251, 191, 36;
@@ -224,7 +262,7 @@ const themes = [
     --color-primary: #9ee6c4;
     --color-secondary: #5ac097;
     --color-accent: #fde047;
-    --bg-color: #4a044e;
+    --bg-color: #4e0452;
     --text-color: #fdf2ff;
     --color-border: #a7f3d0;
     --color-primary-rgb: 167, 243, 208;
@@ -242,9 +280,9 @@ const themes = [
   /* Thème Gris & Citron (accessible, sombre) */
   html[data-theme="gris-citron"] {
     --color-primary: #ecfccb;
-    --color-secondary: #8cb447;
+    --color-secondary: #90b64e;
     --color-accent: #96c348;
-    --bg-color: #1f2937;
+    --bg-color: #1e2735;
     --text-color: #f9fafb;
     --color-border: #ecfccb;
     --color-primary-rgb: 236, 252, 203;
