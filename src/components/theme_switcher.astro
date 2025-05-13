@@ -60,6 +60,15 @@ const themes = [
     isAccessible: true,
   },
   {
+    id: "sunrise",
+    name: "Sunrise",
+    type: "light",
+    bgColor: "#fcf5ee",
+    primaryColor: "#e5007a",
+    secondaryColor: "#ba005f",
+    isAccessible: true,
+  },
+  {
     id: "amethyste-or",
     name: "Améthyste & Or",
     type: "dark",
@@ -195,7 +204,7 @@ const themes = [
     --color-border: #145e63;
     --color-primary-rgb: 56, 163, 165;
   }
-  
+
   /* Thème Vanille & Violet (accessible, clair) */
   html[data-theme="vanille-violet"] {
     --color-primary: #5b21b6;
@@ -215,6 +224,16 @@ const themes = [
     --text-color: #0f172a;
     --color-border: #475569;
     --color-primary-rgb: 71, 85, 105;
+  }
+  /* Thème Sunrise (accessible, clair) */
+  html[data-theme="sunrise"] {
+    --color-primary: #e5007a;
+    --color-secondary: #ba005f;
+    --color-accent: #023aff;
+    --bg-color: #fcf5ee;
+    --text-color: #262036;
+    --color-border: #ffd3e9;
+    --color-primary-rgb: 229, 0, 122;
   }
   /* Thème Améthyste & Or (accessible, sombre) */
   html[data-theme="amethyste-or"] {
