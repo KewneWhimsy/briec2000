@@ -44,7 +44,7 @@ const currentPath = Astro.url.pathname;
           var prefersDark = window.matchMedia(
             "(prefers-color-scheme: dark)"
           ).matches;
-          savedTheme = prefersDark ? "midnight" : "lavande";
+          savedTheme = prefersDark ? "ocean-profond" : "lavande";
         }
 
         // Appliquer le thème immédiatement
@@ -283,7 +283,7 @@ const currentPath = Astro.url.pathname;
 
       <!-- Menu simplifié avec flex-wrap et les mêmes liens que sidebar_menu.astro -->
       <nav class="simple-nav py-1">
-        <ul class="flex flex-wrap gap-x-4 gap-y-2">
+        <ul class="flex flex-wrap gap-x-4 gap-y-2 justify-center">
           <li><a href="/" class="nav-link">Accueil</a></li>
           <li><a href="/events/" class="nav-link">À venir</a></li>
           <li><a href="/cantines/" class="nav-link">Les cantines</a></li>
