@@ -65,12 +65,12 @@ const currentPath = Astro.url.pathname;
           doc.documentElement.setAttribute("data-theme", savedTheme);
         }
       }
-      
+
       // Avant l'échange, s'assurer que le nouveau document a le bon thème
       document.addEventListener("astro:before-swap", (event) => {
         applyTheme(event.newDocument);
       });
-      
+
       // Après l'échange, s'assurer que le thème est toujours appliqué
       document.addEventListener("astro:after-swap", () => {
         applyTheme(document);
@@ -84,7 +84,7 @@ const currentPath = Astro.url.pathname;
       /* ============== SYSTÈME TYPOGRAPHIQUE =============== */
 
       /* Styles de base */
-      html  {
+      html {
         scroll-behavior: smooth;
       }
       body {
@@ -289,6 +289,99 @@ const currentPath = Astro.url.pathname;
           padding-top: 0;
         }
       }
+      /* ============== STYLE POUR LES SCROLLBARS =============== */
+
+      /* Largeur et hauteur des scrollbars */
+      :root {
+        --scrollbar-width: 12px;
+        --scrollbar-height: 12px;
+      }
+
+      /* Styles pour les navigateurs basés sur WebKit (Chrome, Safari, Opera, Edge) */
+      ::-webkit-scrollbar {
+        width: var(--scrollbar-width);
+        height: var(--scrollbar-height);
+      }
+
+      ::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 8px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background-color: color-mix(
+          in srgb,
+          var(--color-primary) 40%,
+          transparent
+        );
+        border-radius: 8px;
+        border: 3px solid var(--bg-color);
+        transition: background-color 0.3s ease;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: color-mix(
+          in srgb,
+          var(--color-primary) 60%,
+          transparent
+        );
+      }
+
+      ::-webkit-scrollbar-corner {
+        background: transparent;
+      }
+
+      /* Styles pour Firefox */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: color-mix(
+            in srgb,
+            var(--color-primary) 40%,
+            transparent
+          )
+          transparent;
+      }
+
+      /* Scrollbars plus petites sur les appareils mobiles */
+      @media (max-width: 768px) {
+        :root {
+          --scrollbar-width: 8px;
+          --scrollbar-height: 8px;
+        }
+      }
+
+      /* Support pour le mode préférant les mouvements réduits */
+      @media (prefers-reduced-motion: reduce) {
+        ::-webkit-scrollbar-thumb {
+          transition: none;
+        }
+      }
+
+      /* Styles spécifiques pour certains conteneurs avec défilement */
+      .pdf-scroller,
+      .fixed-sidebar,
+      .theme-overlay {
+        scrollbar-width: thin;
+        scrollbar-color: color-mix(
+            in srgb,
+            var(--color-primary) 40%,
+            transparent
+          )
+          transparent;
+      }
+
+      /* Support des thèmes sombres */
+      html[data-theme="lavande-sombre"] ::-webkit-scrollbar-thumb,
+      html[data-theme="ocean-profond"] ::-webkit-scrollbar-thumb,
+      html[data-theme="amethyste-or"] ::-webkit-scrollbar-thumb,
+      html[data-theme="bleu-jaune"] ::-webkit-scrollbar-thumb,
+      html[data-theme="gris-ambre"] ::-webkit-scrollbar-thumb,
+      html[data-theme="ardoise-peche"] ::-webkit-scrollbar-thumb,
+      html[data-theme="prune-menthe"] ::-webkit-scrollbar-thumb,
+      html[data-theme="aubergine-citron"] ::-webkit-scrollbar-thumb,
+      html[data-theme="gris-citron"] ::-webkit-scrollbar-thumb {
+        border-color: var(--bg-color);
+      }
     </style>
   </head>
   <body class="min-h-screen flex flex-col">
@@ -342,7 +435,7 @@ const currentPath = Astro.url.pathname;
     <Footer transition:persist />
 
     <script>
-      document.addEventListener('astro:page-load', () => {
+      document.addEventListener("astro:page-load", () => {
         // Gérer les liens d'email après chargement de page
         const emailCopyLinks = document.querySelectorAll(".email-copy");
         emailCopyLinks.forEach((link) => {
@@ -355,7 +448,8 @@ const currentPath = Astro.url.pathname;
         });
 
         // Mettre à jour le bouton de thème actif
-        const currentTheme = document.documentElement.getAttribute("data-theme");
+        const currentTheme =
+          document.documentElement.getAttribute("data-theme");
         if (currentTheme) {
           const themeButton = document.querySelector(
             `.theme-btn[data-theme="${currentTheme}"]`
