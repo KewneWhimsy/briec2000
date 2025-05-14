@@ -382,14 +382,20 @@ const currentPath = Astro.url.pathname;
       html[data-theme="gris-citron"] ::-webkit-scrollbar-thumb {
         border-color: var(--bg-color);
       }
+      @media (max-width: 767px) {
+  body {
+    /* Padding fixe pour compenser la hauteur du header */
+    padding-top: 6rem;
+  }
+}
     </style>
   </head>
   <body class="min-h-screen flex flex-col">
     <header
-      class="border-b py-3 px-4 md:hidden sticky top-0 bg-opacity-95 mobile-header-sticky z-50"
-      style="border-color: var(--color-border); background-color: var(--bg-color);"
-      transition:persist
-    >
+  class="border-b py-3 px-4 md:hidden fixed top-0 left-0 right-0 w-full bg-opacity-95 z-50"
+  style="border-color: var(--color-border); background-color: var(--bg-color);"
+  transition:persist
+>
       <div class="flex justify-between items-center mb-2">
         <ThemeSwitcher transition:persist />
         <span class="text-lg font-medium" style="color: var(--color-primary);"
