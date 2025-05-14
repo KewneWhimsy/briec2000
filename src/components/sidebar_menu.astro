@@ -27,7 +27,8 @@ function isActive(itemUrl: string): boolean {
       {menuItems.map((item) => (
         <li>
           <a href={item.url} 
-            class={`sidebar-link text-lg hover:text-gray-500 transition-colors ${isActive(item.url) ? 'active' : ''}`}>
+            class={`sidebar-link text-lg hover:text-gray-500 transition-colors ${isActive(item.url) ? 'active' : ''}`}
+            transition:animate="fade">
             {item.title}
           </a>
         </li>
@@ -41,6 +42,8 @@ function isActive(itemUrl: string): boolean {
     min-width: 180px;
     border-right: 1px solid var(--color-border);
     padding-right: 1.5rem;
+    position: relative; /* Assure une position relative pour le z-index */
+    z-index: 10; /* Donne un z-index pour la superposition */
   }
   
   .sidebar-link {
@@ -48,6 +51,8 @@ function isActive(itemUrl: string): boolean {
     padding-bottom: 0;
     font-weight: 300;
     transition: color 0.2s ease;
+    position: relative;
+    display: block;
   }
   
   .sidebar-link:hover {
@@ -58,5 +63,46 @@ function isActive(itemUrl: string): boolean {
   .sidebar-link.active {
     color: var(--color-primary) !important;
     font-weight: 500;
+  }
+  
+  /* Effet visuel pour indiquer la page active avec une ligne */
+  .sidebar-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 30px;
+    height: 2px;
+    background-color: var(--color-primary);
+    transform-origin: left;
+    transform: scaleX(1);
+    transition: transform 0.3s ease;
+  }
+  
+  /* Animation pour le survol des liens non actifs */
+  .sidebar-link:not(.active)::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 30px;
+    height: 2px; 
+    background-color: var(--color-primary);
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  
+  .sidebar-link:not(.active):hover::after {
+    transform: scaleX(0.7);
+  }
+  
+  /* Support pour prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    .sidebar-link::after,
+    .sidebar-link:not(.active)::after,
+    .sidebar-link:not(.active):hover::after {
+      transition: none;
+    }
   }
 </style>
