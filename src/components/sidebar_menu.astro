@@ -4,18 +4,18 @@ const currentPath = Astro.url.pathname;
 
 // Définissez les liens de votre menu ici
 const menuItems = [
-  { title: 'Accueil', url: '/' },
-  { title: 'À venir', url: '/events/' },
-  { title: 'Les cantines', url: '/cantines/' },
-  { title: 'Le carnabal', url: '/events/2025-10-31-carnabal/' },
-  { title: 'L\'association', url: '/about/' },
-  { title: 'Archives', url: '/archives/' },
+  { title: "Accueil", url: "/" },
+  { title: "À venir", url: "/events/" },
+  { title: "Les cantines", url: "/cantines/" },
+  { title: "Le carnabal", url: "/events/2025-10-31-carnabal/" },
+  { title: "L'association", url: "/about/" },
+  { title: "Archives", url: "/archives/" },
 ];
 
 // Fonction pour déterminer si un lien est actif
 function isActive(itemUrl: string): boolean {
-  if (itemUrl === '/') {
-    return currentPath === '/';
+  if (itemUrl === "/") {
+    return currentPath === "/";
   }
   return currentPath.endsWith(itemUrl);
 }
@@ -24,19 +24,57 @@ function isActive(itemUrl: string): boolean {
 <aside class="sidebar-menu">
   <nav class="py-8">
     <ul class="space-y-6">
-      {menuItems.map((item) => (
-        <li>
-          <a href={item.url} 
-            class={`sidebar-link text-lg hover:text-gray-500 transition-colors ${isActive(item.url) ? 'active' : ''}`}
-            transition:animate="fade">
-            {item.title}
-          </a>
-        </li>
-      ))}
+      {
+        menuItems.map((item) => (
+          <li>
+            <a
+              href={item.url}
+              class={`sidebar-link text-lg transition-colors ${isActive(item.url) ? "active" : ""}`}
+              transition:animate="fade"
+            >
+              {item.title}
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </nav>
 </aside>
+<script>
+  // Écouteur pour les changements d'URL
+  window.addEventListener("popstate", () => {
+    updateActiveLink();
+  });
 
+  // Fonction pour mettre à jour le lien actif
+  function updateActiveLink() {
+    const currentPath = window.location.pathname;
+    const links = document.querySelectorAll(".sidebar-link");
+
+    links.forEach((link) => {
+      const itemUrl = link.getAttribute("href");
+      if (itemUrl !== null) {
+        // Vérifiez que itemUrl n'est pas null
+        if (isActive(itemUrl, currentPath)) {
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+        }
+      }
+    });
+  }
+
+  // Appeler la fonction une fois au chargement de la page
+  document.addEventListener("astro:page-load", updateActiveLink);
+
+  // Fonction pour déterminer si un lien est actif
+  function isActive(itemUrl: string, currentPath: string): boolean {
+    if (itemUrl === "/") {
+      return currentPath === "/";
+    }
+    return currentPath.endsWith(itemUrl);
+  }
+</script>
 <style>
   .sidebar-menu {
     min-width: 180px;
@@ -45,7 +83,7 @@ function isActive(itemUrl: string): boolean {
     position: relative; /* Assure une position relative pour le z-index */
     z-index: 10; /* Donne un z-index pour la superposition */
   }
-  
+
   .sidebar-link {
     border-bottom: none;
     padding-bottom: 0;
@@ -54,20 +92,20 @@ function isActive(itemUrl: string): boolean {
     position: relative;
     display: block;
   }
-  
+
   .sidebar-link:hover {
     color: var(--color-primary) !important;
   }
-  
+
   /* Effet visuel pour indiquer la page active */
   .sidebar-link.active {
     color: var(--color-primary) !important;
     font-weight: 500;
   }
-  
+
   /* Effet visuel pour indiquer la page active avec une ligne */
   .sidebar-link.active::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -3px;
     left: 0;
@@ -78,25 +116,25 @@ function isActive(itemUrl: string): boolean {
     transform: scaleX(1);
     transition: transform 0.3s ease;
   }
-  
+
   /* Animation pour le survol des liens non actifs */
   .sidebar-link:not(.active)::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -3px;
     left: 0;
     width: 30px;
-    height: 2px; 
+    height: 2px;
     background-color: var(--color-primary);
     transform-origin: left;
     transform: scaleX(0);
     transition: transform 0.3s ease;
   }
-  
+
   .sidebar-link:not(.active):hover::after {
     transform: scaleX(0.7);
   }
-  
+
   /* Support pour prefers-reduced-motion */
   @media (prefers-reduced-motion: reduce) {
     .sidebar-link::after,

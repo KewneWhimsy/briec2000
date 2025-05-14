@@ -24,7 +24,6 @@ const {
 // Pour vérifier les liens actifs exacts et éviter les faux positifs
 const currentPath = Astro.url.pathname;
 ---
-
 <!doctype html>
 <html lang="fr" transition:animate="none">
   <head>
@@ -74,6 +73,7 @@ const currentPath = Astro.url.pathname;
       // Après l'échange, s'assurer que le thème est toujours appliqué
       document.addEventListener("astro:after-swap", () => {
         applyTheme(document);
+        window.scrollTo(0, 0); // Réinitialiser le défilement en haut de la page
       });
     </script>
 
@@ -278,8 +278,11 @@ const currentPath = Astro.url.pathname;
 
       /* Padding pour le contenu mobile sous le header fixe */
       @media (max-width: 767px) {
+        header {
+          height: 8rem; /* Ajustez cette valeur selon la hauteur réelle de votre header */
+        }
         .content-wrapper {
-          padding-top: 9rem;
+          padding-top: 8rem; /* Doit correspondre à la hauteur du header */
         }
       }
 
@@ -394,52 +397,50 @@ const currentPath = Astro.url.pathname;
   </head>
   <body class="min-h-screen flex flex-col">
     <header
-      class="border-b py-3 px-4 md:hidden fixed top-0 left-0 right-0 w-full bg-opacity-95 z-50"
-      style="border-color: var(--color-border); background-color: var(--bg-color);"
+  class="border-b py-3 px-4 md:hidden fixed top-0 left-0 right-0 w-full bg-opacity-100 z-50"
+  style="border-color: var(--color-border); background-color: var(--bg-color);"
+  transition:persist
+>
+  <div class="flex justify-between items-center mb-2">
+    <ThemeSwitcher />
+    <span class="text-lg font-medium" style="color: var(--color-primary);">Briec2000</span>
+  </div>
+
+  <nav class="simple-nav py-1">
+    <ul class="flex flex-wrap gap-x-4 gap-y-2 justify-center">
+      <li><a href="/" class="nav-link">Accueil</a></li>
+      <li><a href="/events/" class="nav-link">À venir</a></li>
+      <li><a href="/cantines/" class="nav-link">Les cantines</a></li>
+      <li>
+        <a href="/events/2025-10-31-carnabal/" class="nav-link">Le carnabal</a>
+      </li>
+      <li><a href="/about/" class="nav-link">L'association</a></li>
+      <li><a href="/archives/" class="nav-link">Archives</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- Wrapper de contenu avec transition et padding-top pour compenser le header -->
+<div class="content-wrapper flex-grow mb-6">
+  <main class="flex-grow container mx-auto px-4 py-6 md:py-6 flex" transition:animate="fade">
+    <!-- Menu latéral pour desktop - sticky -->
+    <div
+      class="hidden md:block sticky top-6 self-start h-auto max-h-[calc(100vh-3rem)] overflow-y-auto pb-6"
       transition:persist
     >
-      <div class="flex justify-between items-center mb-2">
-        <ThemeSwitcher />
-        <span class="text-lg font-medium" style="color: var(--color-primary);"
-          >Briec2000</span
-        >
+      <div class="flex items-center justify-between mb-8">
+        <ThemeSwitcher transition:persist />
       </div>
+      <SidebarMenu transition:persist />
+    </div>
 
-      <nav class="simple-nav py-1">
-        <ul class="flex flex-wrap gap-x-4 gap-y-2 justify-center">
-          <li><a href="/" class="nav-link">Accueil</a></li>
-          <li><a href="/events/" class="nav-link">À venir</a></li>
-          <li><a href="/cantines/" class="nav-link">Les cantines</a></li>
-          <li>
-            <a href="/events/2025-10-31-carnabal/" class="nav-link"
-              >Le carnabal</a
-            >
-          </li>
-          <li><a href="/about/" class="nav-link">L'association</a></li>
-          <li><a href="/archives/" class="nav-link">Archives</a></li>
-        </ul>
-      </nav>
-    </header>
+    <!-- Contenu principal -->
+    <div class="md:ml-12 w-full mx-auto overflow-hidden">
+      <slot />
+    </div>
+  </main>
+</div>
 
-    <!-- Wrapper de contenu avec transition et padding-top pour compenser le header -->
-    <div class="content-wrapper flex-grow mb-6">
-      <main class="flex-grow container mx-auto px-4 py-6 md:py-6 flex" transition:animate="fade">
-        <!-- Menu latéral pour desktop - sticky -->
-        <div
-          class="hidden md:block sticky top-6 self-start h-auto max-h-[calc(100vh-3rem)] overflow-y-auto pb-6"
-          transition:persist
-        >
-          <div class="flex items-center justify-between mb-8">
-            <ThemeSwitcher transition:persist />
-          </div>
-          <SidebarMenu transition:persist />
-        </div>
-
-        <!-- Contenu principal -->
-        <div class="md:ml-12 w-full mx-auto overflow-hidden">
-          <slot />
-        </div>
-      </main>
     </div>
 
     <Footer transition:persist />
