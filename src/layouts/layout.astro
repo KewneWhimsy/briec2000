@@ -279,7 +279,7 @@ const currentPath = Astro.url.pathname;
       /* Padding pour le contenu mobile sous le header fixe */
       @media (max-width: 767px) {
         .content-wrapper {
-          padding-top: 6rem;
+          padding-top: 9rem;
         }
       }
 
@@ -393,10 +393,10 @@ const currentPath = Astro.url.pathname;
     </style>
   </head>
   <body class="min-h-screen flex flex-col">
-    <!-- Header mobile - SANS transition:persist -->
     <header
       class="border-b py-3 px-4 md:hidden fixed top-0 left-0 right-0 w-full bg-opacity-95 z-50"
       style="border-color: var(--color-border); background-color: var(--bg-color);"
+      transition:persist
     >
       <div class="flex justify-between items-center mb-2">
         <ThemeSwitcher />
