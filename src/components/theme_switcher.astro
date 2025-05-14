@@ -1,9 +1,20 @@
 ---
-// src/components/theme_switcher.astro
-// Un composant utilisant l'API Popover CSS native avec fallback
+// src/components/theme_switcher.astro - Version finale avec correction du fallback
+
+// Type pour les thèmes - doit être défini AVANT usage
+type Theme = {
+  id: string;
+  name: string;
+  type: string;
+  bgColor: string;
+  primaryColor: string;
+  secondaryColor: string;
+  featured?: boolean;
+  isAccessible?: boolean;
+};
 
 // Définir les thèmes disponibles avec leurs couleurs caractéristiques
-const themes = [
+const themes: Theme[] = [
   // Thèmes standard clair
   {
     id: "lavande",
@@ -40,7 +51,6 @@ const themes = [
     primaryColor: "#38a3a5",
     secondaryColor: "#57cc99",
     featured: true, // Thème par défaut sombre, oujours affiché
-
   },
 
   // Thèmes accessibles
@@ -53,7 +63,6 @@ const themes = [
     secondaryColor: "#4c1d95",
     isAccessible: true,
     featured: true, // Thème accesible clair, toujours affiché
-
   },
   {
     id: "champagne-acier",
@@ -143,13 +152,14 @@ const themes = [
 const featuredThemes = themes.filter(theme => theme.featured);
 ---
 
+<!-- HTML classique au lieu de JSX pour éviter les erreurs de TypeScript -->
 <div class="theme-switcher">
   <div class="theme-buttons">
     <!-- Tous les thèmes pour desktop -->
     {
       themes.map((theme) => (
         <button
-          class="theme-btn"
+          class={`theme-btn ${theme.featured ? "featured" : ""}`}
           data-theme={theme.id}
           data-featured={theme.featured ? "true" : "false"}
           title={theme.isAccessible ? `${theme.name} (accessible)` : theme.name}
@@ -171,7 +181,7 @@ const featuredThemes = themes.filter(theme => theme.featured);
       ))
     }
     
-    <!-- Bouton popover avec API native et fallback -->
+    <!-- Bouton popover avec API native -->
     <button 
       id="theme-popover-button" 
       class="theme-more-btn" 
@@ -185,9 +195,9 @@ const featuredThemes = themes.filter(theme => theme.featured);
   </div>
   
   <!-- Popover des thèmes (API native) -->
-  <div id="theme-popover" class="theme-popover" popover="auto">
+  <div id="theme-popover" class="theme-overlay" popover="auto">
     <button 
-      class="theme-popover-close" 
+      class="theme-close" 
       aria-label="Fermer" 
       popovertarget="theme-popover"
       popovertargetaction="hide"
@@ -224,525 +234,260 @@ const featuredThemes = themes.filter(theme => theme.featured);
   <div class="popover-fallback">
     <input type="checkbox" id="theme-more-toggle" class="theme-more-toggle" />
     
-    <div class="theme-more-popup">
-      <label class="theme-more-close" for="theme-more-toggle">×</label>
+    <div class="theme-overlay theme-more-popup">
+      <label class="theme-close" for="theme-more-toggle">×</label>
       
-      <div class="theme-more-popup-content">
-        <div class="theme-grid">
-          {
-            themes.map((theme) => (
-              <button
-                class="theme-btn theme-grid-btn"
-                data-theme={theme.id}
-                title={theme.isAccessible ? `${theme.name} (accessible)` : theme.name}
-                aria-label={
-                  theme.isAccessible
-                    ? `Thème accessible ${theme.name}`
-                    : `Thème ${theme.name}`
-                }
-                style={`background-color: ${theme.bgColor}; border-color: ${theme.primaryColor};`}
-              >
-                <span
-                  class="theme-accent"
-                  style={`background-color: ${theme.primaryColor};`}
-                />
-                {theme.isAccessible && (
-                  <span class="a11y-indicator select-none">A+</span>
-                )}
-              </button>
-            ))
-          }
-        </div>
+      <div class="theme-grid">
+        {
+          themes.map((theme) => (
+            <button
+              class="theme-btn theme-grid-btn"
+              data-theme={theme.id}
+              title={theme.isAccessible ? `${theme.name} (accessible)` : theme.name}
+              aria-label={
+                theme.isAccessible
+                  ? `Thème accessible ${theme.name}`
+                  : `Thème ${theme.name}`
+              }
+              style={`background-color: ${theme.bgColor}; border-color: ${theme.primaryColor};`}
+            >
+              <span
+                class="theme-accent"
+                style={`background-color: ${theme.primaryColor};`}
+              />
+              {theme.isAccessible && (
+                <span class="a11y-indicator select-none">A+</span>
+              )}
+            </button>
+          ))
+        }
       </div>
     </div>
   </div>
 </div>
 
 <style is:global>
-  /* Thèmes styles existants... */
-  /* Thème Lavande (clair) */
+  /* Styles des thèmes - compactés pour gagner de l'espace */
   html[data-theme="lavande"] {
-    --color-primary: #7c5295;
-    --color-secondary: #9a6db9;
-    --color-accent: #f7ca44;
-    --bg-color: #f5f0fa;
-    --text-color: #2d2235;
-    --color-border: #e5d8f0;
+    --color-primary: #7c5295; --color-secondary: #9a6db9; --color-accent: #f7ca44;
+    --bg-color: #f5f0fa; --text-color: #2d2235; --color-border: #e5d8f0;
     --color-primary-rgb: 124, 82, 149;
   }
-
-  /* Thème Lavande Sombre */
   html[data-theme="lavande-sombre"] {
-    --color-primary: #a57fbb;
-    --color-secondary: #8460a0;
-    --color-accent: #f7ca44;
-    --bg-color: #33263e;
-    --text-color: #e9dff2;
-    --color-border: #483759;
+    --color-primary: #a57fbb; --color-secondary: #8460a0; --color-accent: #f7ca44;
+    --bg-color: #33263e; --text-color: #e9dff2; --color-border: #483759;
     --color-primary-rgb: 165, 127, 187;
   }
-
-  /* Thème Bleu Canard (clair) */
   html[data-theme="bleu-canard"] {
-    --color-primary: #006d77;
-    --color-secondary: #2fa99c;
-    --color-accent: #e29578;
-    --bg-color: #edf6f9;
-    --text-color: #253c46;
-    --color-border: #c2e7e9;
+    --color-primary: #006d77; --color-secondary: #2fa99c; --color-accent: #e29578;
+    --bg-color: #edf6f9; --text-color: #253c46; --color-border: #c2e7e9;
     --color-primary-rgb: 0, 109, 119;
   }
-
-  /* Thème Océan Profond (sombre) */
   html[data-theme="ocean-profond"] {
-    --color-primary: #38a3a5;
-    --color-secondary: #3eb883;
-    --color-accent: #f8c537;
-    --bg-color: #0e3b43;
-    --text-color: #e0f5f5;
-    --color-border: #145e63;
+    --color-primary: #38a3a5; --color-secondary: #3eb883; --color-accent: #f8c537;
+    --bg-color: #0e3b43; --text-color: #e0f5f5; --color-border: #145e63;
     --color-primary-rgb: 56, 163, 165;
   }
-
-  /* Thème Vanille & Violet (accessible, clair) */
   html[data-theme="vanille-violet"] {
-    --color-primary: #5b21b6;
-    --color-secondary: #4c1d95;
-    --color-accent: #f97316;
-    --bg-color: #fff8e1;
-    --text-color: #1e1b4b;
-    --color-border: #5b21b6;
+    --color-primary: #5b21b6; --color-secondary: #4c1d95; --color-accent: #f97316;
+    --bg-color: #fff8e1; --text-color: #1e1b4b; --color-border: #5b21b6;
     --color-primary-rgb: 91, 33, 182;
   }
-  /* Thème Champagne & Acier (accessible, clair) */
   html[data-theme="champagne-acier"] {
-    --color-primary: #475569;
-    --color-secondary: #334155;
-    --color-accent: #f59e0b;
-    --bg-color: #fdf4ff;
-    --text-color: #0f172a;
-    --color-border: #475569;
+    --color-primary: #475569; --color-secondary: #334155; --color-accent: #f59e0b;
+    --bg-color: #fdf4ff; --text-color: #0f172a; --color-border: #475569;
     --color-primary-rgb: 71, 85, 105;
   }
-  /* Thème Sunrise (accessible, clair) */
   html[data-theme="sunrise"] {
-    --color-primary: #e5007a;
-    --color-secondary: #ba005f;
-    --color-accent: #023aff;
-    --bg-color: #fcf5ee;
-    --text-color: #262036;
-    --color-border: #ffd3e9;
+    --color-primary: #e5007a; --color-secondary: #ba005f; --color-accent: #023aff;
+    --bg-color: #fcf5ee; --text-color: #262036; --color-border: #ffd3e9;
     --color-primary-rgb: 229, 0, 122;
   }
-  /* Thème Améthyste & Or (accessible, sombre) */
   html[data-theme="amethyste-or"] {
-    --color-primary: #facc15;
-    --color-secondary: #debd02;
-    --color-accent: #a7f3d0;
-    --bg-color: #6b21a8;
-    --text-color: #f5f3ff;
-    --color-border: #facc15;
+    --color-primary: #facc15; --color-secondary: #debd02; --color-accent: #a7f3d0;
+    --bg-color: #6b21a8; --text-color: #f5f3ff; --color-border: #facc15;
     --color-primary-rgb: 250, 204, 21;
   }
-  /* Thème Bleu & Jaune (accessible, sombre) */
   html[data-theme="bleu-jaune"] {
-    --color-primary: #ffdc00;
-    --color-secondary: #e2c504;
-    --color-accent: #00ff00;
-    --bg-color: #0e3165;
-    --text-color: #ffffff;
-    --color-border: #ffd60a;
+    --color-primary: #ffdc00; --color-secondary: #e2c504; --color-accent: #00ff00;
+    --bg-color: #0e3165; --text-color: #ffffff; --color-border: #ffd60a;
     --color-primary-rgb: 255, 220, 0;
   }
-  /* Thème Gris & Ambre (accessible, sombre) */
   html[data-theme="gris-ambre"] {
-    --color-primary: #fbbf24;
-    --color-secondary: #d9ab06;
-    --color-accent: #a5f3fc;
-    --bg-color: #2c2c30;
-    --text-color: #f8fafc;
-    --color-border: #fbbf24;
+    --color-primary: #fbbf24; --color-secondary: #d9ab06; --color-accent: #a5f3fc;
+    --bg-color: #2c2c30; --text-color: #f8fafc; --color-border: #fbbf24;
     --color-primary-rgb: 251, 191, 36;
   }
-  /* Thème Ardoise & Pêche (accessible, sombre) */
   html[data-theme="ardoise-peche"] {
-    --color-primary: #fed7aa;
-    --color-secondary: #e7983d;
-    --color-accent: #fdba74;
-    --bg-color: #334155;
-    --text-color: #f8fafc;
-    --color-border: #fed7aa;
+    --color-primary: #fed7aa; --color-secondary: #e7983d; --color-accent: #fdba74;
+    --bg-color: #334155; --text-color: #f8fafc; --color-border: #fed7aa;
     --color-primary-rgb: 254, 215, 170;
   }
-
-  /* Thème Prune & Menthe (accessible, sombre) */
   html[data-theme="prune-menthe"] {
-    --color-primary: #9ee6c4;
-    --color-secondary: #5ac097;
-    --color-accent: #fde047;
-    --bg-color: #4e0452;
-    --text-color: #fdf2ff;
-    --color-border: #a7f3d0;
+    --color-primary: #9ee6c4; --color-secondary: #5ac097; --color-accent: #fde047;
+    --bg-color: #4e0452; --text-color: #fdf2ff; --color-border: #a7f3d0;
     --color-primary-rgb: 167, 243, 208;
   }
-  /* Thème Aubergine & Citron (accessible, sombre) */
   html[data-theme="aubergine-citron"] {
-    --color-primary: #d9f99d;
-    --color-secondary: #94c063;
-    --color-accent: #fef08a;
-    --bg-color: #3b0764;
-    --text-color: #f5f5f5;
-    --color-border: #d9f99d;
+    --color-primary: #d9f99d; --color-secondary: #94c063; --color-accent: #fef08a;
+    --bg-color: #3b0764; --text-color: #f5f5f5; --color-border: #d9f99d;
     --color-primary-rgb: 217, 249, 157;
   }
-  /* Thème Gris & Citron (accessible, sombre) */
   html[data-theme="gris-citron"] {
-    --color-primary: #ecfccb;
-    --color-secondary: #90b64e;
-    --color-accent: #96c348;
-    --bg-color: #1e2735;
-    --text-color: #f9fafb;
-    --color-border: #ecfccb;
+    --color-primary: #ecfccb; --color-secondary: #90b64e; --color-accent: #96c348;
+    --bg-color: #1e2735; --text-color: #f9fafb; --color-border: #ecfccb;
     --color-primary-rgb: 236, 252, 203;
   }
 </style>
 
 <style>
-  /* ===== Core Theme Switcher Styles ===== */
+  /* Variables et styles de base */
+  :root {
+    --theme-size: 28px;
+    --theme-gap: 6px;
+  }
+
+  /* Composant et boutons */
   .theme-switcher {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    width: 100%;
-    max-width: 280px;
-    padding: 4px; /* Ajouter un padding pour permettre l'expansion */
-    overflow: visible; /* Important: permettre aux éléments de déborder */
+    display: flex; flex-wrap: wrap; gap: var(--theme-gap);
+    width: 100%; max-width: 280px; padding: 4px; overflow: visible;
   }
-
-  .theme-btn {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid transparent;
-    position: relative;
-    transition: all 0.2s ease;
-    padding: 0;
-    overflow: hidden;
-    margin: 1px; /* Ajouter une petite marge pour l'espace d'expansion */
-  }
-
-  .theme-btn.active {
-    transform: scale(1.1);
-    box-shadow: 0 0 0 2px var(--color-accent);
-    z-index: 10; /* Assurez-vous que le bouton actif apparaît au-dessus des autres */
-  }
-
   .theme-buttons {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 6px;
-    align-items: center;
+    display: flex; flex-wrap: nowrap; gap: var(--theme-gap); align-items: center;
   }
-
-  .a11y-indicator {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 9px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 0 0 2px #000;
+  .theme-btn {
+    width: var(--theme-size); height: var(--theme-size); border-radius: 50%;
+    cursor: pointer; border: 2px solid transparent; position: relative;
+    transition: all 0.2s ease; padding: 0; overflow: hidden; margin: 1px;
   }
-
+  .theme-btn.active {
+    transform: scale(1.1); box-shadow: 0 0 0 2px var(--color-accent); z-index: 10;
+  }
   .theme-btn .theme-accent {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 30%;
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 30%;
     border-radius: 0 0 50% 50%;
   }
-
-  /* Sur mobile, montre uniquement les thèmes "featured" */
-  @media (max-width: 767px) {
-    .theme-buttons .theme-btn:not([data-featured="true"]) {
-      display: none;
-    }
+  .a11y-indicator {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 9px; font-weight: bold; color: #fff; text-shadow: 0 0 2px #000;
   }
-
-  /* ===== Bouton "More" ===== */
+  
+  /* Bouton "Plus" */
   .theme-more-btn {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background-color: var(--bg-color);
-    border: 2px solid var(--color-primary);
-    color: var(--color-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-weight: bold;
-    font-size: 20px;
-    line-height: 1;
-    padding: 0;
+    width: var(--theme-size); height: var(--theme-size); border-radius: 50%;
+    background-color: var(--bg-color); border: 2px solid var(--color-primary);
+    color: var(--color-primary); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s ease; font-weight: bold; font-size: 20px;
+    line-height: 1; padding: 0;
   }
-
   .theme-more-btn:hover {
-    background-color: var(--color-primary);
-    color: var(--bg-color);
+    background-color: var(--color-primary); color: var(--bg-color);
   }
   
-  /* ===== Styles pour API Popover Native ===== */
-  .theme-popover {
-    border-radius: 0;
-    border: 1px solid var(--color-border);
-    border-left: none;
-    background-color: var(--bg-color);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    padding: 8px 16px;
-    
-    /* Animation avec slide uniquement */
-    transform: translateX(-100%);
-    transition:
-      display 0.3s,
-      transform 0.3s;
-    transition-behavior: allow-discrete;
+  /* Overlays (popover et fallback) */
+  .theme-overlay {
+    border: 1px solid var(--color-border); border-left: none;
+    background-color: var(--bg-color); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%; position: fixed; top: 0; left: 0; z-index: 1000; padding: 8px 16px;
+    transform: translateX(-100%); 
+    transition: display 0.3s, transform 0.3s; transition-behavior: allow-discrete;
   }
-  
-  /* Style pour l'état ouvert du popover */
-  .theme-popover:popover-open {
-    display: block;
-    transform: translateX(0);
-    @starting-style {
-      transform: translateX(-100%);
-    }
+  .theme-close {
+    position: absolute; top: 8px; right: 8px; background: none; border: none;
+    color: var(--text-color); font-size: 22px; cursor: pointer; padding: 0;
+    width: var(--theme-size); height: var(--theme-size);
+    display: flex; align-items: center; justify-content: center; z-index: 10;
   }
-  
-  .theme-popover-close {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: none;
-    border: none;
-    color: var(--text-color);
-    font-size: 22px;
-    cursor: pointer;
-    padding: 0;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-  }
-  
-  /* ===== Fallback pour navigateurs anciens - utilise checkbox hack ===== */
-  .popover-fallback {
-    display: none; /* Caché par défaut, affiché si pas de support Popover */
-    position: relative;
-  }
-  
-  .theme-more-toggle {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-  }
-  
-  .theme-more-popup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background-color: var(--bg-color);
-    z-index: 1000;
-    padding: 8px 16px;
-    border-bottom: 1px solid var(--color-border);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transform: translateX(-100%);
-    transition:
-      display 1s,
-      transform 1s;
-    transition-behavior: allow-discrete;
-  }
-  
-  .theme-more-close {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    font-size: 22px;
-    cursor: pointer;
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-color);
-    z-index: 10;
-  }
-  
-  .theme-more-popup-content {
-    position: relative;
-    padding-right: 30px; /* Espace pour le bouton de fermeture */
-  }
-  
-  /* Activation du fallback checkbox - uniquement si checkbox coché */
-  .theme-more-toggle:checked + .theme-more-popup {
-    display: block;
-    transform: translateX(0);
-  }
-  
-  /* ===== Styles partagés entre Popover et Fallback ===== */
   .theme-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: flex-start;
-    padding-right: 30px; /* Espace pour le bouton de fermeture */
-  }
-
-  .theme-grid-btn {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    overflow: hidden;
-    padding: 0;
-    flex: 0 0 auto;
-  }
-
-  .theme-btn-label {
-    display: none;
+    display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-start;
+    padding-right: 30px;
   }
   
-  /* ===== Adaptations Desktop ===== */
-  @media (min-width: 768px) {
-    /* Sur desktop, on affiche les thèmes en ligne avec flex-wrap */
-    .theme-switcher {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      width: auto;
-    }
-    
-    /* Cacher le bouton "+" sur desktop, puisqu'on montre tous les thèmes */
-    .theme-more-btn {
-      display: none;
-    }
-    
-    /* Tous les boutons thèmes sont visibles sur desktop */
-    .theme-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    
-    /* Pour desktop, les thèmes sont affichés directement, pas besoin du popover */
-    .theme-popover {
-      display: none !important;
-    }
-  }
-
-  /* Support pour prefers-reduced-motion */
-  @media (prefers-reduced-motion: reduce) {
-    .theme-popover,
-    .theme-more-toggle:checked + .theme-more-popup {
-      transition: none;
-      transform: translateX(0);
-    }
-    
-    .theme-popover:popover-open {
-      @starting-style {
-        transform: translateX(0);
-      }
-    }
+  /* Popover natif */
+  [popover].theme-overlay:popover-open {
+    display: block; transform: translateX(0);
+    @starting-style { transform: translateX(-100%); }
   }
   
-  /* ===== Logique mobile uniquement ===== */
+  /* Fallback checkbox */
+  .popover-fallback { display: none; position: relative; }
+  .theme-more-toggle {
+    position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0;
+  }
+  .theme-more-toggle:checked + .theme-more-popup {
+    display: block; transform: translateX(0);
+  }
+  
+  /* Media queries */
   @media (max-width: 767px) {
-    /* Bouton "+" uniquement sur mobile */
-    .theme-more-btn {
-      display: flex;
+    .theme-buttons .theme-btn:not([data-featured="true"]) { display: none; }
+    .theme-more-btn { display: flex; }
+  }
+  @media (min-width: 768px) {
+    .theme-switcher { flex-wrap: wrap; width: auto; }
+    .theme-buttons { flex-wrap: wrap; }
+    .theme-more-btn { display: none; }
+    [popover].theme-overlay { display: none !important; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .theme-overlay { transition: none; }
+    [popover].theme-overlay:popover-open,
+    .theme-more-toggle:checked + .theme-more-popup {
+      transform: translateX(0);
+      @starting-style { transform: translateX(0); }
     }
   }
 </style>
 
 <script>
-  // Script pour gérer les thèmes et détecter le support Popover
+  // Script pour gérer les thèmes et le fallback
   document.addEventListener("DOMContentLoaded", () => {
     const themeButtons = document.querySelectorAll<HTMLButtonElement>(".theme-btn");
     const popoverButton = document.getElementById("theme-popover-button");
     const popoverFallback = document.querySelector(".popover-fallback");
     
     // Fonction pour changer de thème
-    function setTheme(themeId: string): void {
-      // Mettre à jour les classes actives
-      themeButtons.forEach((btn) => btn.classList.remove("active"));
-      
-      // Trouver tous les boutons pour ce thème et les marquer comme actifs
-      document.querySelectorAll(`.theme-btn[data-theme="${themeId}"]`).forEach(btn => {
-        btn.classList.add("active");
-      });
-      
-      // Appliquer le thème
+    const setTheme = (themeId: string): void => {
+      themeButtons.forEach(btn => btn.classList.remove("active"));
+      document.querySelectorAll(`.theme-btn[data-theme="${themeId}"]`)
+        .forEach(btn => btn.classList.add("active"));
       document.documentElement.setAttribute("data-theme", themeId);
       sessionStorage.setItem("selected-theme", themeId);
-    }
+    };
     
-    // Ajouter listeners pour tous les boutons de thème
-    themeButtons.forEach((button) => {
-      const themeId = button.getAttribute("data-theme");
-      if (themeId) {
-        button.addEventListener("click", () => setTheme(themeId));
-      }
+    // Ajouter les listeners aux boutons de thème
+    themeButtons.forEach(btn => {
+      const themeId = btn.getAttribute("data-theme");
+      if (themeId) btn.addEventListener("click", () => setTheme(themeId));
     });
     
-    // Initialiser le thème actif
-    const currentTheme = document.documentElement.getAttribute("data-theme");
+    // Initialiser le thème
+    const currentTheme = sessionStorage.getItem("selected-theme") || 
+                        document.documentElement.getAttribute("data-theme");
     if (currentTheme) {
-      document.querySelectorAll(`.theme-btn[data-theme="${currentTheme}"]`).forEach(btn => {
-        btn.classList.add("active");
-      });
-    }
-    
-    // Détecter le support pour l'API Popover
-    function supportsPopover(): boolean {
-      return 'popover' in HTMLElement.prototype;
+      document.querySelectorAll(`.theme-btn[data-theme="${currentTheme}"]`)
+        .forEach(btn => btn.classList.add("active"));
     }
     
     // Configurer le fallback si nécessaire
-    if (!supportsPopover()) {
+    if (!('popover' in HTMLElement.prototype)) {
       console.log("Popover API not supported, using fallback");
       
-      // Cacher le bouton popover
       if (popoverButton instanceof HTMLElement) {
         popoverButton.style.display = "none";
       }
       
-      // Montrer le fallback
       if (popoverFallback instanceof HTMLElement) {
         popoverFallback.style.display = "block";
         
-        // Connecter l'étiquette "+" pour ouvrir le checkbox
-        const fallbackButton = document.createElement("label");
+        // Créer le bouton de fallback - utiliser typages explicites
+        const fallbackButton = document.createElement("label") as HTMLLabelElement;
         fallbackButton.htmlFor = "theme-more-toggle";
         fallbackButton.className = "theme-more-btn";
         fallbackButton.innerHTML = "<span>+</span>";
         fallbackButton.title = "Plus de thèmes";
         fallbackButton.setAttribute("aria-label", "Afficher plus de thèmes");
         
-        // Ajouter le bouton fallback à côté des boutons de thème
         const buttonsContainer = document.querySelector(".theme-buttons");
         if (buttonsContainer) {
           buttonsContainer.appendChild(fallbackButton);
