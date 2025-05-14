@@ -132,7 +132,7 @@ const {
 
 <script>
   // Script minimal pour gérer les interactions et l'observation des pages
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("astro:page-load", () => {
     const pdfViewers = document.querySelectorAll(".pdf-viewer-component");
 
     pdfViewers.forEach((viewer) => {

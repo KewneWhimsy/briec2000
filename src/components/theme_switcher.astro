@@ -442,7 +442,7 @@ const featuredThemes = themes.filter(theme => theme.featured);
 
 <script>
   // Script pour gérer les thèmes et le fallback
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("astro:page-load", () => {
     const themeButtons = document.querySelectorAll<HTMLButtonElement>(".theme-btn");
     const popoverButton = document.getElementById("theme-popover-button");
     const popoverFallback = document.querySelector(".popover-fallback");

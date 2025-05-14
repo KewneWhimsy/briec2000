@@ -1,8 +1,10 @@
 ---
+// src/layouts/layout.astro
 import Footer from "./footer.astro";
 import SidebarMenu from "../components/sidebar_menu.astro";
 import ThemeSwitcher from "../components/theme_switcher.astro";
 import { Font } from "astro:assets";
+import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 
 // Définissez les props que vous souhaitez passer à votre layout
@@ -24,14 +26,17 @@ const currentPath = Astro.url.pathname;
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang="fr" transition:animate="none">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <meta property="og:image" content={image} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title}</title>
+    <title transition:animate="fade">{title}</title>
+
+    <!-- Activer les transitions de page avec le client router -->
+    <ClientRouter fallback="animate" />
 
     <!-- Script pour éviter le flash de couleur -->
     <script is:inline>
@@ -51,6 +56,27 @@ const currentPath = Astro.url.pathname;
         document.documentElement.setAttribute("data-theme", savedTheme);
       })();
     </script>
+
+    <!-- Gestion du thème pendant les transitions -->
+    <script is:inline>
+      function applyTheme(doc) {
+        const savedTheme = sessionStorage.getItem("selected-theme");
+        if (savedTheme) {
+          doc.documentElement.setAttribute("data-theme", savedTheme);
+        }
+      }
+      
+      // Avant l'échange, s'assurer que le nouveau document a le bon thème
+      document.addEventListener("astro:before-swap", (event) => {
+        applyTheme(event.newDocument);
+      });
+      
+      // Après l'échange, s'assurer que le thème est toujours appliqué
+      document.addEventListener("astro:after-swap", () => {
+        applyTheme(document);
+      });
+    </script>
+
     <Font name="Andika" cssVariable="--font-andika" preload />
     <Font name="Champ" cssVariable="--font-champ" preload />
 
@@ -251,10 +277,6 @@ const currentPath = Astro.url.pathname;
 
       /* ============== ANIMATIONS ET UTILITAIRES =============== */
 
-      @view-transition {
-        navigation: auto;
-      }
-
       /* Adaptation responsive */
       @media (min-width: 768px) {
         /* Sur desktop, cacher le menu mobile */
@@ -273,9 +295,10 @@ const currentPath = Astro.url.pathname;
     <header
       class="border-b py-3 px-4 md:hidden sticky top-0 bg-opacity-95 mobile-header-sticky z-50"
       style="border-color: var(--color-border); background-color: var(--bg-color);"
+      transition:persist
     >
       <div class="flex justify-between items-center mb-2">
-        <ThemeSwitcher />
+        <ThemeSwitcher transition:persist />
         <span class="text-lg font-medium" style="color: var(--color-primary);"
           >Briec2000</span
         >
@@ -302,26 +325,26 @@ const currentPath = Astro.url.pathname;
       <!-- Menu latéral pour desktop - sticky -->
       <div
         class="hidden md:block sticky top-6 self-start h-auto max-h-[calc(100vh-3rem)] overflow-y-auto pb-6"
+        transition:persist
       >
         <div class="flex items-center justify-between mb-8">
-          <ThemeSwitcher />
+          <ThemeSwitcher transition:persist />
         </div>
-        <SidebarMenu />
+        <SidebarMenu transition:persist />
       </div>
 
       <!-- Contenu principal -->
-      <div class="md:ml-12 w-full mx-auto">
+      <div class="md:ml-12 w-full mx-auto" transition:animate="fade">
         <slot />
       </div>
     </main>
 
-    <Footer />
+    <Footer transition:persist />
 
     <script>
-      // Script pour les liens d'email
-      document.addEventListener("DOMContentLoaded", () => {
+      document.addEventListener('astro:page-load', () => {
+        // Gérer les liens d'email après chargement de page
         const emailCopyLinks = document.querySelectorAll(".email-copy");
-
         emailCopyLinks.forEach((link) => {
           link.addEventListener("click", (e) => {
             e.preventDefault();
@@ -332,8 +355,7 @@ const currentPath = Astro.url.pathname;
         });
 
         // Mettre à jour le bouton de thème actif
-        const currentTheme =
-          document.documentElement.getAttribute("data-theme");
+        const currentTheme = document.documentElement.getAttribute("data-theme");
         if (currentTheme) {
           const themeButton = document.querySelector(
             `.theme-btn[data-theme="${currentTheme}"]`

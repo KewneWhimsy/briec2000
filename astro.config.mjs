@@ -1,9 +1,7 @@
-// @ts-check
+// astro.config.mjs
 import { defineConfig, fontProviders } from "astro/config";
-
 import tailwindcss from "@tailwindcss/vite";
 
-// https://astro.build/config
 export default defineConfig({
   experimental: {
     fonts: [
@@ -53,4 +51,9 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+  // Configuration cruciale pour que l'attribut data-theme survive aux transitions
+  transitions: {
+    // Attributs à préserver pendant les transitions
+    persistentAttributes: ['data-theme'],
+  }
 });
