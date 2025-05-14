@@ -52,6 +52,14 @@ const {
 
 // Obtenir la source de l'image correcte
 const imageSrc = imageMap[src] || src;
+
+// Vérifier si c'est l'image repas.png pour appliquer un arrière-plan automatiquement
+const isRepasImage = src.includes('repas.png');
+
+// Si c'est l'image repas.png, on ajoute une classe personnalisée
+const finalClassName = isRepasImage 
+  ? `${className} repas-image-with-bg` 
+  : className;
 ---
 
 {typeof imageSrc === 'object' ? (
@@ -61,7 +69,7 @@ const imageSrc = imageMap[src] || src;
     widths={widths}
     sizes={sizes}
     formats={['avif', 'webp', 'png']} 
-    class={className}
+    class={finalClassName}
     loading={loading}
     {...props}
   />
@@ -69,8 +77,30 @@ const imageSrc = imageMap[src] || src;
   <img 
     src={imageSrc} 
     alt={alt} 
-    class={className}
+    class={finalClassName}
     loading={loading}
     {...props}
   />
 )}
+
+<style>
+  /* Style pour appliquer l'arrière-plan directement à l'image repas */
+  
+
+  /* Thèmes sombres et sunrise*/
+  html[data-theme*="lavande-sombre"] .repas-image-with-bg,
+  html[data-theme*="ocean-profond"] .repas-image-with-bg,
+  html[data-theme="amethyste-or"] .repas-image-with-bg,
+  html[data-theme="bleu-jaune"] .repas-image-with-bg,
+  html[data-theme="gris-ambre"] .repas-image-with-bg,
+  html[data-theme="ardoise-peche"] .repas-image-with-bg,
+  html[data-theme="prune-menthe"] .repas-image-with-bg,
+  html[data-theme="aubergine-citron"] .repas-image-with-bg,
+  html[data-theme="gris-citron"] .repas-image-with-bg {
+    background-color: var(--color-primary); /* Pour les thèmes sombres, utilise color-primary */
+  }
+</style>
+
+
+
+

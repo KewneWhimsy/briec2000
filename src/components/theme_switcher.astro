@@ -60,7 +60,7 @@ const themes: Theme[] = [
     type: "light",
     bgColor: "#fff8e1",
     primaryColor: "#5b21b6",
-    secondaryColor: "#4c1d95",
+    secondaryColor: "#4f1e99",
     isAccessible: true,
     featured: true, // Thème accesible clair, toujours affiché
   },
@@ -268,7 +268,7 @@ const featuredThemes = themes.filter(theme => theme.featured);
 
 <style is:global>
   /* Styles des thèmes - compactés pour gagner de l'espace */
-  html[data-theme="lavande"] {
+  :root, html[data-theme="lavande"] {
     --color-primary: #7c5295; --color-secondary: #9a6db9; --color-accent: #f7ca44;
     --bg-color: #f5f0fa; --text-color: #2d2235; --color-border: #e5d8f0;
     --color-primary-rgb: 124, 82, 149;
@@ -289,12 +289,12 @@ const featuredThemes = themes.filter(theme => theme.featured);
     --color-primary-rgb: 56, 163, 165;
   }
   html[data-theme="vanille-violet"] {
-    --color-primary: #5b21b6; --color-secondary: #4c1d95; --color-accent: #f97316;
+    --color-primary: #5b21b6; --color-secondary: #4f1e99; --color-accent: #f97316;
     --bg-color: #fff8e1; --text-color: #1e1b4b; --color-border: #5b21b6;
     --color-primary-rgb: 91, 33, 182;
   }
   html[data-theme="champagne-acier"] {
-    --color-primary: #475569; --color-secondary: #334155; --color-accent: #f59e0b;
+    --color-primary: #475569; --color-secondary: #38485e; --color-accent: #f59e0b;
     --bg-color: #fdf4ff; --text-color: #0f172a; --color-border: #475569;
     --color-primary-rgb: 71, 85, 105;
   }
