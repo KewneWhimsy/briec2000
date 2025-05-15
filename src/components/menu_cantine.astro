@@ -28,6 +28,7 @@ function getMonthName(date: Date | string): string {
   </div>
   
   <div class="menu-body">
+    <section class="select-all">
     <div class="menu-section">
       <h4 class="course-title">Entrée</h4>
       <div class="dish">
@@ -62,7 +63,7 @@ function getMonthName(date: Date | string): string {
         <p class="dish-description">Disponibles sur place uniquement</p>
       </div>
     </div>
-    
+    </section>
     <div class="menu-footer">
       <p class="menu-note">Pensez à apporter vos contenants propres pour les repas à emporter</p>
       <a href={`/events/${cantineEvent.slug}/`} class="menu-button">
