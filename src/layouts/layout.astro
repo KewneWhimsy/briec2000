@@ -237,7 +237,7 @@ const currentPath = Astro.url.pathname;
         color: var(--color-primary);
         font-size: 0.95rem;
         text-decoration: none;
-        padding: 0.25rem 0;
+        padding: 0.25rem;
       }
 
       .nav-link:hover {
@@ -382,13 +382,13 @@ const currentPath = Astro.url.pathname;
       style="border-color: var(--color-border); background-color: var(--bg-color);"
       transition:persist
     >
-      <div class="flex justify-between items-center mb-6">
+      <div class="flex justify-between items-center">
         <div class="w-[36px]"></div> <!-- Espace réservé de la taille du ThemeSwitcher -->
         <span class="text-lg font-medium" style="color: var(--color-primary);">Briec2000</span>
       </div>
 
-      <nav class="simple-nav py-1">
-        <ul class="flex flex-wrap gap-x-6 justify-center">
+      <nav class="simple-nav sm:py-6 py-4">
+        <ul class="flex flex-wrap gap-x-4 gap-y-3 justify-center">
           <li><a href="/" class="nav-link">Accueil</a></li>
           <li><a href="/events/" class="nav-link">À venir</a></li>
           <li><a href="/cantines/" class="nav-link">Les cantines</a></li>
