@@ -157,13 +157,13 @@ const defaultTheme = "lavande";
 
 <div class="theme-switcher" id="theme-switcher" transition:persist>
   <div class="theme-buttons">
-    <!-- Tous les thèmes pour desktop -->
+    <!-- Uniquement les thèmes featured visibles par défaut -->
     {
-      themes.map((theme) => (
+      featuredThemes.map((theme) => (
         <button
-          class={`theme-btn ${theme.featured ? "featured" : ""}`}
+          class="theme-btn featured"
           data-theme={theme.id}
-          data-featured={theme.featured ? "true" : "false"}
+          data-featured="true"
           title={theme.isAccessible ? `${theme.name} (accessible)` : theme.name}
           aria-label={
             theme.isAccessible
@@ -511,7 +511,7 @@ const defaultTheme = "lavande";
     background: none;
     border: none;
     color: var(--text-color);
-    font-size: 22px;
+    font-size: 1.5rem;
     cursor: pointer;
     padding: 0;
     width: var(--theme-size);
@@ -555,30 +555,12 @@ const defaultTheme = "lavande";
     transform: translateX(0);
   }
 
-  /* Media queries */
-  @media (max-width: 767px) {
-    .theme-buttons .theme-btn:not([data-featured="true"]) {
-      display: none;
-    }
-    .theme-more-btn {
-      display: flex;
-    }
+  /* Style unifié pour mobile et desktop */
+  /* Sur mobile comme sur desktop, on affiche uniquement les thèmes featured et bouton + */
+  .theme-more-btn {
+    display: flex;
   }
-  @media (min-width: 768px) {
-    .theme-switcher {
-      flex-wrap: wrap;
-      width: auto;
-    }
-    .theme-buttons {
-      flex-wrap: wrap;
-    }
-    .theme-more-btn {
-      display: none;
-    }
-    [popover].theme-overlay {
-      display: none !important;
-    }
-  }
+
   @media (prefers-reduced-motion: reduce) {
     .theme-overlay {
       transition: none;

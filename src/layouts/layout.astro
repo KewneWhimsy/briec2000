@@ -56,27 +56,6 @@ const currentPath = Astro.url.pathname;
       })();
     </script>
 
-    <!-- Gestion du thème pendant les transitions -->
-    <script is:inline>
-      function applyTheme(doc) {
-        const savedTheme = sessionStorage.getItem("selected-theme");
-        if (savedTheme) {
-          doc.documentElement.setAttribute("data-theme", savedTheme);
-        }
-      }
-
-      // Avant l'échange, s'assurer que le nouveau document a le bon thème
-      document.addEventListener("astro:before-swap", (event) => {
-        applyTheme(event.newDocument);
-      });
-
-      // Après l'échange, s'assurer que le thème est toujours appliqué
-      document.addEventListener("astro:after-swap", () => {
-        applyTheme(document);
-        window.scrollTo(0, 0); // Réinitialiser le défilement en haut de la page
-      });
-    </script>
-
     <Font name="Andika" cssVariable="--font-andika" preload />
     <Font name="Champ" cssVariable="--font-champ" preload />
 
@@ -252,9 +231,7 @@ const currentPath = Astro.url.pathname;
       }
 
       /* Style pour le menu mobile simplifié */
-      .simple-nav {
-        width: 100%;
-      }
+      
 
       .nav-link {
         color: var(--color-primary);
@@ -293,11 +270,6 @@ const currentPath = Astro.url.pathname;
         /* Sur desktop, cacher le menu mobile */
         header .simple-nav {
           display: none;
-        }
-
-        /* Ajuster le padding pour tenir compte du header sticky sur mobile */
-        body {
-          padding-top: 0;
         }
       }
       /* ============== STYLE POUR LES SCROLLBARS =============== */
@@ -398,26 +370,25 @@ const currentPath = Astro.url.pathname;
   <body class="min-h-screen flex flex-col">
     <!-- ThemeSwitcher en position fixe pour mobile et desktop -->
     <div 
-      class="fixed top-3 left-4 md:top-6 md:left-6 z-[100]" 
+      class="fixed top-2 left-2 z-[100]" 
       transition:persist
     >
       <ThemeSwitcher />
     </div>
 
-    <!-- Header mobile sans ThemeSwitcher -->
+    <!-- Header mobile -->
     <header
       class="border-b py-3 px-4 md:hidden fixed top-0 left-0 right-0 w-full bg-opacity-100 z-50"
       style="border-color: var(--color-border); background-color: var(--bg-color);"
       transition:persist
     >
-      <div class="flex justify-between items-center mb-2">
-        <div class="w-[28px]"></div> <!-- Espace réservé de la taille du ThemeSwitcher -->
+      <div class="flex justify-between items-center mb-6">
+        <div class="w-[36px]"></div> <!-- Espace réservé de la taille du ThemeSwitcher -->
         <span class="text-lg font-medium" style="color: var(--color-primary);">Briec2000</span>
-        <div class="w-[28px]"></div> <!-- Espace réservé pour l'équilibre visuel -->
       </div>
 
       <nav class="simple-nav py-1">
-        <ul class="flex flex-wrap gap-x-4 gap-y-2 justify-center">
+        <ul class="flex flex-wrap gap-x-6 justify-center">
           <li><a href="/" class="nav-link">Accueil</a></li>
           <li><a href="/events/" class="nav-link">À venir</a></li>
           <li><a href="/cantines/" class="nav-link">Les cantines</a></li>
@@ -432,23 +403,23 @@ const currentPath = Astro.url.pathname;
 
     <!-- Wrapper de contenu avec transition et padding-top pour compenser le header -->
     <div class="content-wrapper flex-grow mb-6">
-      <main class="flex-grow container mx-auto px-4 py-6 md:py-6 flex" transition:animate="fade">
-        <!-- Menu latéral pour desktop - sticky sans ThemeSwitcher -->
+      <div class="flex-grow container mx-auto px-4 py-6 md:py-6 flex" transition:animate="fade">
+        <!-- Menu latéral pour desktop - sticky -->
         <div
           class="hidden md:block sticky top-6 self-start h-auto max-h-[calc(100vh-3rem)] pb-6"
           transition:persist
         >
-          <div class="h-20 mb-8">
+          <div class="h-28">
             <!-- Espace réservé pour maintenir l'alignement vertical -->
           </div>
           <SidebarMenu transition:persist />
         </div>
 
         <!-- Contenu principal -->
-        <div class="md:ml-12 w-full mx-auto overflow-hidden">
+        <main class="md:ml-12 md:mt-14 w-full mx-auto overflow-hidden">
           <slot />
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
 
     <Footer transition:persist />
@@ -465,18 +436,6 @@ const currentPath = Astro.url.pathname;
             alert("Email copié !");
           });
         });
-
-        // Mettre à jour le bouton de thème actif
-        const currentTheme =
-          document.documentElement.getAttribute("data-theme");
-        if (currentTheme) {
-          const themeButton = document.querySelector(
-            `.theme-btn[data-theme="${currentTheme}"]`
-          );
-          if (themeButton) {
-            themeButton.classList.add("active");
-          }
-        }
       });
     </script>
   </body>
