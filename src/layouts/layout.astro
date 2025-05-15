@@ -31,62 +31,63 @@ const currentPath = Astro.url.pathname;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script is:inline>
-  // Fonction pour détecter les WebViews Instagram
-  function isInstagramWebView() {
-    const userAgent = navigator.userAgent || '';
-    return userAgent.indexOf('Instagram') > -1;
-  }
-
-  // Fonction pour appliquer les ajustements spécifiques à Instagram
-  function applyInstagramFixes() {
-    // 1. Ajuster le viewport
-    const viewportMeta = document.querySelector('meta[name="viewport"]');
-    if (viewportMeta) {
-      viewportMeta.setAttribute('content', 'width=device-width, initial-scale=0.75, maximum-scale=2.0, user-scalable=1');
-    }
-    
-    // 2. Marquer le HTML avec une classe spéciale
-    document.documentElement.classList.add('instagram-webview');
-    
-    
-  }
-
-  // Vérifier si nous sommes dans Instagram WebView
-  const isInsta = isInstagramWebView();
-  
-  // Appliquer les fixes immédiatement
-  if (isInsta) {
-    applyInstagramFixes();
-    
-    // Stocker l'info dans sessionStorage pour la persistance entre pages
-    sessionStorage.setItem('is-instagram', 'true');
-  }
-  
-  // Réappliquer après chaque chargement de page
-  document.addEventListener('DOMContentLoaded', function() {
-    if (isInsta || sessionStorage.getItem('is-instagram') === 'true') {
-      applyInstagramFixes();
-    }
-  });
-  
-  // Pour Astro : réappliquer après chaque transition de page
-  document.addEventListener('astro:page-load', function() {
-    if (isInsta || sessionStorage.getItem('is-instagram') === 'true') {
-      applyInstagramFixes();
-    }
-  });
-  
-  // Empêcher les transitions sur Instagram pour éviter les problèmes de viewport
-  if (isInsta || sessionStorage.getItem('is-instagram') === 'true') {
-    window.addEventListener('astro:before-preparation', event => {
-      // Forcer la navigation standard au lieu des transitions Astro
-      if (event.navigationType === 'traverse') {
-        event.preventDefault();
-        window.location.href = event.to.href;
+      // Fonction pour détecter les WebViews Instagram
+      function isInstagramWebView() {
+        const userAgent = navigator.userAgent || "";
+        return userAgent.indexOf("Instagram") > -1;
       }
-    });
-  }
-</script>
+
+      // Fonction pour appliquer les ajustements spécifiques à Instagram
+      function applyInstagramFixes() {
+        // 1. Ajuster le viewport
+        const viewportMeta = document.querySelector('meta[name="viewport"]');
+        if (viewportMeta) {
+          viewportMeta.setAttribute(
+            "content",
+            "width=device-width, initial-scale=0.75, maximum-scale=2.0, user-scalable=1"
+          );
+        }
+
+        // 2. Marquer le HTML avec une classe spéciale
+        document.documentElement.classList.add("instagram-webview");
+      }
+
+      // Vérifier si nous sommes dans Instagram WebView
+      const isInsta = isInstagramWebView();
+
+      // Appliquer les fixes immédiatement
+      if (isInsta) {
+        applyInstagramFixes();
+
+        // Stocker l'info dans sessionStorage pour la persistance entre pages
+        sessionStorage.setItem("is-instagram", "true");
+      }
+
+      // Réappliquer après chaque chargement de page
+      document.addEventListener("DOMContentLoaded", function () {
+        if (isInsta || sessionStorage.getItem("is-instagram") === "true") {
+          applyInstagramFixes();
+        }
+      });
+
+      // Pour Astro : réappliquer après chaque transition de page
+      document.addEventListener("astro:page-load", function () {
+        if (isInsta || sessionStorage.getItem("is-instagram") === "true") {
+          applyInstagramFixes();
+        }
+      });
+
+      // Empêcher les transitions sur Instagram pour éviter les problèmes de viewport
+      if (isInsta || sessionStorage.getItem("is-instagram") === "true") {
+        window.addEventListener("astro:before-preparation", (event) => {
+          // Forcer la navigation standard au lieu des transitions Astro
+          if (event.navigationType === "traverse") {
+            event.preventDefault();
+            window.location.href = event.to.href;
+          }
+        });
+      }
+    </script>
     <meta name="description" content={description} />
     <meta property="og:image" content={image} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -425,23 +426,23 @@ const currentPath = Astro.url.pathname;
       }
 
       /* Styles spécifiques pour Instagram WebView */
-html.instagram-webview .content-wrapper {
-  padding-top: 9rem !important;
-}
+      html.instagram-webview .content-wrapper {
+        padding-top: 9rem !important;
+      }
 
-html.instagram-webview .simple-nav {
-  padding: 0.5rem 0 !important;
-}
+      html.instagram-webview .simple-nav {
+        padding: 0.5rem 0 !important;
+      }
 
-html.instagram-webview .nav-link {
-  font-size: 0.9rem !important;
-  padding: 0.25rem 0.5rem !important;
-}
+      html.instagram-webview .nav-link {
+        font-size: 0.9rem !important;
+        padding: 0.25rem 0.5rem !important;
+      }
 
-html.instagram-webview header {
-  height: auto !important;
-  min-height: 5rem !important;
-}
+      html.instagram-webview header {
+        height: auto !important;
+        min-height: 5rem !important;
+      }
     </style>
   </head>
   <body class="min-h-screen flex flex-col">
@@ -507,42 +508,46 @@ html.instagram-webview header {
     <Footer transition:persist />
 
     <script>
-      document.addEventListener("astro:page-load", () => {
-        // Créer l'élément de notification une seule fois
+      /**
+       * Gestionnaire unifié des fonctionnalités de copie
+       * Gère à la fois la copie d'email et la copie du menu
+       */
+      function initCopyFunctions() {
+        // 1. Créer la notification une seule fois si elle n'existe pas déjà
         if (!document.getElementById("copy-notification")) {
           const notification = document.createElement("div");
           notification.id = "copy-notification";
           notification.style.cssText = `
-      position: fixed;
-      top: 10px;
-      right: 8.6px;
-      transform: translateX(100px);
-      background-color: var(--color-secondary);
-      color: white;
-      padding: 10px 16px;
-      border-radius: 4px;
-      font-size: 0.9rem;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-      opacity: 0;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    `;
+        position: fixed;
+        top: 10px;
+        right: 8.6px;
+        transform: translateX(100px);
+        background-color: var(--color-secondary);
+        color: white;
+        padding: 10px 16px;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      `;
 
           // Ajouter une icône de vérification
           const checkIcon = document.createElement("span");
           checkIcon.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
-           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    `;
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      `;
 
           // Ajouter le texte
           const text = document.createElement("span");
-          text.textContent = "Email copié !";
+          text.textContent = "";
 
           // Assembler la notification
           notification.appendChild(checkIcon);
@@ -550,41 +555,179 @@ html.instagram-webview header {
           document.body.appendChild(notification);
         }
 
-        // Gérer les liens d'email
+        // 2. Fonction commune pour afficher la notification
+        function showNotification(message: string) {
+          const notification = document.getElementById("copy-notification");
+          if (notification) {
+            const textSpan = notification.querySelector("span:last-child");
+            if (textSpan) textSpan.textContent = message;
+
+            notification.style.transform = "translateX(0)";
+            notification.style.opacity = "1";
+
+            setTimeout(() => {
+              notification.style.transform = "translateX(100px)";
+              notification.style.opacity = "0";
+            }, 2000);
+          }
+        }
+
+        // 3. Initialiser la copie d'email
         const emailCopyLinks = document.querySelectorAll(".email-copy");
         emailCopyLinks.forEach((link) => {
+          // Vérifier si le lien a déjà un écouteur attaché
+          if (link.getAttribute("data-has-listener") === "true") return;
+
           link.addEventListener("click", (e) => {
             e.preventDefault();
             const email = "briec2000@emailasso.net";
             navigator.clipboard
               .writeText(email)
-              .then(() => {
-                const notification =
-                  document.getElementById("copy-notification");
-                if (notification) {
-                  // Afficher la notification
-                  notification.style.transform = "translateX(0)";
-                  notification.style.opacity = "1";
-
-                  // Masquer la notification après 2 secondes
-                  setTimeout(() => {
-                    notification.style.transform = "translateX(100px)";
-                    notification.style.opacity = "0";
-                  }, 2000);
-                }
-              })
+              .then(() => showNotification("Email copié !"))
               .catch((err) => {
-                console.error(
-                  "Erreur lors de la copie dans le presse-papiers",
-                  err
-                );
-                alert("Impossible de copier l'email : " + err);
+                console.error("Erreur lors de la copie de l'email:", err);
+                alert("Impossible de copier l'email: " + err);
               });
           });
-        });
-      });
 
-      // Ajoutez ce code pour respecter prefers-reduced-motion
+          // Marquer le lien comme ayant un écouteur attaché
+          link.setAttribute("data-has-listener", "true");
+        });
+
+        // 4. Initialiser la copie du menu
+        const copyButtons = document.querySelectorAll(".copy-menu-btn");
+        copyButtons.forEach((copyButton) => {
+          // Vérifier si le bouton a déjà un écouteur attaché
+          if (copyButton.getAttribute("data-has-listener") === "true") return;
+
+          copyButton.addEventListener("click", async () => {
+            try {
+              // Créer un texte formaté pour la copie
+              const menuText = formatMenuForCopy();
+
+              // Copier le texte
+              await navigator.clipboard.writeText(menuText);
+
+              // Animation de succès sur le bouton
+              copyButton.classList.add("copied");
+
+              // Changer temporairement l'icône pour afficher un check
+              const originalIcon = copyButton.innerHTML;
+              copyButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          `;
+
+              // Rétablir après 2 secondes
+              setTimeout(() => {
+                copyButton.innerHTML = originalIcon;
+                copyButton.classList.remove("copied");
+              }, 2000);
+
+              // Afficher la notification
+              showNotification("Menu copié !");
+            } catch (err) {
+              console.error("Erreur lors de la copie du menu:", err);
+              alert("Impossible de copier le menu: " + err);
+            }
+          });
+
+          // Marquer le bouton comme ayant un écouteur attaché
+          copyButton.setAttribute("data-has-listener", "true");
+        });
+      }
+
+      // Fonction pour formatter le menu pour la copie
+      function formatMenuForCopy() {
+        // Titre et sous-titre
+        const titleElement = document.querySelector(".menu-title h3");
+        const title = titleElement
+          ? titleElement.textContent || "La Cantine Mensuelle"
+          : "La Cantine Mensuelle";
+
+        const subtitleElement = document.querySelector(".menu-subtitle");
+        const subtitle = subtitleElement
+          ? subtitleElement.textContent || ""
+          : "";
+
+        // Récupérer les sections du menu
+        const courseTitle1 = document.querySelector(
+          ".course-title:nth-of-type(1)"
+        );
+        const entreeDish = courseTitle1
+          ? courseTitle1.nextElementSibling
+          : null;
+        const entrée =
+          entreeDish && entreeDish.textContent
+            ? entreeDish.textContent.trim()
+            : "";
+
+        // Plat principal et options
+        const dishNameElements = document.querySelectorAll(".dish-name");
+        const platPrincipal =
+          dishNameElements.length > 1 && dishNameElements[1].textContent
+            ? dishNameElements[1].textContent
+            : "";
+
+        const platDescriptionElement =
+          document.querySelector(".dish-description");
+        const platDescription = platDescriptionElement
+          ? platDescriptionElement.textContent || ""
+          : "";
+
+        const optionElements = document.querySelectorAll(".option");
+        const optionVeg =
+          optionElements.length > 0 && optionElements[0].textContent
+            ? optionElements[0].textContent.trim()
+            : "";
+        const optionCarne =
+          optionElements.length > 1 && optionElements[1].textContent
+            ? optionElements[1].textContent.trim()
+            : "";
+
+        // Dessert
+        const dessert =
+          dishNameElements.length > 2 && dishNameElements[2].textContent
+            ? dishNameElements[2].textContent
+            : "";
+
+        const dishDescriptionElements =
+          document.querySelectorAll(".dish-description");
+        const dessertDesc =
+          dishDescriptionElements.length > 1 &&
+          dishDescriptionElements[1].textContent
+            ? dishDescriptionElements[1].textContent
+            : "";
+
+        // Note de bas de page
+        const noteElement = document.querySelector(".menu-note");
+        const note = noteElement ? noteElement.textContent || "" : "";
+
+        // Formater le texte
+        return (
+          `${title} - ${subtitle}\n\n` +
+          `--- ENTRÉE ---\n${entrée}\n\n` +
+          `--- PLAT PRINCIPAL ---\n${platPrincipal}\n${platDescription}\n\n` +
+          `${optionVeg}\n${optionCarne}\n\n` +
+          `--- DESSERT ---\n${dessert}\n${dessertDesc}\n\n` +
+          `Note: ${note}\n\n` +
+          `Réservation par mail à briec2000@emailasso.net`
+        );
+      }
+
+      // Initialiser au chargement de la page
+      document.addEventListener("DOMContentLoaded", initCopyFunctions);
+
+      // Réinitialiser lors des changements de page d'Astro
+      document.addEventListener("astro:page-load", initCopyFunctions);
+
+      // Exécuter aussi après un court délai pour s'assurer que tout est chargé
+      // en particulier dans le contexte du premier chargement de la page
+      setTimeout(initCopyFunctions, 500);
+
+      // Support pour prefers-reduced-motion
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       );
@@ -594,6 +737,9 @@ html.instagram-webview header {
           notification.style.transition = "opacity 0.1s ease";
         }
       }
+
+      // Exécuter immédiatement lors du chargement du script
+      initCopyFunctions();
     </script>
   </body>
 </html>
