@@ -25,45 +25,54 @@ function getMonthName(date: Date | string): string {
       <h3>La Cantine Mensuelle</h3>
       <p class="menu-subtitle">Menu de {getMonthName(cantineEvent.data.date)}</p>
     </div>
+    <button id="copy-menu-btn" class="copy-menu-btn" aria-label="Copier le menu" title="Copier le menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+      <span class="copy-text">Copier</span>
+    </button>
   </div>
   
   <div class="menu-body">
-    <section class="select-all">
-    <div class="menu-section">
-      <h4 class="course-title">Entrée</h4>
-      <div class="dish">
-        <p class="dish-name">Petite salade fraîche de saison</p>
+    <div id="menu-content" class="menu-content">
+      <section>
+      <div class="menu-section">
+        <h4 class="course-title">Entrée</h4>
+        <div class="dish">
+          <p class="dish-name">Petite salade fraîche de saison</p>
+        </div>
       </div>
-    </div>
-    
-    <div class="menu-section">
-      <h4 class="course-title">Plat Principal</h4>
-      <div class="dish">
-        <p class="dish-name">Tajine aux saveurs orientales</p>
-        <p class="dish-description">Semoule, amandes, abricots, raisins secs et légumes</p>
-        
-        <div class="dish-options">
-          <div class="option">
-            <span class="option-label">Option Végétarienne</span>
-            <span class="option-detail">Protéine de soja</span>
-          </div>
+      
+      <div class="menu-section">
+        <h4 class="course-title">Plat Principal</h4>
+        <div class="dish">
+          <p class="dish-name">Tajine aux saveurs orientales</p>
+          <p class="dish-description">Semoule, amandes, abricots, raisins secs et légumes</p>
           
-          <div class="option">
-            <span class="option-label">Option Carnée</span>
-            <span class="option-detail">Poulet fermier</span>
+          <div class="dish-options">
+            <div class="option">
+              <span class="option-label">Option Végétarienne</span>
+              <span class="option-detail">Protéine de soja</span>
+            </div>
+            
+            <div class="option">
+              <span class="option-label">Option Carnée</span>
+              <span class="option-detail">Poulet fermier</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    
-    <div class="menu-section">
-      <h4 class="course-title">Dessert</h4>
-      <div class="dish">
-        <p class="dish-name">Assortiment de desserts maison</p>
-        <p class="dish-description">Disponibles sur place uniquement</p>
+      
+      <div class="menu-section">
+        <h4 class="course-title">Dessert</h4>
+        <div class="dish">
+          <p class="dish-name">Assortiment de desserts maison</p>
+          <p class="dish-description">Disponibles sur place uniquement</p>
+        </div>
       </div>
+      </section>
     </div>
-    </section>
     <div class="menu-footer">
       <p class="menu-note">Pensez à apporter vos contenants propres pour les repas à emporter</p>
       <a href={`/events/${cantineEvent.slug}/`} class="menu-button">
@@ -101,6 +110,13 @@ function getMonthName(date: Date | string): string {
     color: white;
     text-align: center;
     padding: 12px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .menu-title {
+    flex: 1;
   }
   
   .menu-title h3 {
@@ -118,9 +134,54 @@ function getMonthName(date: Date | string): string {
     opacity: 0.9;
   }
   
+  /* Bouton de copie */
+  .copy-menu-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .copy-menu-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+  
+  .copy-menu-btn.copied {
+    background-color: rgba(255, 255, 255, 0.4);
+  }
+  
+  /* Le texte "Copier" est toujours caché */
+  .copy-text {
+    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
   .menu-body {
     padding: 20px;
     background-color: var(--bg-color);
+  }
+  
+  .menu-content {
+    position: relative;
   }
   
   .menu-section {
@@ -232,3 +293,116 @@ function getMonthName(date: Date | string): string {
     opacity: 0.9;
   }
 </style>
+
+<script>
+  // Fonction pour initialiser le bouton de copie
+  function initCopyMenuButton() {
+    // Chercher tous les boutons de copie (pour gérer les vues mobile et desktop)
+    const copyButtons = document.querySelectorAll('.copy-menu-btn');
+    if (!copyButtons.length) return;
+    
+    copyButtons.forEach(copyButton => {
+      copyButton.addEventListener('click', async () => {
+        try {
+          // Créer un texte formaté pour la copie
+          const menuText = formatMenuForCopy();
+          
+          // Copier le texte
+          await navigator.clipboard.writeText(menuText);
+          
+          // Animation de succès
+          copyButton.classList.add('copied');
+          
+          // Changer temporairement l'icône pour afficher un check
+          const originalIcon = copyButton.innerHTML;
+          copyButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          `;
+          
+          // Rétablir après 2 secondes
+          setTimeout(() => {
+            copyButton.innerHTML = originalIcon;
+            copyButton.classList.remove('copied');
+          }, 2000);
+          
+          // Afficher la notification globale
+          const notification = document.getElementById('copy-notification');
+          if (notification) {
+            const textSpan = notification.querySelector('span:last-child');
+            if (textSpan) textSpan.textContent = 'Menu copié !';
+            
+            notification.style.transform = 'translateX(0)';
+            notification.style.opacity = '1';
+            
+            setTimeout(() => {
+              notification.style.transform = 'translateX(100px)';
+              notification.style.opacity = '0';
+            }, 2000);
+          }
+        } catch (err) {
+          console.error('Erreur lors de la copie du menu:', err);
+          alert('Impossible de copier le menu: ' + err);
+        }
+      });
+    });
+  }
+  
+  // Formater le texte du menu pour la copie
+  function formatMenuForCopy() {
+    // Titre et sous-titre
+    const titleElement = document.querySelector('.menu-title h3');
+    const title = titleElement ? titleElement.textContent || 'La Cantine Mensuelle' : 'La Cantine Mensuelle';
+    
+    const subtitleElement = document.querySelector('.menu-subtitle');
+    const subtitle = subtitleElement ? subtitleElement.textContent || '' : '';
+    
+    // Récupérer les sections du menu
+    const courseTitle1 = document.querySelector('.course-title:nth-of-type(1)');
+    const entreeDish = courseTitle1 ? courseTitle1.nextElementSibling : null;
+    const entrée = entreeDish && entreeDish.textContent ? entreeDish.textContent.trim() : '';
+    
+    // Plat principal et options
+    const dishNameElements = document.querySelectorAll('.dish-name');
+    const platPrincipal = dishNameElements.length > 1 && dishNameElements[1].textContent ? 
+                         dishNameElements[1].textContent : '';
+    
+    const platDescriptionElement = document.querySelector('.dish-description');
+    const platDescription = platDescriptionElement ? platDescriptionElement.textContent || '' : '';
+    
+    const optionElements = document.querySelectorAll('.option');
+    const optionVeg = optionElements.length > 0 && optionElements[0].textContent ? 
+                     optionElements[0].textContent.trim() : '';
+    const optionCarne = optionElements.length > 1 && optionElements[1].textContent ? 
+                       optionElements[1].textContent.trim() : '';
+    
+    // Dessert
+    const dessert = dishNameElements.length > 2 && dishNameElements[2].textContent ? 
+                   dishNameElements[2].textContent : '';
+    
+    const dishDescriptionElements = document.querySelectorAll('.dish-description');
+    const dessertDesc = dishDescriptionElements.length > 1 && dishDescriptionElements[1].textContent ? 
+                       dishDescriptionElements[1].textContent : '';
+    
+    // Note de bas de page
+    const noteElement = document.querySelector('.menu-note');
+    const note = noteElement ? noteElement.textContent || '' : '';
+    
+    // Formater le texte
+    return `${title} - ${subtitle}\n\n` +
+           `--- ENTRÉE ---\n${entrée}\n\n` +
+           `--- PLAT PRINCIPAL ---\n${platPrincipal}\n${platDescription}\n\n` +
+           `${optionVeg}\n${optionCarne}\n\n` +
+           `--- DESSERT ---\n${dessert}\n${dessertDesc}\n\n` +
+           `Note: ${note}\n\n` +
+           `Réservation par mail à briec2000@emailasso.net`;
+  }
+  
+  // Exécuter le script lors du chargement initial
+  document.addEventListener('DOMContentLoaded', initCopyMenuButton);
+  
+  // Réinitialiser lors des changements de page d'Astro
+  document.addEventListener('astro:page-load', initCopyMenuButton);
+</script>
