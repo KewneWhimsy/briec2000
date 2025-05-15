@@ -31,24 +31,52 @@ const currentPath = Astro.url.pathname;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script is:inline>
-      // Fonction pour détecter les WebViews Instagram
-      function isInstagramWebView() {
-        const userAgent = navigator.userAgent || "";
-        return userAgent.indexOf("Instagram") > -1;
-      }
+  // Fonction pour détecter les WebViews Instagram
+  function isInstagramWebView() {
+    const userAgent = navigator.userAgent || '';
+    return userAgent.indexOf('Instagram') > -1;
+  }
 
-      // Si c'est Instagram, ajuster le viewport
-      if (isInstagramWebView()) {
-        // Créer ou mettre à jour la balise meta viewport pour Instagram
-        const viewportMeta = document.querySelector('meta[name="viewport"]');
-        if (viewportMeta) {
-          viewportMeta.setAttribute(
-            "content",
-            "width=device-width, initial-scale=0.8, maximum-scale=2.0, user-scalable=1"
-          );
-        }
+  // Si c'est Instagram, ajuster le viewport et ajouter des styles CSS spécifiques
+  if (isInstagramWebView()) {
+    // Créer ou mettre à jour la balise meta viewport pour Instagram
+    const viewportMeta = document.querySelector('meta[name="viewport"]');
+    if (viewportMeta) {
+      viewportMeta.setAttribute('content', 'width=device-width, initial-scale=0.8, maximum-scale=2.0, user-scalable=1');
+    }
+    
+    // Ajouter des styles CSS spécifiques pour Instagram
+    const instagramStyles = document.createElement('style');
+    instagramStyles.textContent = `
+      /* Ajustements spécifiques pour Instagram WebView */
+      body {
+        zoom: 0.75; /* Réduction supplémentaire pour contrer le zoom Instagram */
       }
-    </script>
+      .simple-nav {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+      }
+      .simple-nav ul {
+        gap: 0.5rem !important;
+      }
+      .nav-link {
+        font-size: 0.85rem !important;
+      }
+      header {
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+      }
+      /* Ajuster la hauteur du header pour éviter le débordement */
+      header {
+        height: auto !important;
+      }
+      .content-wrapper {
+        padding-top: 6rem !important; /* Réduire le padding */
+      }
+    `;
+    document.head.appendChild(instagramStyles);
+  }
+</script>
     <meta name="description" content={description} />
     <meta property="og:image" content={image} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
