@@ -40,7 +40,7 @@ const previewPages = [
 ---
 
 <Layout title={`${carnaBal.data.title} - Briec2000`}>
-  <article class="max-w-3xl">
+  <article class="max-w-4xl">
     <!-- Section d'introduction avec silhouettes -->
     <div class="event-hero mb-10 relative overflow-hidden">
       <div class="silhouettes-container">
@@ -81,24 +81,6 @@ const previewPages = [
 
         <!-- Boutons d'action -->
         <div class="flex flex-wrap gap-4 mb-10">
-          <a href="#histoire" class="btn inline-flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="16"></line>
-              <line x1="8" y1="12" x2="16" y2="12"></line>
-            </svg>
-            Plus d'infos
-          </a>
           <a href="#ateliers" class="btn inline-flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -116,7 +98,7 @@ const previewPages = [
                 d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
               ></path>
             </svg>
-            Ateliers
+            Ateliers de confection
           </a>
           <a
             href={pdfPath}

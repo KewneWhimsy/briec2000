@@ -79,7 +79,7 @@ function formatDate(date: Date | string): string {
       
       {/* Section événement principal */}
       {nextEvent && (
-        <div class="mb-10">
+        <div class="mb-6">
           <h2 class="mb-6 border-b pb-2">À venir : {nextEvent.data.title}</h2>
           <article>
             <header class="mb-6">
@@ -128,12 +128,12 @@ function formatDate(date: Date | string): string {
         </div>
       )}
       
-      <div class="mt-12 mb-6">
-        <p class="mb-4">
+      <div class="flex flex-col gap-4 pt-6 text-center">
+        <p>
           <strong>Contact :</strong> 
           <span class="email-copy">briec2000@emailasso.net</span>
         </p>
-        <div class="text-center mt-6">
+        <div>
           <a href="/about/" class="btn">En savoir plus sur l'association</a>
         </div>
       </div>
