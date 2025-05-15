@@ -24,11 +24,31 @@ const {
 // Pour vérifier les liens actifs exacts et éviter les faux positifs
 const currentPath = Astro.url.pathname;
 ---
+
 <!doctype html>
 <html lang="fr" transition:animate="none">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script is:inline>
+      // Fonction pour détecter les WebViews Instagram
+      function isInstagramWebView() {
+        const userAgent = navigator.userAgent || "";
+        return userAgent.indexOf("Instagram") > -1;
+      }
+
+      // Si c'est Instagram, ajuster le viewport
+      if (isInstagramWebView()) {
+        // Créer ou mettre à jour la balise meta viewport pour Instagram
+        const viewportMeta = document.querySelector('meta[name="viewport"]');
+        if (viewportMeta) {
+          viewportMeta.setAttribute(
+            "content",
+            "width=device-width, initial-scale=0.8, maximum-scale=2.0, user-scalable=1"
+          );
+        }
+      }
+    </script>
     <meta name="description" content={description} />
     <meta property="og:image" content={image} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -232,7 +252,6 @@ const currentPath = Astro.url.pathname;
       }
 
       /* Style pour le menu mobile simplifié */
-      
 
       .nav-link {
         color: var(--color-primary);
@@ -370,10 +389,7 @@ const currentPath = Astro.url.pathname;
   </head>
   <body class="min-h-screen flex flex-col">
     <!-- ThemeSwitcher en position fixe pour mobile et desktop -->
-    <div 
-      class="fixed top-2 left-2 z-[100]" 
-      transition:persist
-    >
+    <div class="fixed top-2 left-2 z-[100]" transition:persist>
       <ThemeSwitcher />
     </div>
 
@@ -384,8 +400,11 @@ const currentPath = Astro.url.pathname;
       transition:persist
     >
       <div class="flex justify-between items-center">
-        <div class="w-[36px]"></div> <!-- Espace réservé de la taille du ThemeSwitcher -->
-        <span class="text-lg font-medium" style="color: var(--color-primary);">Briec2000</span>
+        <div class="w-[36px]"></div>
+        <!-- Espace réservé de la taille du ThemeSwitcher -->
+        <span class="text-lg font-medium" style="color: var(--color-primary);"
+          >Briec2000</span
+        >
       </div>
 
       <nav class="simple-nav sm:py-6 py-4">
@@ -394,7 +413,9 @@ const currentPath = Astro.url.pathname;
           <li><a href="/events/" class="nav-link">À venir</a></li>
           <li><a href="/cantines/" class="nav-link">Les cantines</a></li>
           <li>
-            <a href="/events/2025-10-31-carnabal/" class="nav-link">Le carnabal</a>
+            <a href="/events/2025-10-31-carnabal/" class="nav-link"
+              >Le carnabal</a
+            >
           </li>
           <li><a href="/about/" class="nav-link">L'association</a></li>
           <li><a href="/archives/" class="nav-link">Archives</a></li>
@@ -404,7 +425,10 @@ const currentPath = Astro.url.pathname;
 
     <!-- Wrapper de contenu avec transition et padding-top pour compenser le header -->
     <div class="content-wrapper flex-grow mb-6">
-      <div class="flex-grow container mx-auto px-4 py-6 md:py-6 flex" transition:animate="fade">
+      <div
+        class="flex-grow container mx-auto px-4 py-6 md:py-6 flex"
+        transition:animate="fade"
+      >
         <!-- Menu latéral pour desktop - sticky -->
         <div
           class="hidden md:block sticky top-6 self-start h-auto max-h-[calc(100vh-3rem)] pb-6"
@@ -427,11 +451,11 @@ const currentPath = Astro.url.pathname;
 
     <script>
       document.addEventListener("astro:page-load", () => {
-  // Créer l'élément de notification une seule fois
-  if (!document.getElementById('copy-notification')) {
-    const notification = document.createElement('div');
-    notification.id = 'copy-notification';
-    notification.style.cssText = `
+        // Créer l'élément de notification une seule fois
+        if (!document.getElementById("copy-notification")) {
+          const notification = document.createElement("div");
+          notification.id = "copy-notification";
+          notification.style.cssText = `
       position: fixed;
       top: 10px;
       right: 8.6px;
@@ -449,61 +473,70 @@ const currentPath = Astro.url.pathname;
       align-items: center;
       gap: 8px;
     `;
-    
-    // Ajouter une icône de vérification
-    const checkIcon = document.createElement('span');
-    checkIcon.innerHTML = `
+
+          // Ajouter une icône de vérification
+          const checkIcon = document.createElement("span");
+          checkIcon.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="20 6 9 17 4 12"></polyline>
       </svg>
     `;
-    
-    // Ajouter le texte
-    const text = document.createElement('span');
-    text.textContent = 'Email copié !';
-    
-    // Assembler la notification
-    notification.appendChild(checkIcon);
-    notification.appendChild(text);
-    document.body.appendChild(notification);
-  }
 
-  // Gérer les liens d'email
-  const emailCopyLinks = document.querySelectorAll(".email-copy");
-  emailCopyLinks.forEach((link) => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      const email = "briec2000@emailasso.net";
-      navigator.clipboard.writeText(email).then(() => {
-        const notification = document.getElementById('copy-notification');
-        if (notification) {
-          // Afficher la notification
-          notification.style.transform = 'translateX(0)';
-          notification.style.opacity = '1';
-          
-          // Masquer la notification après 2 secondes
-          setTimeout(() => {
-            notification.style.transform = 'translateX(100px)';
-            notification.style.opacity = '0';
-          }, 2000);
+          // Ajouter le texte
+          const text = document.createElement("span");
+          text.textContent = "Email copié !";
+
+          // Assembler la notification
+          notification.appendChild(checkIcon);
+          notification.appendChild(text);
+          document.body.appendChild(notification);
         }
-      }).catch(err => {
-        console.error('Erreur lors de la copie dans le presse-papiers', err);
-        alert('Impossible de copier l\'email : ' + err);
-      });
-    });
-  });
-});
 
-// Ajoutez ce code pour respecter prefers-reduced-motion
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-if (prefersReducedMotion.matches) {
-  const notification = document.getElementById('copy-notification');
-  if (notification) {
-    notification.style.transition = 'opacity 0.1s ease';
-  }
-}
+        // Gérer les liens d'email
+        const emailCopyLinks = document.querySelectorAll(".email-copy");
+        emailCopyLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            const email = "briec2000@emailasso.net";
+            navigator.clipboard
+              .writeText(email)
+              .then(() => {
+                const notification =
+                  document.getElementById("copy-notification");
+                if (notification) {
+                  // Afficher la notification
+                  notification.style.transform = "translateX(0)";
+                  notification.style.opacity = "1";
+
+                  // Masquer la notification après 2 secondes
+                  setTimeout(() => {
+                    notification.style.transform = "translateX(100px)";
+                    notification.style.opacity = "0";
+                  }, 2000);
+                }
+              })
+              .catch((err) => {
+                console.error(
+                  "Erreur lors de la copie dans le presse-papiers",
+                  err
+                );
+                alert("Impossible de copier l'email : " + err);
+              });
+          });
+        });
+      });
+
+      // Ajoutez ce code pour respecter prefers-reduced-motion
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      );
+      if (prefersReducedMotion.matches) {
+        const notification = document.getElementById("copy-notification");
+        if (notification) {
+          notification.style.transition = "opacity 0.1s ease";
+        }
+      }
     </script>
   </body>
 </html>
