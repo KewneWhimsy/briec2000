@@ -54,11 +54,14 @@ const {
 const imageSrc = imageMap[src] || src;
 
 // Vérifier si c'est l'image repas.png pour appliquer un arrière-plan automatiquement
+// Ou si c'est une silhouette dans la classe silhouette-mobile (spécifique à la galerie mobile)
 const isRepasImage = src.includes('repas.png');
+const isSilhouetteWithClass = src.includes('silhouette') && className.includes('silhouette-mobile');
+const isSpecialImage = isRepasImage || isSilhouetteWithClass;
 
-// Si c'est l'image repas.png, on ajoute une classe personnalisée
-const finalClassName = isRepasImage 
-  ? `${className} repas-image-with-bg` 
+// Si c'est un cas spécial, on ajoute une classe personnalisée
+const finalClassName = isSpecialImage 
+  ? `${className} special-image-with-bg` 
   : className;
 ---
 
@@ -84,18 +87,18 @@ const finalClassName = isRepasImage
 )}
 
 <style>
-  /* Style pour appliquer l'arrière-plan directement à l'image repas */
-  html[data-theme*="lavande-sombre"] .repas-image-with-bg,
-  html[data-theme="amethyste-or"] .repas-image-with-bg,
-  html[data-theme="bleu-jaune"] .repas-image-with-bg,
-  html[data-theme="gris-ambre"] .repas-image-with-bg,
-  html[data-theme="ardoise-peche"] .repas-image-with-bg,
-  html[data-theme="prune-menthe"] .repas-image-with-bg,
-  html[data-theme="aubergine-citron"] .repas-image-with-bg,
-  html[data-theme="gris-citron"] .repas-image-with-bg {
+  /* Style pour appliquer l'arrière-plan directement aux images spéciales */
+  html[data-theme*="lavande-sombre"] .special-image-with-bg,
+  html[data-theme="amethyste-or"] .special-image-with-bg,
+  html[data-theme="bleu-jaune"] .special-image-with-bg,
+  html[data-theme="gris-ambre"] .special-image-with-bg,
+  html[data-theme="ardoise-peche"] .special-image-with-bg,
+  html[data-theme="prune-menthe"] .special-image-with-bg,
+  html[data-theme="aubergine-citron"] .special-image-with-bg,
+  html[data-theme="gris-citron"] .special-image-with-bg {
     background-color: var(--color-primary); /* Pour les thèmes sombres, utilise color-primary */
   }
-  html[data-theme*="ocean-profond"] .repas-image-with-bg{
+  html[data-theme*="ocean-profond"] .special-image-with-bg{
     background-color: var(--color-secondary); /* Exception pour le thème ocean-profond */
   }
 </style>
