@@ -37,44 +37,30 @@ const currentPath = Astro.url.pathname;
     return userAgent.indexOf('Instagram') > -1;
   }
 
-  // Si c'est Instagram, ajuster le viewport et ajouter des styles CSS spécifiques
+  // Si c'est Instagram, appliquer des ajustements spécifiques
   if (isInstagramWebView()) {
-    // Créer ou mettre à jour la balise meta viewport pour Instagram
+    // 1. Ajuster le viewport
     const viewportMeta = document.querySelector('meta[name="viewport"]');
     if (viewportMeta) {
-      viewportMeta.setAttribute('content', 'width=device-width, initial-scale=0.8, maximum-scale=2.0, user-scalable=1');
+      viewportMeta.setAttribute('content', 'width=device-width, initial-scale=0.75, maximum-scale=2.0, user-scalable=1');
     }
     
-    // Ajouter des styles CSS spécifiques pour Instagram
-    const instagramStyles = document.createElement('style');
-    instagramStyles.textContent = `
-      /* Ajustements spécifiques pour Instagram WebView */
-      body {
-        zoom: 0.75; /* Réduction supplémentaire pour contrer le zoom Instagram */
+    // 2. Marquer le HTML avec une classe spéciale pour ciblage CSS
+    document.documentElement.classList.add('instagram-webview');
+    
+    // 3. Ajouter une balise style pour les ajustements Instagram
+    document.addEventListener('DOMContentLoaded', function() {
+      // Simplifier radicalement le menu pour Instagram
+      const nav = document.querySelector('.simple-nav ul');
+      if (nav) {
+        // Garder uniquement les liens essentiels
+        nav.innerHTML = `
+          <li><a href="/" class="nav-link">Accueil</a></li>
+          <li><a href="/events/" class="nav-link">Événements</a></li>
+          <li><a href="/archives/" class="nav-link">Archives</a></li>
+        `;
       }
-      .simple-nav {
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-      }
-      .simple-nav ul {
-        gap: 0.5rem !important;
-      }
-      .nav-link {
-        font-size: 0.85rem !important;
-      }
-      header {
-        padding-top: 0.5rem !important;
-        padding-bottom: 0.5rem !important;
-      }
-      /* Ajuster la hauteur du header pour éviter le débordement */
-      header {
-        height: auto !important;
-      }
-      .content-wrapper {
-        padding-top: 6rem !important; /* Réduire le padding */
-      }
-    `;
-    document.head.appendChild(instagramStyles);
+    });
   }
 </script>
     <meta name="description" content={description} />
