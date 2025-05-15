@@ -31,45 +31,71 @@ const currentPath = Astro.url.pathname;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script is:inline>
-      // Fonction pour détecter les WebViews Instagram
-      function isInstagramWebView() {
-        const userAgent = navigator.userAgent || "";
-        return userAgent.indexOf("Instagram") > -1;
+  // Fonction pour détecter les WebViews Instagram
+  function isInstagramWebView() {
+    const userAgent = navigator.userAgent || '';
+    return userAgent.indexOf('Instagram') > -1;
+  }
+
+  // Fonction pour appliquer les ajustements spécifiques à Instagram
+  function applyInstagramFixes() {
+    // 1. Ajuster le viewport
+    const viewportMeta = document.querySelector('meta[name="viewport"]');
+    if (viewportMeta) {
+      viewportMeta.setAttribute('content', 'width=device-width, initial-scale=0.75, maximum-scale=2.0, user-scalable=1');
+    }
+    
+    // 2. Marquer le HTML avec une classe spéciale
+    document.documentElement.classList.add('instagram-webview');
+    
+    // 3. Simplifier le menu pour Instagram
+    const nav = document.querySelector('.simple-nav ul');
+    if (nav) {
+      // Garder uniquement les liens essentiels
+      nav.innerHTML = `
+        <li><a href="/" class="nav-link">Accueil</a></li>
+        <li><a href="/events/" class="nav-link">Événements</a></li>
+        <li><a href="/cantines/" class="nav-link">Cantines</a></li>
+      `;
+    }
+  }
+
+  // Vérifier si nous sommes dans Instagram WebView
+  const isInsta = isInstagramWebView();
+  
+  // Appliquer les fixes immédiatement
+  if (isInsta) {
+    applyInstagramFixes();
+    
+    // Stocker l'info dans sessionStorage pour la persistance entre pages
+    sessionStorage.setItem('is-instagram', 'true');
+  }
+  
+  // Réappliquer après chaque chargement de page
+  document.addEventListener('DOMContentLoaded', function() {
+    if (isInsta || sessionStorage.getItem('is-instagram') === 'true') {
+      applyInstagramFixes();
+    }
+  });
+  
+  // Pour Astro : réappliquer après chaque transition de page
+  document.addEventListener('astro:page-load', function() {
+    if (isInsta || sessionStorage.getItem('is-instagram') === 'true') {
+      applyInstagramFixes();
+    }
+  });
+  
+  // Empêcher les transitions sur Instagram pour éviter les problèmes de viewport
+  if (isInsta || sessionStorage.getItem('is-instagram') === 'true') {
+    window.addEventListener('astro:before-preparation', event => {
+      // Forcer la navigation standard au lieu des transitions Astro
+      if (event.navigationType === 'traverse') {
+        event.preventDefault();
+        window.location.href = event.to.href;
       }
-
-      // Fonction pour appliquer les ajustements spécifiques à Instagram
-      function applyInstagramFixes() {
-        // 1. Ajuster le viewport
-        const viewportMeta = document.querySelector('meta[name="viewport"]');
-        if (viewportMeta) {
-          viewportMeta.setAttribute(
-            "content",
-            "width=device-width, initial-scale=0.75, maximum-scale=2.0, user-scalable=1"
-          );
-        }
-
-        // 2. Marquer le HTML avec une classe spéciale
-        document.documentElement.classList.add("instagram-webview");
-      }
-
-      // Vérifier si nous sommes dans Instagram WebView
-      const isInsta = isInstagramWebView();
-
-      // Appliquer les fixes immédiatement
-      if (isInsta) {
-        applyInstagramFixes();
-
-        // Stocker l'info dans sessionStorage pour la persistance entre pages
-        sessionStorage.setItem("is-instagram", "true");
-      }
-
-      // Réappliquer après chaque transition de page
-      document.addEventListener("astro:page-load", function () {
-        if (isInsta || sessionStorage.getItem("is-instagram") === "true") {
-          applyInstagramFixes();
-        }
-      });
-    </script>
+    });
+  }
+</script>
     <meta name="description" content={description} />
     <meta property="og:image" content={image} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -408,23 +434,23 @@ const currentPath = Astro.url.pathname;
       }
 
       /* Styles spécifiques pour Instagram WebView */
-      html.instagram-webview .content-wrapper {
-        padding-top: 6rem !important;
-      }
+html.instagram-webview .content-wrapper {
+  padding-top: 6rem !important;
+}
 
-      html.instagram-webview .simple-nav {
-        padding: 0.5rem 0 !important;
-      }
+html.instagram-webview .simple-nav {
+  padding: 0.5rem 0 !important;
+}
 
-      html.instagram-webview .nav-link {
-        font-size: 0.9rem !important;
-        padding: 0.25rem 0.5rem !important;
-      }
+html.instagram-webview .nav-link {
+  font-size: 0.9rem !important;
+  padding: 0.25rem 0.5rem !important;
+}
 
-      html.instagram-webview header {
-        height: auto !important;
-        min-height: 5rem !important;
-      }
+html.instagram-webview header {
+  height: auto !important;
+  min-height: 5rem !important;
+}
     </style>
   </head>
   <body class="min-h-screen flex flex-col">
