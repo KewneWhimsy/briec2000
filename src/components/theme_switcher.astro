@@ -1,5 +1,5 @@
 ---
-// src/components/theme_switcher.astro - Version avec support de transition
+// src/components/theme_switcher.astro
 
 // Type pour les thèmes - doit être défini AVANT usage
 type Theme = {
@@ -688,4 +688,5 @@ const defaultTheme = "lavande";
     // Appliquer le thème au nouveau document
     event.newDocument.documentElement.setAttribute("data-theme", currentTheme);
   });
+  
 </script>
