@@ -14,67 +14,89 @@ const { cantineEvent, isDesktop = false } = Astro.props as Props;
 // Extraire le mois pour l'afficher dans le menu
 function getMonthName(date: Date | string): string {
   const dateObj = date instanceof Date ? date : new Date(date);
-  const options: Intl.DateTimeFormatOptions = { month: 'long' };
-  return dateObj.toLocaleDateString('fr-FR', options);
+  const options: Intl.DateTimeFormatOptions = { month: "long" };
+  return dateObj.toLocaleDateString("fr-FR", options);
 }
 ---
 
-<div class={`restaurant-menu ${isDesktop ? 'fixed-sidebar' : ''}`}>
+<div class={`restaurant-menu ${isDesktop ? "fixed-sidebar" : ""}`}>
   <div class="menu-heading">
     <div class="menu-title">
       <h3>La Cantine Mensuelle</h3>
-      <p class="menu-subtitle">Menu de {getMonthName(cantineEvent.data.date)}</p>
+      <p class="menu-subtitle">
+        Menu de {getMonthName(cantineEvent.data.date)}
+      </p>
     </div>
-    <button id="copy-menu-btn" class="copy-menu-btn" aria-label="Copier le menu" title="Copier le menu">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <button
+      id="copy-menu-btn"
+      class="copy-menu-btn"
+      aria-label="Copier le menu"
+      title="Copier le menu"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+        ></path>
       </svg>
       <span class="copy-text">Copier</span>
     </button>
   </div>
-  
+
   <div class="menu-body">
     <div id="menu-content" class="menu-content">
       <section>
-      <div class="menu-section">
-        <h4 class="course-title">Entrée</h4>
-        <div class="dish">
-          <p class="dish-name">Petite salade fraîche de saison</p>
+        <div class="menu-section">
+          <h4 class="course-title">Entrée</h4>
+          <div class="dish">
+            <p class="dish-name">Petite salade fraîche de saison</p>
+          </div>
         </div>
-      </div>
-      
-      <div class="menu-section">
-        <h4 class="course-title">Plat Principal</h4>
-        <div class="dish">
-          <p class="dish-name">Tajine aux saveurs orientales</p>
-          <p class="dish-description">Semoule, amandes, abricots, raisins secs et légumes</p>
-          
-          <div class="dish-options">
-            <div class="option">
-              <span class="option-label">Option Végétarienne</span>
-              <span class="option-detail">Protéine de soja</span>
-            </div>
-            
-            <div class="option">
-              <span class="option-label">Option Carnée</span>
-              <span class="option-detail">Poulet fermier</span>
+
+        <div class="menu-section">
+          <h4 class="course-title">Plat Principal</h4>
+          <div class="dish">
+            <p class="dish-name">Tajine aux saveurs orientales</p>
+            <p class="dish-description">
+              Semoule, amandes, abricots, raisins secs et légumes
+            </p>
+
+            <div class="dish-options">
+              <div class="option">
+                <span class="option-label">Option Végétarienne</span>
+                <span class="option-detail">Protéine de soja</span>
+              </div>
+
+              <div class="option">
+                <span class="option-label">Option Carnée</span>
+                <span class="option-detail">Poulet fermier</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      
-      <div class="menu-section">
-        <h4 class="course-title">Dessert</h4>
-        <div class="dish">
-          <p class="dish-name">Assortiment de desserts maison</p>
-          <p class="dish-description">Disponibles sur place uniquement</p>
+
+        <div class="menu-section">
+          <h4 class="course-title">Dessert</h4>
+          <div class="dish">
+            <p class="dish-name">Assortiment de desserts maison</p>
+            <p class="dish-description">Disponibles sur place uniquement</p>
+          </div>
         </div>
-      </div>
       </section>
     </div>
     <div class="menu-footer">
-      <p class="menu-note">Pensez à apporter vos contenants propres pour les repas à emporter</p>
+      <p class="menu-note">
+        Pensez à apporter vos contenants propres pour les repas à emporter
+      </p>
       <a href={`/events/${cantineEvent.slug}/`} class="menu-button">
         Détails et réservation
       </a>
@@ -94,7 +116,7 @@ function getMonthName(date: Date | string): string {
     font-family: var(--font-andika);
     width: 100%;
   }
-  
+
   /* Fixed sidebar behavior */
   .fixed-sidebar {
     position: fixed;
@@ -104,7 +126,7 @@ function getMonthName(date: Date | string): string {
     width: calc(100% - 2rem);
     max-width: 24rem;
   }
-  
+
   .menu-heading {
     background-color: var(--color-secondary);
     color: white;
@@ -113,12 +135,15 @@ function getMonthName(date: Date | string): string {
     position: relative;
     display: flex;
     justify-content: center;
+    mask:
+      linear-gradient(0, #0000 1rem, #000 0),
+      radial-gradient(1rem, #000 calc(100% - 1px), #0000) bottom/1.85rem 2rem;
   }
-  
+
   .menu-title {
     flex: 1;
   }
-  
+
   .menu-title h3 {
     color: white;
     font-size: 1.75rem;
@@ -126,14 +151,14 @@ function getMonthName(date: Date | string): string {
     font-weight: 700;
     letter-spacing: 1px;
   }
-  
+
   .menu-subtitle {
     font-size: 1rem;
     margin-top: 2px;
     font-style: italic;
     opacity: 0.9;
   }
-  
+
   /* Bouton de copie */
   .copy-menu-btn {
     position: absolute;
@@ -151,16 +176,16 @@ function getMonthName(date: Date | string): string {
     cursor: pointer;
     transition: all 0.2s ease;
   }
-  
+
   .copy-menu-btn:hover {
     background-color: rgba(255, 255, 255, 0.3);
     transform: scale(1.1);
   }
-  
+
   .copy-menu-btn.copied {
     background-color: rgba(255, 255, 255, 0.4);
   }
-  
+
   /* Le texte "Copier" est toujours caché */
   .copy-text {
     display: none;
@@ -174,20 +199,20 @@ function getMonthName(date: Date | string): string {
     white-space: nowrap;
     border-width: 0;
   }
-  
+
   .menu-body {
     padding: 20px;
     background-color: var(--bg-color);
   }
-  
+
   .menu-content {
     position: relative;
   }
-  
+
   .menu-section {
     margin-bottom: 18px;
   }
-  
+
   .course-title {
     font-size: 1.25rem;
     color: var(--color-primary);
@@ -197,7 +222,7 @@ function getMonthName(date: Date | string): string {
     font-weight: 500;
     position: relative;
   }
-  
+
   .course-title::after {
     content: "";
     position: absolute;
@@ -207,19 +232,19 @@ function getMonthName(date: Date | string): string {
     height: 2px;
     background-color: var(--color-secondary);
   }
-  
+
   .dish {
     margin-bottom: 12px;
     padding: 0 6px;
   }
-  
+
   .dish-name {
     font-size: 1.1rem;
     font-weight: 500;
     color: var(--text-color);
     margin: 0 0 6px 0;
   }
-  
+
   .dish-description {
     font-size: 0.95rem;
     color: var(--text-color);
@@ -228,14 +253,14 @@ function getMonthName(date: Date | string): string {
     font-style: italic;
     line-height: 1.4;
   }
-  
+
   .dish-options {
     margin-top: 12px;
     display: flex;
     flex-direction: column;
     gap: 8px;
   }
-  
+
   .option {
     display: flex;
     justify-content: space-between;
@@ -246,29 +271,29 @@ function getMonthName(date: Date | string): string {
     border-radius: 6px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
-  
+
   html[data-theme="midnight"] .option,
   html[data-theme="forest"] .option {
     background-color: rgba(255, 255, 255, 0.1);
   }
-  
+
   .option-label {
     font-weight: 500;
   }
-  
+
   .option-detail {
     color: var(--text-color);
     opacity: 0.8;
     font-style: italic;
   }
-  
+
   .menu-footer {
     margin-top: 18px;
     text-align: center;
     border-top: 1px solid var(--color-border);
     padding-top: 16px;
   }
-  
+
   .menu-note {
     font-size: 0.9rem;
     color: var(--text-color);
@@ -277,7 +302,7 @@ function getMonthName(date: Date | string): string {
     font-style: italic;
     line-height: 1.4;
   }
-  
+
   .menu-button {
     display: inline-block;
     padding: 8px 16px;
@@ -288,7 +313,7 @@ function getMonthName(date: Date | string): string {
     font-size: 0.9rem;
     transition: opacity 0.2s;
   }
-  
+
   .menu-button:hover {
     opacity: 0.9;
   }
