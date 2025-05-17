@@ -241,6 +241,7 @@ const mobileMenuItems = [
       .email-copy {
         text-decoration: underline;
         cursor: pointer;
+        user-select: all;
       }
 
       /* ============== STYLES POUR LE CONTENU MARKDOWN =============== */
@@ -613,14 +614,6 @@ const mobileMenuItems = [
 
           link.addEventListener("click", (e) => {
             e.preventDefault();
-            const email = "briec2000@emailasso.net";
-            navigator.clipboard
-              .writeText(email)
-              .then(() => showNotification("Email copié !"))
-              .catch((err) => {
-                console.error("Erreur lors de la copie de l'email:", err);
-                alert("Impossible de copier l'email: " + err);
-              });
           });
 
           // Marquer le lien comme ayant un écouteur attaché
