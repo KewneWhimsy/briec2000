@@ -425,7 +425,7 @@ const mobileMenuItems = [
         ::-webkit-scrollbar-thumb {
           transition: none;
         }
-        
+
         .nav-link {
           transition: none;
         }
@@ -502,8 +502,8 @@ const mobileMenuItems = [
           {
             mobileMenuItems.map((item) => (
               <li>
-                <a 
-                  href={item.url} 
+                <a
+                  href={item.url}
                   class={`nav-link ${isActive(item.url) ? "active" : ""}`}
                 >
                   {item.title}
@@ -547,22 +547,23 @@ const mobileMenuItems = [
        * Gère à la fois la copie d'email et la copie du menu
        */
       function initCopyFunctions() {
-        // 1. Créer la notification une seule fois si elle n'existe pas déjà
-        if (!document.getElementById("copy-notification")) {
-          const notification = document.createElement("div");
-          notification.id = "copy-notification";
-          notification.style.cssText = `
+        // Créer une notification générique pour toute fonctionnalité de copie
+        function createNotificationIfNeeded() {
+          if (!document.getElementById("copy-notification")) {
+            const notification = document.createElement("div");
+            notification.id = "copy-notification";
+            notification.style.cssText = `
         position: fixed;
         top: 10px;
-        right: 8.6px;
-        transform: translateX(100px);
+        right: 10px;
         background-color: var(--color-secondary);
         color: white;
-        padding: 10px 16px;
+        padding: 8px 16px;
         border-radius: 4px;
         font-size: 0.9rem;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         opacity: 0;
+        transform: translateX(100px);
         transition: transform 0.3s ease, opacity 0.3s ease;
         z-index: 1000;
         display: flex;
@@ -570,32 +571,21 @@ const mobileMenuItems = [
         gap: 8px;
       `;
 
-          // Ajouter une icône de vérification
-          const checkIcon = document.createElement("span");
-          checkIcon.innerHTML = `
+            notification.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
+        <span>Menu Copié !</span>
       `;
-
-          // Ajouter le texte
-          const text = document.createElement("span");
-          text.textContent = "";
-
-          // Assembler la notification
-          notification.appendChild(checkIcon);
-          notification.appendChild(text);
-          document.body.appendChild(notification);
+            document.body.appendChild(notification);
+          }
         }
 
-        // 2. Fonction commune pour afficher la notification
-        function showNotification(message: string) {
+        // Fonction simplifiée pour afficher la notification
+        function showNotification() {
           const notification = document.getElementById("copy-notification");
           if (notification) {
-            const textSpan = notification.querySelector("span:last-child");
-            if (textSpan) textSpan.textContent = message;
-
             notification.style.transform = "translateX(0)";
             notification.style.opacity = "1";
 
@@ -606,135 +596,110 @@ const mobileMenuItems = [
           }
         }
 
-        // 3. Initialiser la copie d'email
-        const emailCopyLinks = document.querySelectorAll(".email-copy");
-        emailCopyLinks.forEach((link) => {
-          // Vérifier si le lien a déjà un écouteur attaché
-          if (link.getAttribute("data-has-listener") === "true") return;
+        // 1. Empêcher le comportement par défaut des liens d'e-mail
+        document.querySelectorAll(".email-copy").forEach((link) => {
+          // Éviter les doubles listeners
+          if (link.getAttribute("data-initialized") === "true") return;
 
           link.addEventListener("click", (e) => {
             e.preventDefault();
           });
 
-          // Marquer le lien comme ayant un écouteur attaché
-          link.setAttribute("data-has-listener", "true");
+          // Ajouter la sélection facile
+          link.classList.add("user-select-all");
+          link.setAttribute("data-initialized", "true");
         });
 
-        // 4. Initialiser la copie du menu
-        const copyButtons = document.querySelectorAll(".copy-menu-btn");
-        copyButtons.forEach((copyButton) => {
-          // Vérifier si le bouton a déjà un écouteur attaché
-          if (copyButton.getAttribute("data-has-listener") === "true") return;
+        // 2. Gérer la copie du menu (seule fonctionnalité qui nécessite une notification)
+        document.querySelectorAll(".copy-menu-btn").forEach((button) => {
+          // Éviter les doubles listeners
+          if (button.getAttribute("data-initialized") === "true") return;
 
-          copyButton.addEventListener("click", async () => {
+          button.addEventListener("click", async () => {
             try {
-              // Créer un texte formaté pour la copie
-              const menuText = formatMenuForCopy();
+              // S'assurer que la notification existe
+              createNotificationIfNeeded();
 
-              // Copier le texte
-              await navigator.clipboard.writeText(menuText);
+              // Copier le menu formaté
+              await navigator.clipboard.writeText(formatMenuForCopy());
 
-              // Animation de succès sur le bouton
-              copyButton.classList.add("copied");
+              // Retour visuel sur le bouton
+              button.classList.add("copied");
+              const originalIcon = button.innerHTML;
+              button.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        `;
 
-              // Changer temporairement l'icône pour afficher un check
-              const originalIcon = copyButton.innerHTML;
-              copyButton.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-          `;
-
-              // Rétablir après 2 secondes
+              // Retour à l'état initial après 2 secondes
               setTimeout(() => {
-                copyButton.innerHTML = originalIcon;
-                copyButton.classList.remove("copied");
+                button.innerHTML = originalIcon;
+                button.classList.remove("copied");
               }, 2000);
 
               // Afficher la notification
-              showNotification("Menu copié !");
+              showNotification();
             } catch (err) {
-              console.error("Erreur lors de la copie du menu:", err);
-              alert("Impossible de copier le menu: " + err);
+              console.error("Erreur de copie:", err);
             }
           });
 
-          // Marquer le bouton comme ayant un écouteur attaché
-          copyButton.setAttribute("data-has-listener", "true");
+          button.setAttribute("data-initialized", "true");
         });
       }
 
-      // Fonction pour formatter le menu pour la copie
+      // Fonction simplifiée pour formatter le menu
       function formatMenuForCopy() {
-        // Titre et sous-titre
-        const titleElement = document.querySelector(".menu-title h3");
-        const title = titleElement
-          ? titleElement.textContent || "La Cantine Mensuelle"
-          : "La Cantine Mensuelle";
+        // Extraire les informations essentielles du menu
+        const title =
+          document.querySelector(".menu-title h3")?.textContent?.trim() ||
+          "La Cantine Mensuelle";
+        const subtitle =
+          document.querySelector(".menu-subtitle")?.textContent?.trim() || "";
 
-        const subtitleElement = document.querySelector(".menu-subtitle");
-        const subtitle = subtitleElement
-          ? subtitleElement.textContent || ""
-          : "";
-
-        // Récupérer les sections du menu
-        const courseTitle1 = document.querySelector(
-          ".course-title:nth-of-type(1)"
-        );
-        const entreeDish = courseTitle1
-          ? courseTitle1.nextElementSibling
-          : null;
-        const entrée =
-          entreeDish && entreeDish.textContent
-            ? entreeDish.textContent.trim()
-            : "";
-
-        // Plat principal et options
-        const dishNameElements = document.querySelectorAll(".dish-name");
+        // Récupérer les plats
+        const entree =
+          document
+            .querySelector(".course-title:nth-of-type(1) + .dish .dish-name")
+            ?.textContent?.trim() || "";
         const platPrincipal =
-          dishNameElements.length > 1 && dishNameElements[1].textContent
-            ? dishNameElements[1].textContent
-            : "";
+          document
+            .querySelector(".course-title:nth-of-type(2) + .dish .dish-name")
+            ?.textContent?.trim() || "";
+        const platDescription =
+          document.querySelector(".dish-description")?.textContent?.trim() ||
+          "";
 
-        const platDescriptionElement =
-          document.querySelector(".dish-description");
-        const platDescription = platDescriptionElement
-          ? platDescriptionElement.textContent || ""
-          : "";
-
-        const optionElements = document.querySelectorAll(".option");
+        // Options
         const optionVeg =
-          optionElements.length > 0 && optionElements[0].textContent
-            ? optionElements[0].textContent.trim()
-            : "";
+          document
+            .querySelector(".option:nth-of-type(1)")
+            ?.textContent?.trim() || "";
         const optionCarne =
-          optionElements.length > 1 && optionElements[1].textContent
-            ? optionElements[1].textContent.trim()
-            : "";
+          document
+            .querySelector(".option:nth-of-type(2)")
+            ?.textContent?.trim() || "";
 
         // Dessert
         const dessert =
-          dishNameElements.length > 2 && dishNameElements[2].textContent
-            ? dishNameElements[2].textContent
-            : "";
-
-        const dishDescriptionElements =
-          document.querySelectorAll(".dish-description");
+          document
+            .querySelector(".course-title:nth-of-type(3) + .dish .dish-name")
+            ?.textContent?.trim() || "";
         const dessertDesc =
-          dishDescriptionElements.length > 1 &&
-          dishDescriptionElements[1].textContent
-            ? dishDescriptionElements[1].textContent
-            : "";
+          document
+            .querySelectorAll(".dish-description")[1]
+            ?.textContent?.trim() || "";
 
-        // Note de bas de page
-        const noteElement = document.querySelector(".menu-note");
-        const note = noteElement ? noteElement.textContent || "" : "";
+        // Note
+        const note =
+          document.querySelector(".menu-note")?.textContent?.trim() || "";
 
         // Formater le texte
         return (
           `${title} - ${subtitle}\n\n` +
-          `--- ENTRÉE ---\n${entrée}\n\n` +
+          `--- ENTRÉE ---\n${entree}\n\n` +
           `--- PLAT PRINCIPAL ---\n${platPrincipal}\n${platDescription}\n\n` +
           `${optionVeg}\n${optionCarne}\n\n` +
           `--- DESSERT ---\n${dessert}\n${dessertDesc}\n\n` +
@@ -743,55 +708,35 @@ const mobileMenuItems = [
         );
       }
 
-      // Fonction pour mettre à jour les liens actifs du menu mobile
+      // Gestion des liens actifs du menu mobile (fonction réduite à l'essentiel)
       function updateMobileLinks() {
-        const currentPath = window.location.pathname;
-        
-        // Fonction pour déterminer si un lien est actif
-        function isPathActive(linkPath: string) {
-          if (linkPath === "/") {
-            return currentPath === "/";
-          }
-          return currentPath.endsWith(linkPath);
-        }
-        
-        // Mettre à jour les liens de la navigation mobile
         document.querySelectorAll(".nav-link").forEach((link) => {
           const href = link.getAttribute("href");
           if (!href) return;
-          
-          if (isPathActive(href)) {
-            link.classList.add("active");
-          } else {
-            link.classList.remove("active");
-          }
+
+          // Vérifier si le lien correspond au chemin actuel
+          const isActive =
+            href === "/"
+              ? window.location.pathname === "/"
+              : window.location.pathname.endsWith(href);
+
+          // Mettre à jour la classe active
+          link.classList.toggle("active", isActive);
         });
       }
 
-      // Initialiser au chargement de la page
+      // Initialiser les fonctionnalités lors du chargement et des transitions
       document.addEventListener("DOMContentLoaded", () => {
         initCopyFunctions();
         updateMobileLinks();
       });
 
-      // Réinitialiser lors des changements de page d'Astro
       document.addEventListener("astro:page-load", () => {
         initCopyFunctions();
         updateMobileLinks();
       });
 
-      // Support pour prefers-reduced-motion
-      const prefersReducedMotion = window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      );
-      if (prefersReducedMotion.matches) {
-        const notification = document.getElementById("copy-notification");
-        if (notification) {
-          notification.style.transition = "opacity 0.1s ease";
-        }
-      }
-
-      // Exécuter immédiatement lors du chargement du script
+      // Activer les fonctionnalités immédiatement
       initCopyFunctions();
       updateMobileLinks();
     </script>

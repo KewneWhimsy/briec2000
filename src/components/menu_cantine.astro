@@ -48,7 +48,6 @@ function getMonthName(date: Date | string): string {
         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
         ></path>
       </svg>
-      <span class="copy-text">Copier</span>
     </button>
   </div>
 
@@ -184,20 +183,6 @@ function getMonthName(date: Date | string): string {
 
   .copy-menu-btn.copied {
     background-color: rgba(255, 255, 255, 0.4);
-  }
-
-  /* Le texte "Copier" est toujours caché */
-  .copy-text {
-    display: none;
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
   }
 
   .menu-body {
