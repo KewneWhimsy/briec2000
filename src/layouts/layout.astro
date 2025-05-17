@@ -130,7 +130,7 @@ const mobileMenuItems = [
         text-decoration: underline;
       }
 
-      /* Bouton standard - style global car utilisé partout */
+      /* Bouton standard */
       .btn {
         display: inline-flex;
         align-items: center;
@@ -146,29 +146,21 @@ const mobileMenuItems = [
         white-space: nowrap;
         user-select: none;
       }
-
       .btn:hover {
         background-color: var(--color-primary);
         color: var(--bg-color);
         text-decoration: none;
       }
 
+      /* Carte standard */
       .card {
         border: 1px solid var(--color-border);
-        background-color: var(--bg-color);
         border-radius: 0.375rem;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         transition: background-color 0.2s ease;
       }
-
       .card:hover {
         background-color: rgba(var(--color-primary-rgb, 0, 0, 0), 0.05);
-      }
-
-      .email-copy {
-        text-decoration: underline;
-        cursor: pointer;
-        user-select: all;
       }
 
       /* ============== STYLES POUR LE CONTENU MARKDOWN =============== */
@@ -243,7 +235,6 @@ const mobileMenuItems = [
         text-decoration: none;
         padding: 0.25rem;
         position: relative;
-        transition: font-weight 0.2s ease;
       }
 
       /* Petit indicateur visuel sous le lien actif */
@@ -257,14 +248,6 @@ const mobileMenuItems = [
         height: 2px;
         background-color: var(--color-primary);
         border-radius: 1px;
-      }
-
-      /* Styles pour l'en-tête mobile fixed */
-      .mobile-header-sticky {
-        z-index: 50;
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
       }
 
       /* Padding pour le contenu mobile sous le header fixe */
@@ -286,6 +269,14 @@ const mobileMenuItems = [
           display: none;
         }
       }
+      
+      /* Liens mail, permet aussi le ciblage par le script bloquant le mail:to */
+      .email-copy {
+        text-decoration: underline;
+        cursor: pointer;
+        user-select: all;
+      }
+
       /* ============== STYLE POUR LES SCROLLBARS =============== */
 
       /* Largeur et hauteur des scrollbars */
@@ -294,42 +285,7 @@ const mobileMenuItems = [
         --scrollbar-height: 12px;
       }
 
-      /* Styles pour les navigateurs basés sur WebKit (Chrome, Safari, Opera, Edge) */
-      ::-webkit-scrollbar {
-        width: var(--scrollbar-width);
-        height: var(--scrollbar-height);
-      }
-
-      ::-webkit-scrollbar-track {
-        background: transparent;
-        border-radius: 8px;
-      }
-
-      ::-webkit-scrollbar-thumb {
-        background-color: color-mix(
-          in srgb,
-          var(--color-primary) 40%,
-          transparent
-        );
-        border-radius: 8px;
-        border: 3px solid var(--bg-color);
-        transition: background-color 0.3s ease;
-      }
-
-      ::-webkit-scrollbar-thumb:hover {
-        background-color: color-mix(
-          in srgb,
-          var(--color-primary) 60%,
-          transparent
-        );
-      }
-
-      ::-webkit-scrollbar-corner {
-        background: transparent;
-      }
-
-      /* Styles pour Firefox */
-      * {
+      html {
         scrollbar-width: thin;
         scrollbar-color: color-mix(
             in srgb,
@@ -339,50 +295,7 @@ const mobileMenuItems = [
           transparent;
       }
 
-      /* Scrollbars plus petites sur les appareils mobiles */
-      @media (max-width: 768px) {
-        :root {
-          --scrollbar-width: 8px;
-          --scrollbar-height: 8px;
-        }
-      }
-
-      /* Support pour le mode préférant les mouvements réduits */
-      @media (prefers-reduced-motion: reduce) {
-        ::-webkit-scrollbar-thumb {
-          transition: none;
-        }
-
-        .nav-link {
-          transition: none;
-        }
-      }
-
-      /* Styles spécifiques pour certains conteneurs avec défilement */
-      .pdf-scroller,
-      .fixed-sidebar,
-      .theme-overlay {
-        scrollbar-width: thin;
-        scrollbar-color: color-mix(
-            in srgb,
-            var(--color-primary) 40%,
-            transparent
-          )
-          transparent;
-      }
-
-      /* Support des thèmes sombres */
-      html[data-theme="lavande-sombre"] ::-webkit-scrollbar-thumb,
-      html[data-theme="ocean-profond"] ::-webkit-scrollbar-thumb,
-      html[data-theme="amethyste-or"] ::-webkit-scrollbar-thumb,
-      html[data-theme="bleu-jaune"] ::-webkit-scrollbar-thumb,
-      html[data-theme="gris-ambre"] ::-webkit-scrollbar-thumb,
-      html[data-theme="ardoise-peche"] ::-webkit-scrollbar-thumb,
-      html[data-theme="prune-menthe"] ::-webkit-scrollbar-thumb,
-      html[data-theme="aubergine-citron"] ::-webkit-scrollbar-thumb,
-      html[data-theme="gris-citron"] ::-webkit-scrollbar-thumb {
-        border-color: var(--bg-color);
-      }
+      /* ============== CORRECTIONS INSTAGRAM =============== */
 
       /* Styles spécifiques pour Instagram WebView */
       html.instagram-webview .content-wrapper {
@@ -402,6 +315,7 @@ const mobileMenuItems = [
         height: auto !important;
         min-height: 5rem !important;
       }
+      
     </style>
   </head>
   <body class="min-h-screen flex flex-col">
