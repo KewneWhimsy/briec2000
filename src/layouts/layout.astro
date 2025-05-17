@@ -55,7 +55,7 @@ const mobileMenuItems = [
     <title transition:animate="fade">{title}</title>
 
     <!-- Activer les transitions de page avec le client router -->
-    <ClientRouter />
+    <ClientRouter fallback="swap"/>
 
     <!-- Intégration des scripts du layout -->
     <LayoutScripts />
@@ -276,7 +276,7 @@ const mobileMenuItems = [
         cursor: pointer;
         user-select: all;
       }
-
+      
       /* ============== STYLE POUR LES SCROLLBARS =============== */
 
       /* Largeur et hauteur des scrollbars */
