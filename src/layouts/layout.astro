@@ -543,8 +543,7 @@ const mobileMenuItems = [
 
     <script>
       /**
-       * Gestionnaire unifié des fonctionnalités de copie
-       * Gère à la fois la copie d'email et la copie du menu
+       * Gère à la fois le prevent default pour les emails et la copie du menu
        */
       function initCopyFunctions() {
         // Créer une notification générique pour toute fonctionnalité de copie
@@ -576,7 +575,7 @@ const mobileMenuItems = [
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
-        <span>Menu Copié !</span>
+        <span>Menu copié !</span>
       `;
             document.body.appendChild(notification);
           }
@@ -610,7 +609,7 @@ const mobileMenuItems = [
           link.setAttribute("data-initialized", "true");
         });
 
-        // 2. Gérer la copie du menu (seule fonctionnalité qui nécessite une notification)
+        // 2. Gérer la copie du menu
         document.querySelectorAll(".copy-menu-btn").forEach((button) => {
           // Éviter les doubles listeners
           if (button.getAttribute("data-initialized") === "true") return;
