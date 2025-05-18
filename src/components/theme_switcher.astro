@@ -596,8 +596,8 @@ const defaultTheme = "lavande";
       // Appliquer le thème au document
       document.documentElement.setAttribute("data-theme", themeId);
 
-      // Sauvegarder la préférence en sessionStorage
-      sessionStorage.setItem("selected-theme", themeId);
+      // Sauvegarder la préférence en localStorage
+      localStorage.setItem("selected-theme", themeId);
     };
 
     // Ajouter les écouteurs d'événements aux boutons de thème
@@ -642,7 +642,7 @@ const defaultTheme = "lavande";
     // Détecter le thème actuel et appliquer les classes actives
     const currentTheme =
       document.documentElement.getAttribute("data-theme") ||
-      sessionStorage.getItem("selected-theme") ||
+      localStorage.getItem("selected-theme") ||
       "lavande";
 
     if (currentTheme) {
@@ -664,7 +664,7 @@ const defaultTheme = "lavande";
   document.addEventListener("astro:before-swap", (event) => {
     const currentTheme =
       document.documentElement.getAttribute("data-theme") ||
-      sessionStorage.getItem("selected-theme") ||
+      localStorage.getItem("selected-theme") ||
       "lavande";
 
     // Appliquer le thème au nouveau document
