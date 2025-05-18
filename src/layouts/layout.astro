@@ -319,10 +319,14 @@ const mobileMenuItems = [
     </style>
   </head>
   <body class="min-h-screen flex flex-col">
-    
+    <!-- ThemeSwitcher en position fixe pour mobile et desktop -->
+    <div class="fixed top-2 left-2 z-[99]" transition:persist>
+      <ThemeSwitcher />
+    </div>
+
     <!-- Header mobile avec liens actifs mis en valeur -->
     <header
-      class="border-b py-3 px-4 md:hidden fixed top-0 left-0 right-0 w-full bg-opacity-100 z-50"
+      class="border-b py-3 px-4 md:hidden fixed top-0 left-0 right-0 w-full z-50"
       style="border-color: var(--color-border); background-color: var(--bg-color);"
       transition:animate="fade"
     >
