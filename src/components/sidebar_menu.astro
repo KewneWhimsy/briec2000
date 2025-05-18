@@ -21,7 +21,7 @@ function isActive(itemUrl: string): boolean {
 }
 ---
 
-<aside class="sidebar-menu">
+<aside class="sidebar-menu" transition:animate="fade">
   <nav class="py-8">
     <ul class="space-y-6">
       {
@@ -29,8 +29,7 @@ function isActive(itemUrl: string): boolean {
           <li>
             <a
               href={item.url}
-              class={`sidebar-link text-lg transition-colors ${isActive(item.url) ? "active" : ""}`}
-              transition:animate="fade"
+              class={`sidebar-link text-lg ${isActive(item.url) ? "active" : ""}`}
             >
               {item.title}
             </a>
@@ -44,6 +43,36 @@ function isActive(itemUrl: string): boolean {
   // Écouteur pour les changements d'URL
   window.addEventListener("popstate", () => {
     updateActiveLink();
+  });
+
+  // Gérer le début de la transition - avant que le contenu change
+  document.addEventListener('astro:before-preparation', (event) => {
+    const targetHref = event.to?.pathname;
+    if (!targetHref) return;
+    
+    // Trouver le lien cible
+    const links = document.querySelectorAll(".sidebar-link");
+    links.forEach((link) => {
+      const href = link.getAttribute("href");
+      if (!href) return;
+      
+      // Si c'est le lien vers lequel on navigue, ajouter une classe de pré-transition
+      if ((href === '/' && targetHref === '/') || 
+          (href !== '/' && targetHref.endsWith(href))) {
+        // Conservation de l'état pendant la transition
+        document.documentElement.style.setProperty('--keep-trait', '1');
+        link.classList.add('pre-active');
+      }
+    });
+  });
+  
+  // Nettoyer après la fin de la transition
+  document.addEventListener('astro:after-swap', () => {
+    document.documentElement.style.removeProperty('--keep-trait');
+    
+    // Supprimer la classe temporaire
+    const preActiveLinks = document.querySelectorAll('.pre-active');
+    preActiveLinks.forEach(link => link.classList.remove('pre-active'));
   });
 
   // Fonction pour mettre à jour le lien actif
@@ -68,7 +97,7 @@ function isActive(itemUrl: string): boolean {
   document.addEventListener("astro:page-load", updateActiveLink);
 
   // Fonction pour déterminer si un lien est actif
-  function isActive(itemUrl: string, currentPath: string): boolean {
+  function isActive(itemUrl: string, currentPath: string) {
     if (itemUrl === "/") {
       return currentPath === "/";
     }
@@ -80,8 +109,6 @@ function isActive(itemUrl: string): boolean {
     min-width: 180px;
     border-right: 1px solid var(--color-border);
     padding-right: 1.5rem;
-    position: relative; /* Assure une position relative pour le z-index */
-    z-index: 10; /* Donne un z-index pour la superposition */
   }
 
   .sidebar-link {
@@ -101,45 +128,54 @@ function isActive(itemUrl: string): boolean {
   .sidebar-link.active {
     color: var(--color-primary) !important;
     font-weight: 500;
+    /* Astuce: rendre la transition du trait indépendante de l'état active */
+    --trait-scale: 1;
+  }
+  
+  /* Les liens non actifs ont un trait d'échelle 0 par défaut */
+  .sidebar-link {
+    --trait-scale: 0;
+  }
+  
+  /* Lien vers lequel on navigue - préparation à l'état actif */
+  .sidebar-link.pre-active {
+    --trait-scale: 0.8;
+    color: var(--color-primary) !important;
   }
 
   /* Effet visuel pour indiquer la page active avec une ligne */
-  .sidebar-link.active::after {
+  .sidebar-link::after {
     content: "";
     position: absolute;
     bottom: -3px;
     left: 0;
-    width: 30px;
+    width: 32px;
     height: 2px;
     background-color: var(--color-primary);
     transform-origin: left;
-    transform: scaleX(1);
+    transform: scaleX(var(--trait-scale));
     transition: transform 0.3s ease;
+    /* Important: ces propriétés persistent pendant les transitions */
+    transition-property: transform, opacity, color;
+    will-change: transform;
   }
 
   /* Animation pour le survol des liens non actifs */
-  .sidebar-link:not(.active)::after {
-    content: "";
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-    width: 30px;
-    height: 2px;
-    background-color: var(--color-primary);
-    transform-origin: left;
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-  }
-
-  .sidebar-link:not(.active):hover::after {
+  .sidebar-link:not(.active):not(.pre-active):hover::after {
     transform: scaleX(0.7);
+  }
+  
+  /* Animation au clic pour tous les liens - crée un effet visuel immédiat */
+  .sidebar-link:active::after {
+    transform: scaleX(0.8);
+    transition: transform 0.1s ease;
   }
 
   /* Support pour prefers-reduced-motion */
   @media (prefers-reduced-motion: reduce) {
     .sidebar-link::after,
-    .sidebar-link:not(.active)::after,
-    .sidebar-link:not(.active):hover::after {
+    .sidebar-link:not(.active):not(.pre-active):hover::after,
+    .sidebar-link:active::after {
       transition: none;
     }
   }
