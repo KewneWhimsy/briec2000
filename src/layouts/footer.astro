@@ -1,21 +1,22 @@
 ---
 const year = new Date().getFullYear();
 ---
+
 <footer>
   <div class="container mx-auto px-4 py-6">
-    <div class="flex flex-col md:flex-row justify-between items-center">
-      <p class="text-sm mb-4 md:mb-0">
-        <strong>Contact:</strong> 
+    <div class="flex flex-col md:flex-row justify-between gap-y-4 items-center">
+      <p class="text-sm">
+        <strong>Contact:</strong>
         <span class="email-copy">briec2000@emailasso.net</span>
       </p>
-  <div class="flex items-center gap-3 md:gap-6">
-    <p class="text-sm m-0">
-      &copy; {year} Briec2000 - Tous droits réservés
-    </p>
-    <span class="hidden md:inline">|</span>
-    <a href="/legal/" class="text-sm">Mentions légales & Confidentialité</a>
-  </div>
-</div>
+      <div class="flex items-center gap-4">
+        <p class="text-sm text-balance">
+          &copy; {year} Briec2000 - Tous droits réservés
+        </p>
+        <span class="inline">|</span>
+        <a href="/legal/" class="text-sm text-balance text-right">Mentions légales & Confidentialité</a>
+      </div>
+    </div>
   </div>
 </footer>
 <style>
@@ -23,11 +24,12 @@ const year = new Date().getFullYear();
     background-color: var(--color-secondary);
     color: white;
   }
-  
-  footer span, footer a {
+
+  footer span,
+  footer a {
     color: white !important;
   }
-  
+
   /* S'assurer que les paragraphes dans le footer n'ont pas de margin par défaut */
   footer p {
     margin-bottom: 0;
