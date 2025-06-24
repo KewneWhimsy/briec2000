@@ -87,7 +87,7 @@ function formatDate(date: Date | string): string {
       {/* Menu du mois en version mobile - s'affiche avant l'événement */}
       {nextCantine && (
         <div class="xl:hidden mt-8 mb-10">
-          <MenuCantine cantineEvent={nextCantine} isDesktop={false} />
+          <MenuCantine isDesktop={false} />
         </div>
       )}
       
@@ -152,7 +152,7 @@ function formatDate(date: Date | string): string {
     {/* Menu du mois en version desktop - s'affiche à droite */}
     {nextCantine && (
       <div class="hidden xl:block lg:w-80 xl:w-96 lg:relative">
-        <MenuCantine cantineEvent={nextCantine} isDesktop={true} />
+        <MenuCantine isDesktop={true} />
       </div>
     )}
   </div>

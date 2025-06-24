@@ -1,105 +1,160 @@
 ---
 // src/components/menu_cantine.astro
+import { getCollection } from 'astro:content';
+import type { EventEntry } from '../../types';
+
 export interface Props {
-  cantineEvent: any;
   isDesktop?: boolean;
 }
 
-const { cantineEvent, isDesktop = false } = Astro.props as Props;
+const { isDesktop = false } = Astro.props as Props;
+
+// Récupérer automatiquement la prochaine cantine
+const allEvents = await getCollection('events') as EventEntry[];
+const currentDate = new Date();
+
+const nextCantine = allEvents
+  .filter((event: EventEntry) => {
+    const eventDate = event.data.date instanceof Date ? 
+      event.data.date : 
+      new Date(event.data.date);
+      
+    return eventDate > currentDate && 
+           event.data.draft !== true && 
+           event.data.title.toLowerCase().includes('cantine');
+  })
+  .sort((a: EventEntry, b: EventEntry) => {
+    const dateA = a.data.date instanceof Date ? a.data.date : new Date(a.data.date);
+    const dateB = b.data.date instanceof Date ? b.data.date : new Date(b.data.date);
+    return dateA.getTime() - dateB.getTime();
+  })[0];
 
 function getMonthName(date: Date | string): string {
   const dateObj = date instanceof Date ? date : new Date(date);
   const options: Intl.DateTimeFormatOptions = { month: "long" };
   return dateObj.toLocaleDateString("fr-FR", options);
 }
+
+// Parser le contenu markdown pour extraire les infos du menu
+function parseMenuFromMarkdown(event: EventEntry) {
+  const { body } = event;
+  
+  let menu = {
+    entree: "Petite salade fraîche de saison",
+    platPrincipal: "Plat du jour",
+    platDescription: "Légumes et saveurs du moment",
+    optionVeg: "Protéine végétale",
+    optionCarnee: "Poulet fermier",
+    dessert: "Assortiment de desserts maison",
+    dessertDesc: "Disponibles sur place uniquement"
+  };
+
+  const lines = body.split('\n');
+  
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    
+    if (line.startsWith('**Entrée :**')) {
+      menu.entree = line.replace('**Entrée :**', '').trim();
+    }
+    
+    if (line.startsWith('**Plat principal :**')) {
+      menu.platPrincipal = line.replace('**Plat principal :**', '').trim();
+      if (i + 1 < lines.length && lines[i + 1].trim().startsWith('*')) {
+        menu.platDescription = lines[i + 1].trim().replace(/^\*/, '').replace(/\*$/, '').trim();
+      }
+    }
+    
+    if (line.startsWith('**Option végétarienne :**')) {
+      menu.optionVeg = line.replace('**Option végétarienne :**', '').trim();
+    }
+    
+    if (line.startsWith('**Option carnée :**')) {
+      menu.optionCarnee = line.replace('**Option carnée :**', '').trim();
+    }
+    
+    if (line.startsWith('**Dessert :**')) {
+      menu.dessert = line.replace('**Dessert :**', '').trim();
+      if (i + 1 < lines.length && lines[i + 1].trim().startsWith('*')) {
+        menu.dessertDesc = lines[i + 1].trim().replace(/^\*/, '').replace(/\*$/, '').trim();
+      }
+    }
+  }
+
+  return menu;
+}
 ---
 
-<div class={`restaurant-menu ${isDesktop ? "fixed-sidebar" : ""}`}>
-  <div class="menu-heading">
-    <div class="menu-title">
-      <h3>La Cantine Mensuelle</h3>
-      <p class="menu-subtitle">
-        Menu de {getMonthName(cantineEvent.data.date)}
-      </p>
+{nextCantine && (
+  <div class={`restaurant-menu ${isDesktop ? "fixed-sidebar" : ""}`}>
+    <div class="menu-heading">
+      <div class="menu-title">
+        <h3>La Cantine Mensuelle</h3>
+        <p class="menu-subtitle">Menu de {getMonthName(nextCantine.data.date)}</p>
+      </div>
+      <button id="copy-menu-btn" class="copy-menu-btn" aria-label="Copier le menu" title="Copier le menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+      </button>
     </div>
-    <button
-      id="copy-menu-btn"
-      class="copy-menu-btn"
-      aria-label="Copier le menu"
-      title="Copier le menu"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
-        ></path>
-      </svg>
-    </button>
-  </div>
 
-  <div class="menu-body">
-    <div id="menu-content" class="menu-content">
-      <section>
-        <div class="menu-section">
-          <h4 class="course-title">Entrée</h4>
-          <div class="dish compact">
-            <p class="dish-name">Petite salade fraîche de saison</p>
-          </div>
-        </div>
+    <div class="menu-body">
+      <div id="menu-content" class="menu-content">
+        <section>
+          {(() => {
+            const menu = parseMenuFromMarkdown(nextCantine);
+            return (
+              <>
+                <div class="menu-section">
+                  <h4 class="course-title">Entrée</h4>
+                  <div class="dish compact">
+                    <p class="dish-name">{menu.entree}</p>
+                  </div>
+                </div>
 
-        <div class="menu-section">
-          <h4 class="course-title">Plat Principal</h4>
-          <div class="dish">
-            <p class="dish-name">Tajine aux saveurs orientales</p>
-            <p class="dish-description">
-              Semoule, amandes, abricots, raisins secs et légumes
-            </p>
+                <div class="menu-section">
+                  <h4 class="course-title">Plat Principal</h4>
+                  <div class="dish">
+                    <p class="dish-name">{menu.platPrincipal}</p>
+                    <p class="dish-description">{menu.platDescription}</p>
+                    <div class="dish-options">
+                      <div class="option">
+                        <span class="option-label">Option Végétarienne</span>
+                        <span class="option-detail">{menu.optionVeg}</span>
+                      </div>
+                      <div class="option">
+                        <span class="option-label">Option Carnée</span>
+                        <span class="option-detail">{menu.optionCarnee}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-            <div class="dish-options">
-              <div class="option">
-                <span class="option-label">Option Végétarienne</span>
-                <span class="option-detail">Protéine de soja</span>
-              </div>
-
-              <div class="option">
-                <span class="option-label">Option Carnée</span>
-                <span class="option-detail">Poulet fermier</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="menu-section">
-          <h4 class="course-title">Dessert</h4>
-          <div class="dish compact">
-            <p class="dish-name">Assortiment de desserts maison</p>
-            <p class="dish-description">Disponibles sur place uniquement</p>
-          </div>
-        </div>
-      </section>
-    </div>
-    <div class="menu-footer">
-      <p class="menu-note">
-        Pensez à apporter vos contenants propres pour les repas à emporter
-      </p>
-      <a href={`/events/${cantineEvent.slug}/`} class="menu-button">
-        Détails et réservation
-      </a>
+                <div class="menu-section">
+                  <h4 class="course-title">Dessert</h4>
+                  <div class="dish compact">
+                    <p class="dish-name">{menu.dessert}</p>
+                    <p class="dish-description">{menu.dessertDesc}</p>
+                  </div>
+                </div>
+              </>
+            );
+          })()}
+        </section>
+      </div>
+      <div class="menu-footer">
+        <p class="menu-note">
+          Pensez à apporter vos contenants propres pour les repas à emporter. Réservation par mail briec2000@emailasso.net ou sur place au centre social
+        </p>
+        <a href={`/events/${nextCantine.slug}/`} class="menu-button">Plus d'infos sur les cantines</a>
+      </div>
     </div>
   </div>
-</div>
+)}
 
 <style>
-  /* Styles pour le menu de restaurant avec variables de thème */
   .restaurant-menu {
     border: 1px solid var(--color-border);
     border-radius: 10px;
@@ -110,7 +165,6 @@ function getMonthName(date: Date | string): string {
     width: 100%;
   }
 
-  /* Fixed sidebar behavior */
   .fixed-sidebar {
     position: fixed;
     top: 2rem;
@@ -171,17 +225,9 @@ function getMonthName(date: Date | string): string {
     transform: scale(1.1);
   }
 
-  .copy-menu-btn.copied {
-    background-color: rgba(255, 255, 255, 0.4);
-  }
-
   .menu-body {
     padding: 16px;
     background-color: var(--bg-color);
-  }
-
-  .menu-content {
-    position: relative;
   }
 
   .menu-section {
@@ -212,7 +258,7 @@ function getMonthName(date: Date | string): string {
     margin-bottom: 10px;
     padding: 0 6px;
   }
-  
+
   .dish.compact {
     margin-bottom: 6px;
   }
@@ -232,7 +278,7 @@ function getMonthName(date: Date | string): string {
     font-style: italic;
     line-height: 1.3;
   }
-  
+
   .dish.compact .dish-description {
     margin-bottom: 4px;
   }
@@ -255,8 +301,8 @@ function getMonthName(date: Date | string): string {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
 
-  html[data-theme="midnight"] .option,
-  html[data-theme="forest"] .option {
+  html[data-theme*="sombre"] .option,
+  html[data-theme*="profond"] .option {
     background-color: rgba(255, 255, 255, 0.1);
   }
 
@@ -273,6 +319,7 @@ function getMonthName(date: Date | string): string {
   .menu-footer {
     margin-top: 14px;
     text-align: center;
+    text-wrap: balance;
     border-top: 1px solid var(--color-border);
     padding-top: 12px;
   }
