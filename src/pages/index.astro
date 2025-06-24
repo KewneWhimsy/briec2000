@@ -5,6 +5,9 @@ import { getCollection } from 'astro:content';
 import type { EventEntry, CantineEntry, Price } from '../../types';
 import MenuCantine from '../components/menu_cantine.astro';
 
+// Importer les informations de build
+import buildInfo from '../data/build-info.json';
+
 // Récupérer tous les événements
 const allEvents = await getCollection('events') as EventEntry[];
 const currentDate = new Date();
@@ -12,7 +15,6 @@ const currentDate = new Date();
 // Filtrer pour ne montrer que les événements à venir et non brouillons
 const upcomingEvents = allEvents
   .filter((event: EventEntry) => {
-    // Vérifier si date existe et convertir en Date si c'est une string
     const eventDate = event.data.date instanceof Date ? 
       event.data.date : 
       new Date(event.data.date);
@@ -66,9 +68,21 @@ function formatDate(date: Date | string): string {
     <div class="lg:flex-1 max-w-3xl">
       <h1 class="mb-8">Briec2000</h1>
       
-      <p class="text-lg mb-6">
-        Association locale à Briec-de-l'Odet (29510) organisant des événements communautaires et culturels.
-      </p>
+      <div class="mb-8">
+        <p class="text-lg leading-relaxed mb-4">
+          Briec 2000 c'est une petite équipe qui concocte un <strong>CarnaBal des monstres</strong> pour le <strong>31 octobre</strong>. 
+          Pour préparer ça, iels organisent des repas à emporter, des ateliers, des petits événements, 
+          <strong>viens nous rencontrer au prochain !</strong>
+        </p>
+        
+        <div class="contact-info mb-4">
+          <p><strong>Contact :</strong> <span class="email-copy">briec2000@emailasso.net</span></p>
+        </div>
+        
+        <p class="text-sm opacity-70 italic">
+          Dernière mise à jour le : {buildInfo.lastUpdate}
+        </p>
+      </div>
       
       {/* Menu du mois en version mobile - s'affiche avant l'événement */}
       {nextCantine && (
@@ -129,10 +143,6 @@ function formatDate(date: Date | string): string {
       )}
       
       <div class="flex flex-col gap-4 pt-6 text-center">
-        <p>
-          <strong>Contact :</strong> 
-          <span class="email-copy">briec2000@emailasso.net</span>
-        </p>
         <div>
           <a href="/about/" class="btn">En savoir plus sur l'association</a>
         </div>
