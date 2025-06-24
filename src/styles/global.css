@@ -1,2 +1,236 @@
 /* Import Tailwind CSS */
 @import "tailwindcss";
+
+/* ============== VARIABLES DE BASE =============== */
+/* Les thèmes sont définis dans theme_switcher.astro pour respecter la locality of concern */
+
+/* ============== STYLES DE BASE =============== */
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-primary) 40%, transparent) transparent;
+}
+
+body {
+  font-family: var(--font-andika);
+  font-size: 1rem;
+  line-height: 1.5;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ============== HIÉRARCHIE TYPOGRAPHIQUE =============== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-champ);
+  color: var(--color-primary);
+  font-weight: 700;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+h3 {
+  font-size: 1.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+h4 {
+  font-size: 1.125rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+/* ============== COMPOSANTS DE BASE =============== */
+
+/* Liens */
+a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* Bouton standard */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  transition: all 0.2s ease;
+  text-decoration: none;
+  font-size: 0.875rem;
+  background-color: transparent;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.btn:hover {
+  background-color: var(--color-primary);
+  color: var(--bg-color);
+  text-decoration: none;
+}
+
+/* Carte standard */
+.card {
+  border: 1px solid var(--color-border);
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s ease;
+}
+
+.card:hover {
+  background-color: rgba(var(--color-primary-rgb, 0, 0, 0), 0.05);
+}
+
+/* ============== CONTENU MARKDOWN =============== */
+
+.event-content h1,
+.cantines-content h1,
+.about-content h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Masquer les H1 dans les contenus inclus */
+.event-content-in-page h1 {
+  display: none;
+}
+
+.event-content h2,
+.cantines-content h2,
+.about-content h2 {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.5rem;
+}
+
+.event-content h3,
+.cantines-content h3,
+.about-content h3 {
+  font-size: 1.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.event-content p,
+.cantines-content p,
+.about-content p {
+  margin-bottom: 1rem;
+}
+
+.event-content ul,
+.cantines-content ul,
+.about-content ul {
+  margin-left: 1.5rem;
+  margin-bottom: 1.5rem;
+  list-style-type: disc;
+}
+
+.event-content li,
+.cantines-content li,
+.about-content li {
+  margin-bottom: 0.5rem;
+}
+
+.event-content strong,
+.cantines-content strong,
+.about-content strong {
+  font-weight: 600;
+}
+
+.event-content em,
+.cantines-content em,
+.about-content em {
+  font-style: italic;
+}
+
+/* ============== NAVIGATION MOBILE =============== */
+
+.nav-link {
+  color: var(--color-primary);
+  font-size: 0.95rem;
+  text-decoration: none;
+  padding: 0.25rem;
+  position: relative;
+}
+
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background-color: var(--color-primary);
+  border-radius: 1px;
+}
+
+/* ============== UTILITAIRES =============== */
+
+.email-copy {
+  text-decoration: underline;
+  cursor: pointer;
+  user-select: all;
+}
+
+/* ============== RESPONSIVE =============== */
+
+@media (max-width: 767px) {
+  header {
+    min-height: 7rem;
+  }
+  
+  .content-wrapper {
+    padding-top: 8rem;
+  }
+}
+
+@media (min-width: 768px) {
+  header .simple-nav {
+    display: none;
+  }
+}
+
+/* ============== INSTAGRAM FIXES =============== */
+
+html.instagram-webview .content-wrapper {
+  padding-top: 9rem !important;
+}
+
+html.instagram-webview .simple-nav {
+  padding: 0.5rem 0 !important;
+}
+
+html.instagram-webview .nav-link {
+  font-size: 0.9rem !important;
+  padding: 0.25rem 0.5rem !important;
+}
+
+html.instagram-webview header {
+  height: auto !important;
+  min-height: 5rem !important;
+}

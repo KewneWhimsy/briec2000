@@ -3,29 +3,25 @@
 import Footer from "./footer.astro";
 import SidebarMenu from "../components/sidebar_menu.astro";
 import ThemeSwitcher from "../components/theme_switcher.astro";
-import LayoutScripts from "../components/layout_scripts.astro"; // Nouveau composant
+import LayoutScripts from "../components/layout_scripts.astro";
 import { Font } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 
-// Définissez les props que vous souhaitez passer à votre layout
 interface Props {
   title: string;
   description?: string;
   image?: string;
 }
 
-// Récupérez les props avec des valeurs par défaut
 const {
   title,
   description = "Briec2000 - Site de l'Association",
   image = "/images/default-og.png",
 } = Astro.props;
 
-// Obtenir directement le pathname pour les liens actifs
 const { pathname } = Astro.url;
 
-// Fonction simple pour vérifier si un lien est actif
 function isActive(path: string): boolean {
   if (path === "/") {
     return pathname === "/";
@@ -33,7 +29,6 @@ function isActive(path: string): boolean {
   return pathname.endsWith(path);
 }
 
-// Liste des liens du menu mobile (utilisée uniquement pour le menu mobile)
 const mobileMenuItems = [
   { title: "Accueil", url: "/" },
   { title: "À venir", url: "/events/" },
@@ -54,326 +49,64 @@ const mobileMenuItems = [
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title transition:animate="fade">{title}</title>
 
-    <!-- Activer les transitions de page avec le client router -->
     <ClientRouter fallback="swap"/>
-
-    <!-- Intégration des scripts du layout -->
     <LayoutScripts />
 
     <Font name="Andika" cssVariable="--font-andika" preload />
     <Font name="Champ" cssVariable="--font-champ" preload />
-
-    <style is:global>
-      /* ============== SYSTÈME TYPOGRAPHIQUE =============== */
-
-      /* Styles de base */
-      html {
-        scroll-behavior: smooth;
-      }
-      body {
-        font-family: var(--font-andika);
-        font-size: 1rem;
-        line-height: 1.5;
-        background-color: var(--bg-color);
-        color: var(--text-color);
-        transition:
-          background-color 0.3s ease,
-          color 0.3s ease;
-      }
-
-      /* Hiérarchie typographique principale */
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      h6 {
-        font-family: var(--font-champ);
-        color: var(--color-primary);
-        font-weight: 700;
-        line-height: 1.2;
-        transition: color 0.3s ease;
-      }
-
-      h1 {
-        font-size: 2rem;
-        margin-bottom: 2rem;
-      }
-
-      h2 {
-        font-size: 1.5rem;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid var(--color-border);
-      }
-
-      h3 {
-        font-size: 1.25rem;
-        margin-top: 1.5rem;
-        margin-bottom: 0.75rem;
-      }
-
-      h4 {
-        font-size: 1.125rem;
-        margin-top: 1.25rem;
-        margin-bottom: 0.5rem;
-      }
-
-      p {
-        margin-bottom: 1rem;
-      }
-
-      /* Liens */
-      a {
-        color: var(--color-primary);
-        text-decoration: underline;
-      }
-
-      /* Bouton standard */
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.5rem 1rem;
-        border: 1px solid var(--color-primary);
-        color: var(--color-primary);
-        transition: all 0.2s ease;
-        text-decoration: none;
-        font-size: 0.875rem;
-        background-color: transparent;
-        border-radius: 0.25rem;
-        white-space: nowrap;
-        user-select: none;
-      }
-      .btn:hover {
-        background-color: var(--color-primary);
-        color: var(--bg-color);
-        text-decoration: none;
-      }
-
-      /* Carte standard */
-      .card {
-        border: 1px solid var(--color-border);
-        border-radius: 0.375rem;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        transition: background-color 0.2s ease;
-      }
-      .card:hover {
-        background-color: rgba(var(--color-primary-rgb, 0, 0, 0), 0.05);
-      }
-
-      /* ============== STYLES POUR LE CONTENU MARKDOWN =============== */
-
-      /* Styles pour le contenu Markdown généré (utilisé dans plusieurs composants) */
-      .event-content :global(h1),
-      .cantines-content :global(h1),
-      .about-content :global(h1) {
-        font-size: 2rem;
-        margin-bottom: 1.5rem;
-      }
-
-      /* Pour cacher les H1 dans les contenus inclus dans une page */
-      .event-content-in-page :global(h1) {
-        display: none;
-      }
-
-      .event-content :global(h2),
-      .cantines-content :global(h2),
-      .about-content :global(h2) {
-        font-size: 1.5rem;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-        border-bottom: 1px solid var(--color-border);
-        padding-bottom: 0.5rem;
-      }
-
-      .event-content :global(h3),
-      .cantines-content :global(h3),
-      .about-content :global(h3) {
-        font-size: 1.25rem;
-        margin-top: 1.5rem;
-        margin-bottom: 0.75rem;
-      }
-
-      .event-content :global(p),
-      .cantines-content :global(p),
-      .about-content :global(p) {
-        margin-bottom: 1rem;
-      }
-
-      .event-content :global(ul),
-      .cantines-content :global(ul),
-      .about-content :global(ul) {
-        margin-left: 1.5rem;
-        margin-bottom: 1.5rem;
-        list-style-type: disc;
-      }
-
-      .event-content :global(li),
-      .cantines-content :global(li),
-      .about-content :global(li) {
-        margin-bottom: 0.5rem;
-      }
-
-      .event-content :global(strong),
-      .cantines-content :global(strong),
-      .about-content :global(strong) {
-        font-weight: 600;
-      }
-
-      .event-content :global(em),
-      .cantines-content :global(em),
-      .about-content :global(em) {
-        font-style: italic;
-      }
-
-      /* Style pour le menu mobile avec indication de lien actif */
-      .nav-link {
-        color: var(--color-primary);
-        font-size: 0.95rem;
-        text-decoration: none;
-        padding: 0.25rem;
-        position: relative;
-      }
-
-      /* Petit indicateur visuel sous le lien actif */
-      .nav-link.active::after {
-        content: "";
-        position: absolute;
-        bottom: -2px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 20px;
-        height: 2px;
-        background-color: var(--color-primary);
-        border-radius: 1px;
-      }
-
-      /* Padding pour le contenu mobile sous le header fixe */
-      @media (max-width: 767px) {
-        header {
-          min-height: 7rem; /* Ajustez cette valeur selon la hauteur réelle de votre header */
-        }
-        .content-wrapper {
-          padding-top: 8rem; /* Doit correspondre à la hauteur du header */
-        }
-      }
-
-      /* ============== ANIMATIONS ET UTILITAIRES =============== */
-
-      /* Adaptation responsive */
-      @media (min-width: 768px) {
-        /* Sur desktop, cacher le menu mobile */
-        header .simple-nav {
-          display: none;
-        }
-      }
-      
-      /* Liens mail, permet aussi le ciblage par le script bloquant le mail:to */
-      .email-copy {
-        text-decoration: underline;
-        cursor: pointer;
-        user-select: all;
-      }
-      
-      /* ============== STYLE POUR LES SCROLLBARS =============== */
-
-      /* Largeur et hauteur des scrollbars */
-      :root {
-        --scrollbar-width: 12px;
-        --scrollbar-height: 12px;
-      }
-
-      html {
-        scrollbar-width: thin;
-        scrollbar-color: color-mix(
-            in srgb,
-            var(--color-primary) 40%,
-            transparent
-          )
-          transparent;
-      }
-
-      /* ============== CORRECTIONS INSTAGRAM =============== */
-
-      /* Styles spécifiques pour Instagram WebView */
-      html.instagram-webview .content-wrapper {
-        padding-top: 9rem !important;
-      }
-
-      html.instagram-webview .simple-nav {
-        padding: 0.5rem 0 !important;
-      }
-
-      html.instagram-webview .nav-link {
-        font-size: 0.9rem !important;
-        padding: 0.25rem 0.5rem !important;
-      }
-
-      html.instagram-webview header {
-        height: auto !important;
-        min-height: 5rem !important;
-      }
-      
-    </style>
   </head>
+  
   <body class="min-h-screen flex flex-col">
-    <!-- ThemeSwitcher en position fixe pour mobile et desktop -->
+    <!-- ThemeSwitcher fixe -->
     <div class="fixed top-2 left-2 z-[99]" transition:persist>
       <ThemeSwitcher />
     </div>
 
-    <!-- Header mobile avec liens actifs mis en valeur -->
+    <!-- Header mobile -->
     <header
       class="border-b py-3 px-4 md:hidden fixed top-0 left-0 right-0 w-full z-50"
       style="border-color: var(--color-border); background-color: var(--bg-color);"
       transition:animate="fade"
     >
-      <!-- ThemeSwitcher en position fixe pour mobile et desktop -->
-    <div class="fixed top-2 left-2 z-[100]" transition:persist>
-      <ThemeSwitcher />
-    </div>
+      <div class="fixed top-2 left-2 z-[100]" transition:persist>
+        <ThemeSwitcher />
+      </div>
+      
       <div class="flex justify-between items-center">
         <div class="w-[36px]"></div>
-        <!-- Espace réservé de la taille du ThemeSwitcher -->
-        <span class="text-lg font-medium" style="color: var(--color-primary);"
-          >Briec2000</span
-        >
+        <span class="text-lg font-medium" style="color: var(--color-primary);">
+          Briec2000
+        </span>
       </div>
 
       <nav class="simple-nav pt-6" transition:animate="fade">
         <ul class="flex flex-wrap gap-x-4 gap-y-3 justify-center">
-          {
-            mobileMenuItems.map((item) => (
-              <li>
-                <a
-                  href={item.url}
-                  class={`nav-link ${isActive(item.url) ? "active" : ""}`}
-                >
-                  {item.title}
-                </a>
-              </li>
-            ))
-          }
+          {mobileMenuItems.map((item) => (
+            <li>
+              <a
+                href={item.url}
+                class={`nav-link ${isActive(item.url) ? "active" : ""}`}
+              >
+                {item.title}
+              </a>
+            </li>
+          ))}
         </ul>
       </nav>
     </header>
 
-    <!-- Wrapper de contenu avec transition et padding-top pour compenser le header -->
+    <!-- Contenu principal -->
     <div class="content-wrapper flex-grow mb-6">
       <div
         class="flex-grow container mx-auto px-4 py-6 md:py-6 flex"
         transition:animate="fade"
       >
-        <!-- Menu latéral pour desktop - sticky -->
+        <!-- Menu latéral desktop -->
         <div
           class="hidden md:block sticky top-6 self-start h-auto max-h-[calc(100vh-3rem)] pb-6"
           transition:persist
         >
-          <div class="h-28">
-            <!-- Espace réservé pour maintenir l'alignement vertical -->
-          </div>
+          <div class="h-28"></div>
           <SidebarMenu transition:persist />
         </div>
 
