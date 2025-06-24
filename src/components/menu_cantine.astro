@@ -86,13 +86,20 @@ function parseMenuFromMarkdown(event: EventEntry) {
 ---
 
 {nextCantine && (
-  <div class={`restaurant-menu ${isDesktop ? "fixed-sidebar" : ""}`}>
-    <div class="menu-heading">
-      <div class="menu-title">
-        <h3>La Cantine Mensuelle</h3>
-        <p class="menu-subtitle">Menu de {getMonthName(nextCantine.data.date)}</p>
+  <div class={`border-[var(--color-border)] rounded-lg overflow-hidden shadow-lg w-full ${isDesktop ? "fixed top-8 max-h-[90vh] overflow-y-auto max-w-96" : ""}`}>
+    <!-- En-tête du menu -->
+    <div class="bg-[var(--color-secondary)] text-center flex justify-center">
+      <div>
+        <h3 class="tracking-wide" style="color: white;">La Cantine Mensuelle</h3>
+        <p class="italic opacity-90 text-white">Menu de {getMonthName(nextCantine.data.date)}</p>
       </div>
-      <button id="copy-menu-btn" class="copy-menu-btn" aria-label="Copier le menu" title="Copier le menu">
+      
+      <button 
+        id="copy-menu-btn" 
+        class="copy-menu-btn absolute top-3 right-3 bg-white/20 hover:bg-white/30 text-white rounded-full w-8 h-8 flex items-center justify-center transition-all hover:scale-110" 
+        aria-label="Copier le menu" 
+        title="Copier le menu"
+      >
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
           <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
@@ -100,251 +107,91 @@ function parseMenuFromMarkdown(event: EventEntry) {
       </button>
     </div>
 
-    <div class="menu-body">
-      <div id="menu-content" class="menu-content">
-        <section>
-          {(() => {
-            const menu = parseMenuFromMarkdown(nextCantine);
-            return (
-              <>
-                <div class="menu-section">
-                  <h4 class="course-title">Entrée</h4>
-                  <div class="dish compact">
-                    <p class="dish-name">{menu.entree}</p>
-                  </div>
+    <!-- Corps du menu -->
+    <div class="px-4 pb-4 bg-[var(--bg-color)]">
+      <div id="menu-content" class="space-y-4">
+        {(() => {
+          const menu = parseMenuFromMarkdown(nextCantine);
+          return (
+            <>
+              <!-- Entrée -->
+              <div class="menu-section">
+                <h4 class="course-title text-lg text-[var(--color-primary)] font-medium mb-2 pb-1 border-b border-[var(--color-border)] relative">
+                  Entrée
+                  <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-[var(--color-secondary)]"></span>
+                </h4>
+                <div class="dish px-1">
+                  <p class="dish-name font-medium text-[var(--text-color)]">{menu.entree}</p>
                 </div>
+              </div>
 
-                <div class="menu-section">
-                  <h4 class="course-title">Plat Principal</h4>
-                  <div class="dish">
-                    <p class="dish-name">{menu.platPrincipal}</p>
-                    <p class="dish-description">{menu.platDescription}</p>
-                    <div class="dish-options">
-                      <div class="option">
-                        <span class="option-label">Option Végétarienne</span>
-                        <span class="option-detail">{menu.optionVeg}</span>
-                      </div>
-                      <div class="option">
-                        <span class="option-label">Option Carnée</span>
-                        <span class="option-detail">{menu.optionCarnee}</span>
-                      </div>
+              <!-- Plat Principal -->
+              <div class="menu-section">
+                <h4 class="course-title text-lg text-[var(--color-primary)] font-medium mb-2 pb-1 border-b border-[var(--color-border)] relative">
+                  Plat Principal
+                  <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-[var(--color-secondary)]"></span>
+                </h4>
+                <div class="dish px-1">
+                  <p class="dish-name font-medium mb-1 text-[var(--text-color)]">{menu.platPrincipal}</p>
+                  <p class="dish-description text-sm italic opacity-80 mb-3 leading-snug text-[var(--text-color)]">{menu.platDescription}</p>
+                  <div class="dish-options space-y-2">
+                    <div class="option flex justify-between items-center text-sm p-2 rounded-md shadow-sm">
+                      <span class="option-label font-medium text-[var(--text-color)]">Option Végétarienne</span>
+                      <span class="option-detail italic opacity-80 text-[var(--text-color)]">{menu.optionVeg}</span>
+                    </div>
+                    <div class="option flex justify-between items-center text-sm p-2 rounded-md shadow-sm">
+                      <span class="option-label font-medium text-[var(--text-color)]">Option Carnée</span>
+                      <span class="option-detail italic opacity-80 text-[var(--text-color)]">{menu.optionCarnee}</span>
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div class="menu-section">
-                  <h4 class="course-title">Dessert</h4>
-                  <div class="dish compact">
-                    <p class="dish-name">{menu.dessert}</p>
-                    <p class="dish-description">{menu.dessertDesc}</p>
-                  </div>
+              <!-- Dessert -->
+              <div class="menu-section">
+                <h4 class="course-title text-lg text-[var(--color-primary)] font-medium mb-2 pb-1 border-b border-[var(--color-border)] relative">
+                  Dessert
+                  <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-[var(--color-secondary)]"></span>
+                </h4>
+                <div class="dish px-1">
+                  <p class="dish-name font-medium mb-1 text-[var(--text-color)]">{menu.dessert}</p>
+                  <p class="dish-description text-sm italic opacity-80 text-[var(--text-color)]">{menu.dessertDesc}</p>
                 </div>
-              </>
-            );
-          })()}
-        </section>
+              </div>
+            </>
+          );
+        })()}
       </div>
-      <div class="menu-footer">
-        <p class="menu-note">
-          Pensez à apporter vos contenants propres pour les repas à emporter. Réservation par mail briec2000@emailasso.net ou sur place au centre social
+      
+      <!-- Footer du menu -->
+      <div class="mt-4 pt-3 border-t border-[var(--color-border)] text-center text-balance">
+        <p class="menu-note text-sm italic opacity-70 mb-3 leading-snug text-[var(--text-color)]">
+          Pensez à apporter vos contenants propres pour les repas à emporter.
         </p>
-        <a href={`/events/${nextCantine.slug}/`} class="menu-button">Plus d'infos sur les cantines</a>
+        <p class="menu-note text-sm italic opacity-70 mb-3 leading-snug text-[var(--text-color)]">
+          Réservation par mail <span class="email-copy">briec2000@emailasso.net</span> ou sur place au centre social
+        </p>
+        <a 
+          href={`/events/${nextCantine.slug}/`} 
+          class="inline-block px-4 py-2 bg-[var(--color-secondary)] text-sm rounded-md hover:opacity-90 transition-opacity"
+          style="color: white; text-decoration: none;"
+        >
+          Plus d'infos sur les cantines
+        </a>
       </div>
     </div>
   </div>
 )}
 
 <style>
-  .restaurant-menu {
-    border: 1px solid var(--color-border);
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    margin: 0 auto;
-    font-family: var(--font-andika);
-    width: 100%;
-  }
-
-  .fixed-sidebar {
-    position: fixed;
-    top: 2rem;
-    max-height: 90vh;
-    overflow-y: auto;
-    width: calc(100% - 2rem);
-    max-width: 24rem;
-  }
-
-  .menu-heading {
-    background-color: var(--color-secondary);
-    color: white;
-    text-align: center;
-    padding: 10px;
-    position: relative;
-    display: flex;
-    justify-content: center;
-  }
-
-  .menu-title {
-    flex: 1;
-  }
-
-  .menu-title h3 {
-    color: white;
-    font-size: 1.6rem;
-    margin: 0;
-    font-weight: 700;
-    letter-spacing: 1px;
-  }
-
-  .menu-subtitle {
-    font-size: 1rem;
-    margin-top: 2px;
-    font-style: italic;
-    opacity: 0.9;
-  }
-
-  .copy-menu-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: rgba(255, 255, 255, 0.2);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .copy-menu-btn:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-    transform: scale(1.1);
-  }
-
-  .menu-body {
-    padding: 16px;
-    background-color: var(--bg-color);
-  }
-
-  .menu-section {
-    margin-bottom: 14px;
-  }
-
-  .course-title {
-    font-size: 1.15rem;
-    color: var(--color-primary);
-    margin: 0 0 8px 0;
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: 4px;
-    font-weight: 500;
-    position: relative;
-  }
-
-  .course-title::after {
-    content: "";
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 50px;
-    height: 2px;
-    background-color: var(--color-secondary);
-  }
-
-  .dish {
-    margin-bottom: 10px;
-    padding: 0 6px;
-  }
-
-  .dish.compact {
-    margin-bottom: 6px;
-  }
-
-  .dish-name {
-    font-size: 1.05rem;
-    font-weight: 500;
-    color: var(--text-color);
-    margin: 0 0 4px 0;
-  }
-
-  .dish-description {
-    font-size: 0.95rem;
-    color: var(--text-color);
-    opacity: 0.8;
-    margin: 0 0 10px 0;
-    font-style: italic;
-    line-height: 1.3;
-  }
-
-  .dish.compact .dish-description {
-    margin-bottom: 4px;
-  }
-
-  .dish-options {
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
+  /* Styles adaptatifs pour les arrière-plans des options selon les thèmes */
   .option {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.95rem;
-    padding: 6px 10px;
     background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
 
-  html[data-theme*="sombre"] .option,
-  html[data-theme*="profond"] .option {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .option-label {
-    font-weight: 500;
-  }
-
-  .option-detail {
-    color: var(--text-color);
-    opacity: 0.8;
-    font-style: italic;
-  }
-
-  .menu-footer {
-    margin-top: 14px;
-    text-align: center;
-    text-wrap: balance;
-    border-top: 1px solid var(--color-border);
-    padding-top: 12px;
-  }
-
-  .menu-note {
-    font-size: 0.9rem;
-    color: var(--text-color);
-    opacity: 0.7;
-    margin-bottom: 12px;
-    font-style: italic;
-    line-height: 1.3;
-  }
-
-  .menu-button {
-    display: inline-block;
-    padding: 6px 14px;
-    background-color: var(--color-secondary);
-    color: white;
-    text-decoration: none;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    transition: opacity 0.2s;
-  }
-
-  .menu-button:hover {
-    opacity: 0.9;
+  /* Animation du bouton copie */
+  .copy-menu-btn.copied {
+    background-color: rgba(34, 197, 94, 0.8) !important;
+    transform: scale(1.1);
   }
 </style>
