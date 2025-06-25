@@ -88,10 +88,10 @@ function parseMenuFromMarkdown(event: EventEntry) {
 {nextCantine && (
   <div class={`border-[var(--color-border)] rounded-lg overflow-hidden shadow-lg w-full ${isDesktop ? "fixed top-8 max-h-[90vh] overflow-y-auto max-w-96" : ""}`}>
     <!-- En-tête du menu -->
-    <div class="bg-[var(--color-secondary)] text-center flex justify-center">
-      <div>
-        <h3 class="tracking-wide" style="color: white;">La Cantine Mensuelle</h3>
-        <p class="italic opacity-90 text-white">Menu de {getMonthName(nextCantine.data.date)}</p>
+    <div class="bg-[var(--color-secondary)] text-white text-center p-3 relative flex justify-center">
+      <div class="flex-1">
+        <h3 class="text-xl font-bold tracking-wide" style="color: white;">La Cantine Mensuelle</h3>
+        <p class="text-sm italic opacity-90 text-white">Menu de {getMonthName(nextCantine.data.date)}</p>
       </div>
       
       <button 
@@ -108,7 +108,7 @@ function parseMenuFromMarkdown(event: EventEntry) {
     </div>
 
     <!-- Corps du menu -->
-    <div class="px-4 pb-4 bg-[var(--bg-color)]">
+    <div class="p-4 bg-[var(--bg-color)]">
       <div id="menu-content" class="space-y-4">
         {(() => {
           const menu = parseMenuFromMarkdown(nextCantine);

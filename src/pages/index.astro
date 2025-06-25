@@ -96,7 +96,8 @@ function formatDate(date: Date | string): string {
         <div class="mb-6">
           <h2 class="mb-6 border-b pb-2">À venir : {nextEvent.data.title}</h2>
           <article>
-            <header class="mb-6">
+            <section class="flex justify-between gap-2">
+            <header class="my-6">
               <p class="text-lg mb-2">
                 <strong>Date :</strong> <time datetime={nextEvent.data.date.toISOString()}>
                   {formatDate(nextEvent.data.date)}
@@ -107,14 +108,15 @@ function formatDate(date: Date | string): string {
             </header>
 
             {nextEvent.data.image && (
-              <div class="my-6">
+              <div class="my-4">
                 <OptimizeImage 
                   src={nextEvent.data.image} 
                   alt={nextEvent.data.title} 
-                  class="w-auto h-80 rounded-lg shadow-md"
+                  class="w-auto max-h-72 rounded-lg shadow-md"
                 />
               </div>
             )}
+            </section>
 
             {nextEvent.data.price && nextEvent.data.price.length > 0 && (
               <div class="card mb-8 p-4">
