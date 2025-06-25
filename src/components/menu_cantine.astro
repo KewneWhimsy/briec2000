@@ -88,10 +88,10 @@ function parseMenuFromMarkdown(event: EventEntry) {
 {nextCantine && (
   <div class={`menu-cantine-container rounded-lg overflow-hidden shadow-lg w-full ${isDesktop ? "fixed top-8 max-h-[90vh] overflow-y-auto max-w-96" : ""}`}>
     <!-- En-tête du menu -->
-    <div class="bg-[var(--color-secondary)] text-white text-center p-3 relative flex justify-center">
+    <div class="bg-[var(--color-secondary)] text-center p-3 relative flex justify-center">
       <div class="flex-1">
         <h3 class="text-xl font-bold tracking-wide" style="color: white;">La Cantine Mensuelle</h3>
-        <p class="text-sm italic opacity-90 text-white">Menu de {getMonthName(nextCantine.data.date)}</p>
+        <p class="text-md italic text-white">Menu de {getMonthName(nextCantine.data.date)}</p>
       </div>
       
       <button 
@@ -173,10 +173,10 @@ function parseMenuFromMarkdown(event: EventEntry) {
         </p>
         <a 
           href={`/events/${nextCantine.slug}/`} 
-          class="inline-block px-4 py-2 bg-[var(--color-secondary)] text-sm rounded-md hover:opacity-90 transition-opacity"
+          class="inline-block md:hidden px-4 py-2 bg-[var(--color-secondary)] rounded-md hover:opacity-90 transition-opacity"
           style="color: white; text-decoration: none;"
         >
-          Plus d'infos sur les cantines
+          Voir les détails
         </a>
       </div>
     </div>
@@ -187,6 +187,21 @@ function parseMenuFromMarkdown(event: EventEntry) {
   /* Border pour le menu cantine */
   .menu-cantine-container {
     border: 1px solid var(--color-border);
+  }
+
+  /* Ajout d'ombrages noirs forts pour l'en-tête du menu des cantines */
+  
+  /* En-tête principal */
+  .menu-cantine-container .bg-\[var\(--color-secondary\)\] h3 {
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+  }
+  /* Sous-titre */
+  .menu-cantine-container .bg-\[var\(--color-secondary\)\] p {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  }
+  /* Bouton "Plus d'infos sur les cantines" */
+  .menu-cantine-container a[href*="/events/"] {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
   }
 
   /* Styles adaptatifs pour les arrière-plans des options selon les thèmes */
