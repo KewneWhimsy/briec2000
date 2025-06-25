@@ -107,11 +107,11 @@ function formatDate(date: Date | string): string {
             </header>
 
             {nextEvent.data.image && (
-              <div class="mb-6">
+              <div class="my-6">
                 <OptimizeImage 
                   src={nextEvent.data.image} 
                   alt={nextEvent.data.title} 
-                  class="w-full h-auto rounded-lg shadow-md"
+                  class="w-auto h-80 rounded-lg shadow-md"
                 />
               </div>
             )}
