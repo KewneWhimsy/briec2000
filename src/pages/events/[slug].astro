@@ -3,6 +3,7 @@ import Layout from '../../layouts/layout.astro';
 import OptimizeImage from '../../components/optimize_image.astro';
 import { getCollection } from 'astro:content';
 import type { EventEntry, Price } from '../../../types';
+import Ghost from '../../components/ghost.astro';
 
 // Générer toutes les routes pour les événements
 export async function getStaticPaths() {
@@ -80,4 +81,8 @@ function formatDate(date: Date | string): string {
       <a href="/" class="btn">Retour à l'accueil</a>
     </div>
   </article>
+  <Ghost 
+    className="hidden md:block rotate-y-180"
+    style="top: 8%; right: 8%;"
+  />
 </Layout>
