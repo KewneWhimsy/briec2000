@@ -59,13 +59,20 @@ function formatDate(date: Date | string): string {
               
               {event.data.image && (
                 <div class="mb-4 overflow-hidden" style="height: 180px;">
-                  <OptimizeImage 
-                    src={event.data.image} 
-                    alt={event.data.title} 
-                    widths={[300, 600]}
-                    sizes="(max-width: 767px) 100vw, 300px"
-                    class="w-full h-full object-cover rounded-lg shadow-sm"
-                  />
+                  <a 
+                    href={`/events/${event.slug}/`} 
+                    class="event-image-link block rounded-lg overflow-hidden h-full"
+                    aria-label={`Voir les détails de ${event.data.title}`}
+                  >
+                    <OptimizeImage 
+                      src={event.data.image} 
+                      alt={event.data.title} 
+                      widths={[300, 600]}
+                      sizes="(max-width: 767px) 100vw, 300px"
+                      class="w-full h-full object-cover rounded-lg shadow-sm"
+                      transition:name={`event-image-${event.slug}`}
+                    />
+                  </a>
                 </div>
               )}
               
@@ -88,3 +95,24 @@ function formatDate(date: Date | string): string {
     </div>
   </section>
 </Layout>
+
+<style>
+  /* Lien image d'événement - sans transformation pour préserver les dessins */
+  .event-image-link {
+    cursor: pointer;
+    transition: outline 0.2s ease;
+  }
+
+  .event-image-link:hover,
+  .event-image-link:focus {
+    outline: 1px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* Support pour prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    .event-image-link {
+      transition: none;
+    }
+  }
+</style>

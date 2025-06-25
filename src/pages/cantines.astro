@@ -85,11 +85,18 @@ function formatDate(date: Date | string): string {
                 </time>
               </p>
               <div class="mb-4 overflow-hidden rounded-lg" style="height: 160px;">
-                <OptimizeImage 
-                  src="/src/assets/events/repas.png" 
-                  alt={event.data.title} 
-                  class="w-full h-full object-cover"
-                />
+                <a 
+                  href={`/events/${event.slug}/`} 
+                  class="event-image-link block rounded-lg overflow-hidden h-full"
+                  aria-label={`Voir les détails de ${event.data.title}`}
+                >
+                  <OptimizeImage 
+                    src="/src/assets/events/repas.png" 
+                    alt={event.data.title} 
+                    class="w-full h-full object-cover"
+                    transition:name={`event-image-${event.slug}`}
+                  />
+                </a>
               </div>
               <p class="mb-4">{event.data.description}</p>
               <a href={`/events/${event.slug}/`} class="btn inline-block">Voir les détails</a>

@@ -102,11 +102,18 @@ function formatDate(date: Date | string): string {
 
               {nextEvent.data.image && (
                 <div class="my-4">
-                  <OptimizeImage 
-                    src={nextEvent.data.image} 
-                    alt={nextEvent.data.title} 
-                    class="w-auto max-h-72 rounded-lg shadow-md"
-                  />
+                  <a 
+                    href={`/events/${nextEvent.slug}/`} 
+                    class="event-image-link block rounded-lg overflow-hidden"
+                    aria-label={`Voir les détails de ${nextEvent.data.title}`}
+                  >
+                    <OptimizeImage 
+                      src={nextEvent.data.image} 
+                      alt={nextEvent.data.title} 
+                      class="w-auto max-h-72 rounded-lg shadow-md"
+                      transition:name={`event-image-${nextEvent.slug}`}
+                    />
+                  </a>
                 </div>
               )}
             </section>
@@ -154,3 +161,24 @@ function formatDate(date: Date | string): string {
     )}
   </div>
 </Layout>
+
+<style>
+  /* Lien image d'événement - sans transformation pour préserver les dessins */
+  .event-image-link {
+    cursor: pointer;
+    transition: outline 0.2s ease;
+  }
+
+  .event-image-link:hover,
+  .event-image-link:focus {
+    outline: 1px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* Support pour prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    .event-image-link {
+      transition: none;
+    }
+  }
+</style>
