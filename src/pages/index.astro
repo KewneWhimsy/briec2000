@@ -4,6 +4,7 @@ import OptimizeImage from '../components/optimize_image.astro';
 import { getCollection } from 'astro:content';
 import type { EventEntry, CantineEntry, Price } from '../../types';
 import MenuCantine from '../components/menu_cantine.astro';
+import Ghost from '../components/ghost.astro';
 
 // Importer les informations de build
 import buildInfo from '../data/build-info.json';
@@ -56,7 +57,8 @@ function formatDate(date: Date | string): string {
 
 <Layout title="Briec2000 - Association locale">
   <!-- Wrapper flex pour la mise en page desktop -->
-  <div class="lg:flex lg:gap-8 xl:gap-20 lg:items-start">
+  <div class="lg:flex lg:gap-8 xl:gap-20 lg:items-start relative">
+    
     <!-- Contenu principal avec max-width -->
     <div class="lg:flex-1 max-w-3xl">
       <h1 class="mb-8">Briec2000</h1>
@@ -77,14 +79,14 @@ function formatDate(date: Date | string): string {
         </p>
       </div>
       
-      {/* Menu du mois en version mobile - s'affiche avant l'événement */}
+      {/* Menu du mois en version mobile */}
       {nextCantine && (
         <div class="xl:hidden mt-8 mb-10">
           <MenuCantine isDesktop={false} />
         </div>
       )}
       
-      {/* Section événement principal - VERSION SIMPLIFIÉE */}
+      {/* Section événement principal */}
       {nextEvent && (
         <div class="mb-6">
           <h2 class="mb-6 border-b pb-2">À venir : {nextEvent.data.title}</h2>
@@ -118,7 +120,6 @@ function formatDate(date: Date | string): string {
               )}
             </section>
 
-            {/* Afficher seulement la description courte au lieu du contenu complet */}
             <div class="mb-6">
               <p class="text-base leading-relaxed">{nextEvent.data.description}</p>
             </div>
@@ -153,17 +154,23 @@ function formatDate(date: Date | string): string {
       </div>
     </div>
     
-    {/* Menu du mois en version desktop - s'affiche à droite */}
+    {/* Menu du mois en version desktop */}
     {nextCantine && (
       <div class="hidden xl:block lg:w-80 xl:w-96 lg:relative">
         <MenuCantine isDesktop={true} />
       </div>
     )}
   </div>
+  
+  <!-- Un seul fantôme discret sous le sidebar menu -->
+  <Ghost 
+    className="hidden md:block"
+    style="bottom: 5%; left: 5%;" 
+  />
 </Layout>
 
 <style>
-  /* Lien image d'événement - sans transformation pour préserver les dessins */
+  /* Lien image d'événement */
   .event-image-link {
     cursor: pointer;
     transition: outline 0.2s ease;
@@ -173,12 +180,5 @@ function formatDate(date: Date | string): string {
   .event-image-link:focus {
     outline: 1px solid var(--color-primary);
     outline-offset: 2px;
-  }
-
-  /* Support pour prefers-reduced-motion */
-  @media (prefers-reduced-motion: reduce) {
-    .event-image-link {
-      transition: none;
-    }
   }
 </style>

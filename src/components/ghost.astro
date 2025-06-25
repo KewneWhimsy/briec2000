@@ -1,0 +1,144 @@
+---
+// src/components/ghost.astro
+// Un seul fantôme simple qui s'adapte aux couleurs des thèmes
+
+import OptimizeImage from './optimize_image.astro';
+
+export interface Props {
+  className?: string;
+  style?: string;
+}
+
+const { 
+  className = '',
+  style = ''
+} = Astro.props;
+---
+
+<div 
+  class={`ghost-simple ${className}`}
+  style={style}
+>
+  <OptimizeImage 
+    src="/src/assets/ghost.png" 
+    alt="ooOOOOooo" 
+    widths={[125]}
+    class="ghost-img"
+    loading="lazy"
+  />
+</div>
+
+<style>
+  .ghost-simple {
+    position: absolute;
+    width: 125px;
+    height: 125px;
+    user-select: none;
+    z-index: 5;
+  }
+
+  .ghost-img {
+    filter: var(--ghost-filter);
+    transition: filter 0.3s ease;
+  }
+
+  /* Adaptation des couleurs des traits selon les thèmes */
+  :root,
+  html[data-theme="lavande"] {
+    --ghost-filter: 
+      brightness(0) saturate(100%) 
+      invert(42%) sepia(23%) saturate(1234%) 
+      hue-rotate(260deg) brightness(95%) contrast(95%);
+  }
+
+  html[data-theme="lavande-sombre"] {
+    --ghost-filter: 
+      brightness(0) saturate(100%) 
+      invert(69%) sepia(18%) saturate(1456%) 
+      hue-rotate(253deg) brightness(111%) contrast(91%);
+  }
+
+  html[data-theme="bleu-canard"] {
+    --ghost-filter: 
+      brightness(0) saturate(100%) 
+      invert(21%) sepia(80%) saturate(1847%) 
+      hue-rotate(175deg) brightness(94%) contrast(101%);
+  }
+
+  html[data-theme="ocean-profond"] {
+    --ghost-filter: 
+      brightness(0) saturate(100%) 
+      invert(53%) sepia(75%) saturate(434%) 
+      hue-rotate(142deg) brightness(95%) contrast(90%);
+  }
+
+  html[data-theme="vanille-violet"] {
+    --ghost-filter: 
+      brightness(0) saturate(100%) 
+      invert(19%) sepia(97%) saturate(2466%) 
+      hue-rotate(252deg) brightness(94%) contrast(103%);
+  }
+
+  html[data-theme="champagne-acier"] {
+    --ghost-filter: 
+      brightness(0) saturate(100%) 
+      invert(35%) sepia(8%) saturate(1304%) 
+      hue-rotate(184deg) brightness(93%) contrast(87%);
+  }
+
+  html[data-theme="sunrise"] {
+    --ghost-filter: 
+      brightness(0) saturate(100%) 
+      invert(8%) sepia(100%) saturate(4823%) 
+      hue-rotate(320deg) brightness(97%) contrast(107%);
+  }
+
+  html[data-theme="amethyste-or"] {
+    --ghost-filter: 
+      brightness(0) saturate(100%) 
+      invert(84%) sepia(39%) saturate(1280%) 
+      hue-rotate(10deg) brightness(104%) contrast(97%);
+  }
+
+  html[data-theme="bleu-jaune"] {
+    --ghost-filter: 
+      brightness(0) saturate(100%) 
+      invert(89%) sepia(86%) saturate(1638%) 
+      hue-rotate(359deg) brightness(107%) contrast(101%);
+  }
+
+  html[data-theme="gris-ambre"] {
+    --ghost-filter: 
+      brightness(0) saturate(100%) 
+      invert(73%) sepia(57%) saturate(424%) 
+      hue-rotate(10deg) brightness(96%) contrast(94%);
+  }
+
+  html[data-theme="ardoise-peche"] {
+    --ghost-filter: 
+      brightness(0) saturate(100%) 
+      invert(87%) sepia(20%) saturate(450%) 
+      hue-rotate(314deg) brightness(108%) contrast(96%);
+  }
+
+  html[data-theme="prune-menthe"] {
+    --ghost-filter: 
+      brightness(0) saturate(100%) 
+      invert(83%) sepia(17%) saturate(1042%) 
+      hue-rotate(103deg) brightness(96%) contrast(89%);
+  }
+
+  html[data-theme="aubergine-citron"] {
+    --ghost-filter: 
+      brightness(0) saturate(100%) 
+      invert(88%) sepia(26%) saturate(644%) 
+      hue-rotate(44deg) brightness(104%) contrast(96%);
+  }
+
+  html[data-theme="gris-citron"] {
+    --ghost-filter: 
+      brightness(0) saturate(100%) 
+      invert(95%) sepia(15%) saturate(1285%) 
+      hue-rotate(44deg) brightness(102%) contrast(94%);
+  }
+</style>
