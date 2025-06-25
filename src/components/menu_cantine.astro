@@ -192,15 +192,21 @@ function parseMenuFromMarkdown(event: EventEntry) {
   /* Ajout d'ombrages noirs forts pour l'en-tête du menu des cantines */
   
   /* En-tête principal */
-  .menu-cantine-container .bg-\[var\(--color-secondary\)\] h3 {
+  html[data-theme="amethyste-or"] .menu-cantine-container .bg-\[var\(--color-secondary\)\] h3,
+  html[data-theme="gris-ambre"] .menu-cantine-container .bg-\[var\(--color-secondary\)\] h3,
+  html[data-theme="bleu-jaune"] .menu-cantine-container .bg-\[var\(--color-secondary\)\] h3 {
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
   }
   /* Sous-titre */
-  .menu-cantine-container .bg-\[var\(--color-secondary\)\] p {
+  html[data-theme="amethyste-or"] .menu-cantine-container .bg-\[var\(--color-secondary\)\] p,
+  html[data-theme="gris-ambre"] .menu-cantine-container .bg-\[var\(--color-secondary\)\] p,
+  html[data-theme="bleu-jaune"] .menu-cantine-container .bg-\[var\(--color-secondary\)\] p {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   }
   /* Bouton "Plus d'infos sur les cantines" */
-  .menu-cantine-container a[href*="/events/"] {
+  html[data-theme="amethyste-or"] .menu-cantine-container a[href*="/events/"],
+  html[data-theme="gris-ambre"] .menu-cantine-container a[href*="/events/"],
+  html[data-theme="bleu-jaune"] .menu-cantine-container a[href*="/events/"] {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
   }
 
