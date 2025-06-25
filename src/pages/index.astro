@@ -118,6 +118,12 @@ function formatDate(date: Date | string): string {
             )}
             </section>
 
+            {Content && (
+              <div class="event-content-in-page event-content prose mb-8">
+                <Content />
+              </div>
+            )}
+            
             {nextEvent.data.price && nextEvent.data.price.length > 0 && (
               <div class="card mb-8 p-4">
                 <h2 class="text-xl mb-4">Tarifs</h2>
@@ -126,12 +132,6 @@ function formatDate(date: Date | string): string {
                     <li>{price.name}: {price.amount > 0 ? `${price.amount}€` : 'Gratuit'}</li>
                   ))}
                 </ul>
-              </div>
-            )}
-
-            {Content && (
-              <div class="event-content-in-page event-content prose mb-8">
-                <Content />
               </div>
             )}
 

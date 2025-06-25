@@ -86,7 +86,7 @@ function parseMenuFromMarkdown(event: EventEntry) {
 ---
 
 {nextCantine && (
-  <div class={`border-[var(--color-border)] rounded-lg overflow-hidden shadow-lg w-full ${isDesktop ? "fixed top-8 max-h-[90vh] overflow-y-auto max-w-96" : ""}`}>
+  <div class={`menu-cantine-container rounded-lg overflow-hidden shadow-lg w-full ${isDesktop ? "fixed top-8 max-h-[90vh] overflow-y-auto max-w-96" : ""}`}>
     <!-- En-tête du menu -->
     <div class="bg-[var(--color-secondary)] text-white text-center p-3 relative flex justify-center">
       <div class="flex-1">
@@ -184,6 +184,11 @@ function parseMenuFromMarkdown(event: EventEntry) {
 )}
 
 <style>
+  /* Border pour le menu cantine */
+  .menu-cantine-container {
+    border: 1px solid var(--color-border);
+  }
+
   /* Styles adaptatifs pour les arrière-plans des options selon les thèmes */
   .option {
     background-color: rgba(255, 255, 255, 0.5);
