@@ -41,13 +41,6 @@ const cantineInfo = cantinesCollection.find((entry: CantineEntry) =>
   entry.data.title === "Cantines Mensuelles"
 );
 
-// Préparer le contenu Markdown pour l'affichage si un événement existe
-let Content;
-if (nextEvent) {
-  const contentRender = await nextEvent.render();
-  Content = contentRender.Content;
-}
-
 // Formater la date en français
 function formatDate(date: Date | string): string {
   const dateObj = date instanceof Date ? date : new Date(date);
@@ -91,42 +84,41 @@ function formatDate(date: Date | string): string {
         </div>
       )}
       
-      {/* Section événement principal */}
+      {/* Section événement principal - VERSION SIMPLIFIÉE */}
       {nextEvent && (
         <div class="mb-6">
           <h2 class="mb-6 border-b pb-2">À venir : {nextEvent.data.title}</h2>
           <article>
-            <section class="flex justify-between gap-2">
-            <header class="my-6">
-              <p class="text-lg mb-2">
-                <strong>Date :</strong> <time datetime={nextEvent.data.date.toISOString()}>
-                  {formatDate(nextEvent.data.date)}
-                </time>
-              </p>
-              <p class="mb-2"><strong>Lieu :</strong> {nextEvent.data.location}</p>
-              <p><strong>Horaires :</strong> {nextEvent.data.time}</p>
-            </header>
+            <section class="flex justify-between gap-3">
+              <header class="my-6">
+                <p class="text-lg mb-2">
+                  <strong>Date :</strong> <time datetime={nextEvent.data.date.toISOString()}>
+                    {formatDate(nextEvent.data.date)}
+                  </time>
+                </p>
+                <p class="mb-2"><strong>Lieu :</strong> {nextEvent.data.location}</p>
+                <p><strong>Horaires :</strong> {nextEvent.data.time}</p>
+              </header>
 
-            {nextEvent.data.image && (
-              <div class="my-4">
-                <OptimizeImage 
-                  src={nextEvent.data.image} 
-                  alt={nextEvent.data.title} 
-                  class="w-auto max-h-72 rounded-lg shadow-md"
-                />
-              </div>
-            )}
+              {nextEvent.data.image && (
+                <div class="my-4">
+                  <OptimizeImage 
+                    src={nextEvent.data.image} 
+                    alt={nextEvent.data.title} 
+                    class="w-auto max-h-72 rounded-lg shadow-md"
+                  />
+                </div>
+              )}
             </section>
 
-            {Content && (
-              <div class="event-content-in-page event-content prose mb-8">
-                <Content />
-              </div>
-            )}
+            {/* Afficher seulement la description courte au lieu du contenu complet */}
+            <div class="mb-6">
+              <p class="text-base leading-relaxed">{nextEvent.data.description}</p>
+            </div>
             
             {nextEvent.data.price && nextEvent.data.price.length > 0 && (
               <div class="card mb-8 p-4">
-                <h2 class="text-xl mb-4">Tarifs</h2>
+                <h3 class="text-xl mb-4">Tarifs</h3>
                 <ul class="list-disc ml-6">
                   {nextEvent.data.price.map((price: Price) => (
                     <li>{price.name}: {price.amount > 0 ? `${price.amount}€` : 'Gratuit'}</li>
@@ -135,9 +127,12 @@ function formatDate(date: Date | string): string {
               </div>
             )}
 
-            <div class="text-center mt-6">
+            <div class="flex gap-4 justify-center mt-6">
+              <a href={`/events/${nextEvent.slug}/`} class="btn">
+                Voir les détails
+              </a>
               <a href="/events/" class="btn">
-                Voir tous les événements à venir
+                Tous les événements
               </a>
             </div>
           </article>
