@@ -3,6 +3,7 @@ import Layout from '../layouts/layout.astro';
 import { getCollection } from 'astro:content';
 import OptimizeImage from '../components/optimize_image.astro';
 import type { EventEntry } from '../../types';
+import Ghost from '../components/ghost.astro';
 
 // Récupérer tous les événements non brouillons
 const allEvents = await getCollection('events') as EventEntry[];
@@ -120,6 +121,10 @@ const sortedYears = Object.keys(eventsByYear)
       <a href="/" class="btn">Retour à l'accueil</a>
     </div>
   </section>
+  <Ghost 
+  className="hidden md:block rotate-y-180"
+  style="bottom: 8%; right: 8%;"
+  />
 </Layout>
 
 <style>

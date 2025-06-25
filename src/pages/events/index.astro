@@ -3,6 +3,7 @@ import Layout from '../../layouts/layout.astro';
 import { getCollection } from 'astro:content';
 import OptimizeImage from '../../components/optimize_image.astro';
 import type { EventEntry } from '../../../types';
+import Ghost from '../../components/ghost.astro';
 
 // Récupérer tous les événements non brouillons
 const allEvents = await getCollection('events') as EventEntry[];
@@ -94,6 +95,10 @@ function formatDate(date: Date | string): string {
       <a href="/archives/" class="btn">Voir les archives</a>
     </div>
   </section>
+  <Ghost 
+  className="hidden md:block"
+  style="top: 8%; right: 8%;"
+  />
 </Layout>
 
 <style>

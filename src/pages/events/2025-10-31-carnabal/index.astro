@@ -7,6 +7,7 @@ import PdfViewer from "../../../components/pdf_viewer.astro";
 import OptimizeImage from "../../../components/optimize_image.astro";
 import { getCollection } from "astro:content";
 import type { EventEntry } from "../../../../types";
+import Ghost from "../../../components/ghost.astro";
 
 // Récupérer l'événement CarnaBal
 const eventsEntries = (await getCollection("events")) as EventEntry[];
@@ -373,6 +374,10 @@ const previewPages = [
       <a href="/" class="btn">Retour à l'accueil</a>
     </div>
   </article>
+  <Ghost 
+    className="hidden md:block rotate-y-180"
+    style="top: 10%; right: 10%;"
+  />
 </Layout>
 
 <style>
