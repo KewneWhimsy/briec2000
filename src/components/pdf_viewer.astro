@@ -89,7 +89,7 @@ const {
       {
         previewPages.map((_, index) => (
           <button
-            class="pagination-dot"
+            class="pagination-dot mt-2"
             data-index={index}
             aria-label={`Aller à la page ${index + 1}`}
             aria-current={index === 0 ? "true" : "false"}
@@ -99,7 +99,7 @@ const {
     </div>
 
     <!-- Compteur de page et bouton d'ouverture du PDF -->
-    <div class="flex justify-between items-center mt-3">
+    <div class="flex justify-between items-center">
       <div class="page-counter text-sm opacity-70">
         Page <span id="current-page">1</span> sur {previewPages.length}
       </div>
