@@ -11,7 +11,6 @@ import silhouette1Image from '../assets/silhouettes/silhouette1.png';
 import silhouette2Image from '../assets/silhouettes/silhouette2.png';
 import silhouette3Image from '../assets/silhouettes/silhouette3.png';
 import ghostImage from '../assets/ghost500x500.png';
-// Ajoutez d'autres imports selon vos besoins
 
 // Définir le type pour l'objet imageMap avec index signature
 interface ImageMap {
@@ -23,11 +22,9 @@ const imageMap: ImageMap = {
   '/src/assets/events/repas.png': repasImage,
   '/src/assets/events/carnabal.jpg': carnabalImage,
   '/src/assets/ghost.png': ghostImage,
-  // Ajouter les silhouettes au mapping
   '/src/assets/silhouettes/silhouette1.png': silhouette1Image,
   '/src/assets/silhouettes/silhouette2.png': silhouette2Image,
   '/src/assets/silhouettes/silhouette3.png': silhouette3Image,
-  // Ajoutez d'autres mappings selon vos besoins
 };
 
 // Props du composant
@@ -56,7 +53,6 @@ const {
 const imageSrc = imageMap[src] || src;
 
 // Vérifier si c'est l'image repas.png pour appliquer un arrière-plan automatiquement
-// Ou si c'est une silhouette dans la classe silhouette-mobile (spécifique à la galerie mobile)
 const isRepasImage = src.includes('repas.png');
 const isSilhouetteWithClass = src.includes('silhouette') && className.includes('silhouette-mobile');
 const isSpecialImage = isRepasImage || isSilhouetteWithClass;
@@ -89,8 +85,8 @@ const finalClassName = isSpecialImage
 )}
 
 <style>
-  /* Style pour appliquer l'arrière-plan directement aux images spéciales */
-  html[data-theme*="lavande-sombre"] .special-image-with-bg,
+  /* Arrière-plan coloré pour les thèmes sombres seulement */
+  html[data-theme*="sombre"] .special-image-with-bg,
   html[data-theme="amethyste-or"] .special-image-with-bg,
   html[data-theme="bleu-jaune"] .special-image-with-bg,
   html[data-theme="gris-ambre"] .special-image-with-bg,
@@ -98,9 +94,14 @@ const finalClassName = isSpecialImage
   html[data-theme="prune-menthe"] .special-image-with-bg,
   html[data-theme="aubergine-citron"] .special-image-with-bg,
   html[data-theme="gris-citron"] .special-image-with-bg {
-    background-color: var(--color-primary); /* Pour les thèmes sombres, utilise color-primary */
+    background-color: var(--color-primary);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
   }
-  html[data-theme*="ocean-profond"] .special-image-with-bg{
-    background-color: var(--color-secondary); /* Exception pour le thème ocean-profond */
+  
+  html[data-theme*="ocean-profond"] .special-image-with-bg {
+    background-color: var(--color-secondary);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
   }
 </style>
