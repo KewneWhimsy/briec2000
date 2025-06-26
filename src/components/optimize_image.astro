@@ -45,10 +45,19 @@ const isRepasImage = src.includes('repas.png');
 const isSilhouetteWithClass = src.includes('silhouette') && className.includes('silhouette-mobile');
 const isSpecialImage = isRepasImage || isSilhouetteWithClass;
 
-// Si c'est un cas spécial, on ajoute une classe personnalisée
-const finalClassName = isSpecialImage 
-  ? `${className} special-image-with-bg` 
-  : className;
+// Vérifier si c'est confection.png pour appliquer le filtre thématique
+const isConfectionImage = src.includes('confection.png');
+
+// Construire la classe finale
+let finalClassName = className;
+
+if (isSpecialImage) {
+  finalClassName += ' special-image-with-bg';
+}
+
+if (isConfectionImage) {
+  finalClassName += ' theme-filtered';
+}
 ---
 
 <Picture 
@@ -61,25 +70,3 @@ const finalClassName = isSpecialImage
   loading={loading}
   {...props}
 />
-
-<style>
-  /* Arrière-plan coloré pour les thèmes sombres seulement */
-  html[data-theme*="sombre"] .special-image-with-bg,
-  html[data-theme="amethyste-or"] .special-image-with-bg,
-  html[data-theme="bleu-jaune"] .special-image-with-bg,
-  html[data-theme="gris-ambre"] .special-image-with-bg,
-  html[data-theme="ardoise-peche"] .special-image-with-bg,
-  html[data-theme="prune-menthe"] .special-image-with-bg,
-  html[data-theme="aubergine-citron"] .special-image-with-bg,
-  html[data-theme="gris-citron"] .special-image-with-bg {
-    background-color: var(--color-primary);
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-  }
-  
-  html[data-theme*="ocean-profond"] .special-image-with-bg {
-    background-color: var(--color-secondary);
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-  }
-</style>

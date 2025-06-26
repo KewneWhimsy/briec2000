@@ -4,6 +4,136 @@
 /* ============== VARIABLES DE BASE =============== */
 /* Les thèmes sont définis dans theme_switcher.astro pour respecter la locality of concern */
 
+/* ============== FILTRES THÉMATIQUES RÉUTILISABLES =============== */
+
+/* Variables CSS pour les filtres thématiques */
+:root,
+html[data-theme="lavande"] {
+  --theme-filter: 
+    brightness(0) saturate(100%) 
+    invert(42%) sepia(23%) saturate(1234%) 
+    hue-rotate(260deg) brightness(95%) contrast(95%);
+}
+
+html[data-theme="lavande-sombre"] {
+  --theme-filter: 
+    brightness(0) saturate(100%) 
+    invert(69%) sepia(18%) saturate(1456%) 
+    hue-rotate(253deg) brightness(111%) contrast(91%);
+}
+
+html[data-theme="bleu-canard"] {
+  --theme-filter: 
+    brightness(0) saturate(100%) 
+    invert(21%) sepia(80%) saturate(1847%) 
+    hue-rotate(175deg) brightness(94%) contrast(101%);
+}
+
+html[data-theme="ocean-profond"] {
+  --theme-filter: 
+    brightness(0) saturate(100%) 
+    invert(53%) sepia(75%) saturate(434%) 
+    hue-rotate(142deg) brightness(95%) contrast(90%);
+}
+
+html[data-theme="vanille-violet"] {
+  --theme-filter: 
+    brightness(0) saturate(100%) 
+    invert(19%) sepia(97%) saturate(2466%) 
+    hue-rotate(252deg) brightness(94%) contrast(103%);
+}
+
+html[data-theme="champagne-acier"] {
+  --theme-filter: 
+    brightness(0) saturate(100%) 
+    invert(35%) sepia(8%) saturate(1304%) 
+    hue-rotate(184deg) brightness(93%) contrast(87%);
+}
+
+html[data-theme="sunrise"] {
+  --theme-filter: 
+    brightness(0) saturate(100%) 
+    invert(8%) sepia(100%) saturate(4823%) 
+    hue-rotate(320deg) brightness(97%) contrast(107%);
+}
+
+html[data-theme="amethyste-or"] {
+  --theme-filter: 
+    brightness(0) saturate(100%) 
+    invert(84%) sepia(39%) saturate(1280%) 
+    hue-rotate(10deg) brightness(104%) contrast(97%);
+}
+
+html[data-theme="bleu-jaune"] {
+  --theme-filter: 
+    brightness(0) saturate(100%) 
+    invert(89%) sepia(86%) saturate(1638%) 
+    hue-rotate(359deg) brightness(107%) contrast(101%);
+}
+
+html[data-theme="gris-ambre"] {
+  --theme-filter: 
+    brightness(0) saturate(100%) 
+    invert(73%) sepia(57%) saturate(424%) 
+    hue-rotate(10deg) brightness(96%) contrast(94%);
+}
+
+html[data-theme="ardoise-peche"] {
+  --theme-filter: 
+    brightness(0) saturate(100%) 
+    invert(87%) sepia(20%) saturate(450%) 
+    hue-rotate(314deg) brightness(108%) contrast(96%);
+}
+
+html[data-theme="prune-menthe"] {
+  --theme-filter: 
+    brightness(0) saturate(100%) 
+    invert(83%) sepia(17%) saturate(1042%) 
+    hue-rotate(103deg) brightness(96%) contrast(89%);
+}
+
+html[data-theme="aubergine-citron"] {
+  --theme-filter: 
+    brightness(0) saturate(100%) 
+    invert(88%) sepia(26%) saturate(644%) 
+    hue-rotate(44deg) brightness(104%) contrast(96%);
+}
+
+html[data-theme="gris-citron"] {
+  --theme-filter: 
+    brightness(0) saturate(100%) 
+    invert(95%) sepia(15%) saturate(1285%) 
+    hue-rotate(44deg) brightness(102%) contrast(94%);
+}
+
+/* Classe utilitaire pour appliquer le filtre thématique */
+.theme-filtered {
+  filter: var(--theme-filter);
+  transition: filter 0.3s ease;
+}
+
+/* ============== FILTRES THÉMATIQUES RÉUTILISABLES =============== */
+
+/* Arrière-plan coloré pour les thèmes sombres seulement */
+  html[data-theme*="sombre"] .special-image-with-bg,
+  html[data-theme="amethyste-or"] .special-image-with-bg,
+  html[data-theme="bleu-jaune"] .special-image-with-bg,
+  html[data-theme="gris-ambre"] .special-image-with-bg,
+  html[data-theme="ardoise-peche"] .special-image-with-bg,
+  html[data-theme="prune-menthe"] .special-image-with-bg,
+  html[data-theme="aubergine-citron"] .special-image-with-bg,
+  html[data-theme="gris-citron"] .special-image-with-bg {
+    background-color: var(--color-primary);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+  }
+  
+  html[data-theme*="ocean-profond"] .special-image-with-bg {
+    background-color: var(--color-secondary);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+  }
+
 /* ============== STYLES DE BASE =============== */
 
 html {
