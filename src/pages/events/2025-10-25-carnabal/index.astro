@@ -1,6 +1,6 @@
 ---
 // src/pages/events/2025-10-25-carnabal/index.astro
-// Page de l'événement CarnaBal avec navigation via composant
+// Page de l'événement CarnaBal optimisée avec Tailwind
 
 import Layout from "../../../layouts/layout.astro";
 import PdfViewer from "../../../components/pdf_viewer.astro";
@@ -40,7 +40,7 @@ const nextCantine = eventsEntries
     return dateA.getTime() - dateB.getTime();
   })[0];
 
-// Fallback : la cantine la plus récente (passée) si aucune prochaine cantine
+// Fallback : la cantine la plus récente si aucune prochaine
 const mostRecentCantine = !nextCantine ? eventsEntries
   .filter((event: EventEntry) => {
     const eventDate = event.data.date instanceof Date ? 
@@ -81,83 +81,63 @@ const previewPages = [
 <Layout title={`${carnaBal.data.title} - Briec2000`}>
   <article class="max-w-4xl">
     <!-- Section d'introduction avec silhouettes -->
-    <div class="event-hero mb-10 relative overflow-hidden">
-      <div class="silhouettes-container">
-        {
-          silhouettes.map((silhouette, index) => (
-            <OptimizeImage
-              src={silhouette}
-              alt={`Silhouette monstrueuse ${index + 1}`}
-              class={`silhouette silhouette-${index + 1}`}
-              widths={[200, 400]}
-              sizes="(max-width: 767px) 200px, 400px"
-              loading={index === 0 ? "eager" : "lazy"}
-            />
-          ))
-        }
+    <div class="relative overflow-hidden p-6 rounded-lg bg-[color:rgba(var(--color-primary-rgb),0.08)] min-h-96 flex items-center z-10 md:min-h-[500px]">
+      <!-- Silhouettes en arrière-plan -->
+      <div class="absolute inset-0 w-full overflow-hidden z-0 pointer-events-none opacity-60">
+        <OptimizeImage
+          src={silhouettes[0]}
+          alt="Silhouette monstrueuse 1"
+          class="absolute -right-32 -top-24 w-72 h-auto rotate-[5deg] md:-right-24 md:w-96"
+          widths={[300, 400]}
+          sizes="300px"
+          loading="eager"
+        />
+        <OptimizeImage
+          src={silhouettes[1]}
+          alt="Silhouette monstrueuse 2"
+          class="absolute right-12 -bottom-36 w-60 h-auto rotate-[6deg] md:right-24 md:w-80"
+          widths={[250, 350]}
+          sizes="250px"
+          loading="lazy"
+        />
+        <OptimizeImage
+          src={silhouettes[2]}
+          alt="Silhouette monstrueuse 3"
+          class="absolute right-48 top-12 w-48 h-auto scale-x-[-1] rotate-[-2deg] md:right-72 md:w-72"
+          widths={[200, 300]}
+          sizes="200px"
+          loading="lazy"
+        />
       </div>
 
-      <div class="event-content-wrapper">
-        <div class="event-badge">25 Octobre 2025</div>
-        <h1 class="event-title mb-4">{carnaBal.data.title}</h1>
-        <p class="event-tagline text-lg mb-6">
-          Entre dans la saison sombre en célébrant notre nature sauvage et
-          monstrueuse !
+      <!-- Contenu principal -->
+      <div class="relative z-20 max-w-full sm:max-w-[80%]">
+        <div class="inline-block bg-[color:var(--color-secondary)] text-white px-3 py-1 rounded-full text-sm font-medium mb-4">
+          25 Octobre 2025
+        </div>
+        <h1 class="text-3xl md:text-4xl leading-tight mb-4 text-[color:var(--color-primary)]">{carnaBal.data.title}</h1>
+        <p class="text-lg mb-6 italic max-w-xl leading-relaxed">
+          Entre dans la saison sombre en célébrant notre nature sauvage et monstrueuse !
         </p>
-        <div class="event-meta flex flex-wrap gap-4 mb-8">
-          <div class="event-meta-item">
-            <strong>Date:</strong> samedi 25 octobre 2025
-          </div>
-          <div class="event-meta-item">
-            <strong>Lieu:</strong>
-            {carnaBal.data.location}
-          </div>
-          <div class="event-meta-item">
-            <strong>Horaires:</strong>
-            {carnaBal.data.time}
-          </div>
+        
+        <!-- Métadonnées de l'événement -->
+        <div class="flex flex-col sm:flex-row flex-wrap gap-4 mb-8 text-sm">
+          <div><strong>Date:</strong> samedi 25 octobre 2025</div>
+          <div><strong>Lieu:</strong> {carnaBal.data.location}</div>
+          <div><strong>Horaires:</strong> {carnaBal.data.time}</div>
         </div>
 
         <!-- Boutons d'action -->
-        <div class="flex flex-wrap gap-4 mb-10">
+        <div class="flex flex-wrap gap-4">
           <a href="#ateliers" class="btn inline-flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-              <path
-                d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
-              ></path>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
             </svg>
             Ateliers de confection
           </a>
-          <a
-            href={pdfPath}
-            download="CarnaBal_des_monstres_2025.pdf"
-            class="btn inline-flex items-center gap-2"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="7 10 12 15 17 10"></polyline>
-              <line x1="12" y1="15" x2="12" y2="3"></line>
+          <a href={pdfPath} download="CarnaBal_des_monstres_2025.pdf" class="btn inline-flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
             </svg>
             Télécharger le flyer
           </a>
@@ -165,13 +145,13 @@ const previewPages = [
       </div>
     </div>
 
-    <!-- Histoire et origine - Design amélioré -->
-    <section id="histoire" class="card event-story-card p-8 mb-10">
+    <!-- Histoire et origine -->
+    <section class="card bg-[color:rgba(var(--color-primary-rgb),0.03)] p-8 my-10 rounded-xl border-t-4 border-t-[color:var(--color-primary)] shadow-lg">
       <h2 class="text-2xl mb-6 text-center border-b pb-2">
         Le CarnaBal des monstres et créatures
       </h2>
 
-      <div class="prose event-story-text mb-10">
+      <div class="space-y-4 leading-relaxed">
         <p>
           Alors que dans la fraicheur de l'hiver la nature hiberne encore, c'est
           autour d'un feu au solstice qu'un groupe de personnes commence à
@@ -181,16 +161,14 @@ const previewPages = [
 
         <p>
           À la levée des dormances, cette discussion prend corps, et se mue en
-          une association : <strong class="whitespace-nowrap">Briec 2000</strong
-          >. Son idée ? Rassembler les énergies créatives et joyeuses, et
+          une association : <strong class="whitespace-nowrap">Briec 2000</strong>. 
+          Son idée ? Rassembler les énergies créatives et joyeuses, et
           provoquer la rencontre entre les gens.
         </p>
 
         <p>
-          Et pour cela, ce premier projet : l'organisation d'un <strong
-            >CarnaBal de monstres et de créatures</strong
-          >, pour célébrer ensemble l'entrée dans la « saison sombre » à
-          l'automne 2025.
+          Et pour cela, ce premier projet : l'organisation d'un <strong>CarnaBal de monstres et de créatures</strong>, 
+          pour célébrer ensemble l'entrée dans la « saison sombre » à l'automne 2025.
         </p>
 
         <p>
@@ -202,31 +180,32 @@ const previewPages = [
           joyeuse jusqu'à l'Arthémuse, où se poursuivront les festivités.
         </p>
       </div>
+    </section>
 
     <!-- Galerie de silhouettes pour mobile -->
-    <div class="silhouettes-gallery mb-10">
+    <div class="my-10 -mx-4 px-4">
       <h2 class="text-xl mb-4">Inspirations monstrueuses</h2>
       <div class="flex justify-center">
-        <div class="flex gap-2 overflow-x-auto pb-4 mb-6 snap-x">
-          {
-            silhouettes.map((silhouette, index) => (
-              <div class="silhouette-card snap-center">
+        <div class="flex gap-2 overflow-x-auto pb-4 snap-x snap-mandatory">
+          {silhouettes.map((silhouette, index) => (
+            <div class="flex-none w-40 snap-center">
+              <div class="bg-[color:rgba(var(--color-primary-rgb),0.05)] rounded-lg shadow-md overflow-hidden">
                 <OptimizeImage
                   src={silhouette}
                   alt={`Silhouette monstrueuse ${index + 1}`}
-                  class="silhouette-mobile"
+                  class="w-full h-80 object-cover object-top"
                   widths={[160, 320]}
                   sizes="160px"
                   loading="lazy"
                 />
               </div>
-            ))
-          }
+            </div>
+          ))}
         </div>
       </div>
     </div>
 
-    <!-- Utilisation du composant PdfViewer -->
+    <!-- Composant PdfViewer -->
     <PdfViewer
       pdfPath={pdfPath}
       previewPages={previewPages}
@@ -245,40 +224,43 @@ const previewPages = [
       </p>
 
       <div class="grid gap-4 md:grid-cols-2 mb-8">
-        <div class="card p-6">
+        <div class="card p-6 bg-[color:rgba(var(--color-primary-rgb),0.03)] hover:bg-[color:rgba(var(--color-primary-rgb),0.05)] transition-colors">
           <h3 class="text-lg mb-3 flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="6" cy="6" r="3"></circle>
-              <path d="M8.12 8.12 12 12"></path>
-              <path d="M20 4 8.12 15.88"></path>
-              <circle cx="6" cy="18" r="3"></circle>
-              <path d="M14.8 14.8 20 20"></path>
+            <svg class="w-5 h-5 text-[color:var(--color-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <circle cx="6" cy="6" r="3"/>
+              <path d="M8.12 8.12 12 12M20 4 8.12 15.88"/>
+              <circle cx="6" cy="18" r="3"/>
+              <path d="M14.8 14.8 20 20"/>
             </svg>
             Ateliers costumes
           </h3>
-          <p class="mb-3">16-17 juillet à Ti Glazik</p>
-          <p class="text-sm mb-4">Création de costumes avec matériaux fournis. Matinées jeunes, après-midis tout public.</p>
+          <p class="mb-3 font-medium">16-17 juillet à Ti Glazik</p>
+          <p class="text-sm mb-4 opacity-80">
+            Création de costumes avec matériaux fournis. Matinées jeunes, après-midis tout public.
+          </p>
           <a href="/events/2025-07-17-ateliers-costumes/" class="btn text-sm">Voir les détails</a>
         </div>
 
-        <div class="card p-6">
+        <div class="card p-6 bg-[color:rgba(var(--color-primary-rgb),0.03)] hover:bg-[color:rgba(var(--color-primary-rgb),0.05)] transition-colors">
           <h3 class="text-lg mb-3 flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-              <line x1="12" y1="19" x2="12" y2="22"></line>
-              <line x1="8" y1="22" x2="16" y2="22"></line>
+            <svg class="w-5 h-5 text-[color:var(--color-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="22"/>
+              <line x1="8" y1="22" x2="16" y2="22"/>
             </svg>
             Après-midi/soirée déguisement + spectacle
           </h3>
-          <p class="mb-3">18 juillet à Ti Glazik</p>
-          <p class="text-sm mb-4">Atelier déguisement + spectacle "Adieu Meringue" de la Cie Fil en bulle.</p>
+          <p class="mb-3 font-medium">18 juillet à Ti Glazik</p>
+          <p class="text-sm mb-4 opacity-80">
+            Atelier déguisement + spectacle "Adieu Meringue" de la Cie Fil en bulle.
+          </p>
           <a href="/events/2025-07-18-spectacle-adieu-meringue/" class="btn text-sm">Voir les détails</a>
         </div>
       </div>
 
       <div class="text-center">
-        <p class="text-sm italic opacity-80">
+        <p class="text-sm italic opacity-70">
           Ces ateliers vous permettront d'arriver le 25 octobre avec un costume unique !
         </p>
       </div>
@@ -298,13 +280,10 @@ const previewPages = [
           premiers dimanches de chaque mois, des repas à Ti Glazik.
         </p>
 
-        <div class="cantine-info p-4 border-l-4 mb-4">
-          <p><strong>Comment participer ?</strong></p>
-          <ol class="list-decimal ml-6 mt-2 space-y-2">
-            <li>
-              Réservez votre repas par email jusqu'au mercredi précédant la
-              cantine
-            </li>
+        <div class="bg-[color:rgba(var(--color-primary-rgb),0.05)] border-l-4 border-l-[color:var(--color-secondary)] p-4 mb-4 rounded">
+          <p class="font-medium mb-2">Comment participer ?</p>
+          <ol class="list-decimal ml-6 space-y-2">
+            <li>Réservez votre repas par email jusqu'au mercredi précédant la cantine</li>
             <li>Venez chercher votre repas avec vos propres contenants</li>
             <li>Service assuré par les monstres !</li>
           </ol>
@@ -320,277 +299,13 @@ const previewPages = [
       </div>
     </section>
 
-    <!-- Utilisation du composant de navigation -->
+    <!-- Navigation entre événements -->
     <EventNavigation currentSlug={carnaBal.slug} />
 
   </article>
+  
   <Ghost 
     className="hidden md:block rotate-y-180"
     style="top: 15%; right: 12%;"
   />
 </Layout>
-
-<!-- CSS conservé uniquement pour les spécificités visuelles de cette page -->
-<style>
-  /* Styles spécifiques pour la page CarnaBal */
-  .event-hero {
-    position: relative;
-    padding: 1.5rem;
-    border-radius: 0.5rem;
-    background-color: rgba(var(--color-primary-rgb), 0.08);
-    min-height: 400px;
-    display: flex;
-    align-items: center;
-    z-index: 1;
-  }
-
-  .event-content-wrapper {
-    position: relative;
-    z-index: 10;
-    max-width: 80%;
-  }
-
-  /* Conteneur pour les silhouettes */
-  .silhouettes-container {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    overflow: hidden;
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  /* Styles des silhouettes individuelles */
-  .silhouette {
-    position: absolute;
-    height: auto;
-    opacity: 0.6;
-    transition: opacity 0.3s ease;
-  }
-
-  .silhouette-1 {
-    right: -135px;
-    top: -100px;
-    width: 300px;
-    transform: rotate(5deg);
-  }
-
-  .silhouette-2 {
-    right: 50px;
-    bottom: -150px;
-    width: 250px;
-    transform: rotate(6deg);
-  }
-
-  .silhouette-3 {
-    right: 200px;
-    top: 50px;
-    width: 200px;
-    transform: scaleX(-1) rotate(-2deg);
-  }
-
-  /* Galerie de silhouettes pour mobile */
-  .silhouettes-gallery {
-    margin: 0 -1rem;
-    padding: 0 1rem;
-  }
-
-  .silhouette-card {
-    flex: 0 0 auto;
-    width: 160px;
-    border-radius: 0.5rem;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    background-color: rgba(var(--color-primary-rgb), 0.05);
-  }
-
-  .silhouette-mobile {
-    width: 100%;
-    height: 320px;
-    object-fit: cover;
-    object-position: center top;
-  }
-
-  .event-badge {
-    display: inline-block;
-    background-color: var(--color-secondary);
-    color: white;
-    padding: 0.25rem 0.75rem;
-    border-radius: 1rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    margin-bottom: 1rem;
-  }
-
-  .event-title {
-    font-size: 2.25rem;
-    line-height: 1.2;
-  }
-
-  .event-tagline {
-    max-width: 38rem;
-    font-style: italic;
-  }
-
-  .event-meta {
-    color: var(--text-color);
-  }
-
-  .event-time {
-    font-weight: 500;
-    color: var(--color-primary);
-    min-width: 80px;
-    display: inline-block;
-  }
-
-  .highlight-card {
-    border-left: 4px solid var(--color-primary);
-  }
-
-  /* Style amélioré pour la section histoire */
-  .event-story-card {
-    background-color: rgba(var(--color-primary-rgb), 0.03);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    border-radius: 0.75rem;
-    border-top: 4px solid var(--color-primary);
-  }
-
-  .event-story-text p {
-    line-height: 1.7;
-    margin-bottom: 1rem;
-  }
-
-  .event-story-text p:last-child {
-    margin-bottom: 0;
-  }
-
-  /* Nouveau style pour les infos pratiques */
-  .event-info-wrapper {
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(var(--color-primary-rgb), 0.2);
-  }
-
-  .event-info-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-  }
-
-  .event-info-card {
-    background-color: rgba(var(--color-primary-rgb), 0.05);
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    flex: 1 1 280px;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .event-info-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  }
-
-  .event-info-icon {
-    background-color: var(--color-primary);
-    color: var(--bg-color);
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1rem;
-  }
-
-  .event-info-title {
-    font-family: var(--font-champ);
-    color: var(--color-primary);
-    font-size: 1.1rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-  }
-
-  .event-info-value {
-    font-size: 1rem;
-    line-height: 1.5;
-  }
-
-  .cantine-info {
-    border-color: var(--color-secondary);
-    background-color: rgba(var(--color-primary-rgb), 0.05);
-  }
-
-  /* Responsive tweaks */
-  @media (max-width: 640px) {
-    .event-title {
-      font-size: 1.75rem;
-    }
-
-    .event-meta {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .event-content-wrapper {
-      max-width: 100%;
-    }
-
-    .silhouettes-container {
-      opacity: 0.2;
-    }
-
-    .event-info-card {
-      flex: 1 1 100%;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .event-info-container {
-      flex-direction: column;
-    }
-  }
-
-  @media (min-width: 768px) {
-    .event-hero {
-      min-height: 500px;
-    }
-
-    .silhouette-1 {
-      right: -100px;
-      width: 400px;
-    }
-
-    .silhouette-2 {
-      right: 100px;
-      width: 350px;
-    }
-
-    .silhouette-3 {
-      right: 300px;
-      width: 300px;
-    }
-  }
-
-  /* Support pour prefers-reduced-motion */
-  @media (prefers-reduced-motion: reduce) {
-    .silhouette {
-      transition: none;
-    }
-
-    .event-info-card:hover {
-      transform: none;
-    }
-  }
-</style>
