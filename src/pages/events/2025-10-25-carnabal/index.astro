@@ -1,5 +1,5 @@
 ---
-// src/pages/events/2025-10-31-carnabal/index.astro
+// src/pages/events/2025-10-25-carnabal/index.astro
 // Page de l'événement CarnaBal avec une meilleure présentation visuelle
 
 import Layout from "../../../layouts/layout.astro";
@@ -12,7 +12,7 @@ import Ghost from "../../../components/ghost.astro";
 // Récupérer l'événement CarnaBal
 const eventsEntries = (await getCollection("events")) as EventEntry[];
 const carnaBal = eventsEntries.find(
-  (entry: EventEntry) => entry.slug === "2025-10-31-carnabal"
+  (entry: EventEntry) => entry.slug === "2025-10-25-carnabal"
 );
 
 if (!carnaBal) {
@@ -60,7 +60,7 @@ const previewPages = [
       </div>
 
       <div class="event-content-wrapper">
-        <div class="event-badge">31 Octobre 2025</div>
+        <div class="event-badge">25 Octobre 2025</div>
         <h1 class="event-title mb-4">{carnaBal.data.title}</h1>
         <p class="event-tagline text-lg mb-6">
           Entre dans la saison sombre en célébrant notre nature sauvage et
@@ -68,7 +68,7 @@ const previewPages = [
         </p>
         <div class="event-meta flex flex-wrap gap-4 mb-8">
           <div class="event-meta-item">
-            <strong>Date:</strong> vendredi 31 octobre 2025
+            <strong>Date:</strong> samedi 25 octobre 2025
           </div>
           <div class="event-meta-item">
             <strong>Lieu:</strong>
@@ -189,7 +189,7 @@ const previewPages = [
               </svg>
             </div>
             <h4 class="event-info-title">DATE</h4>
-            <p class="event-info-value">vendredi 31 octobre 2025</p>
+            <p class="event-info-value">samedi 25 octobre 2025</p>
           </div>
 
           <div class="event-info-card">
