@@ -3,7 +3,7 @@ title: "Aprem déguisement et spectacle \"Adieu Meringue\""
 date: 2025-07-18
 description: "Après-midi collective de déguisement suivie d'une soirée festive avec le spectacle \"Adieu Meringue\" de la compagnie Fil en bulle. Un fascinant cabaret de monstres !"
 location: "Base de loisirs Ti Glazik, Place de Ruthin, 29510 Briec"
-time: "14h : atelier déguisement collectif, 19h : début des festivités et spectacle"
+time: "15h : atelier déguisement collectif, 17h déambulation monstrueuse dans le bourg, 18h30 : Repas à la base de loisirs, 20h30 : spectacle"
 image: "/src/assets/events/meringue.jpg"
 price:
   - name: "Gratuit"
@@ -11,13 +11,19 @@ price:
 draft: false
 ---
 
-## Une journée entre création et spectacle !
+## On se retrouve à 15h pour se transformer !
 
-Le vendredi 18 juillet, l'association Briec2000 vous propose une journée spéciale qui mêle création collective et spectacle vivant, en préparation du CarnaBal d'octobre.
+Que vous ayez participé ou non aux ateliers des jours précédents, venez nous retrouver à la base de loisirs avec vos peaux de monstres à revêtir. On s'habille tous ensemble, pimpe nos tentacules, ajuste nos canines et nos poses inhumaines avant d'aller parader dans les rues pour inviter les gens au repas suivi du spectacle à la base de loisirs. 
+
+
+## Repas à 19h30
+
+Le menu est en cours de chaudronnerie, revenez plus tard !
+Briec 2000 concocte une cantine spéciale, toujours au profit du CarnaBal !
 
 ## Le spectacle : "Adieu Meringue"
 
-### Par la compagnie Fil en bulle - 19h
+### Par la compagnie Fil en bulle - 20h30
 
 **Bienvenue dans le plus grand des petits cabarets de monstres du monde !**
 
@@ -30,18 +36,12 @@ Heureusement, Meringue a toujours une solution à bas prix pour nous débarrasse
 ## Informations pratiques
 
 ### Tarifs
-- **Atelier déguisement seul** : Participation libre
-- **Spectacle** : 5€
+- **Après midi déguisement** : gratuit
+- **Repas** : prix fixe (en cours de calcul)
+- **Spectacle** : gratuit
 
-### Restauration
-- Petite restauration disponible sur place
-- Boissons et collations
-- Ambiance conviviale et décontractée
+L'ensemble des activités de la base de loisirs est gratuite : <a href="https://www.calameo.com/read/006759657ae56e0d57728/" target="_blank" rel="noopener noreferrer">programme complet</a>
 
-### À prévoir
-- Votre costume de monstre (en cours de création ou terminé)
-- Votre bonne humeur et votre curiosité !
+**Repas et buvette sur place**
 
 **Réservations et informations :** <span class="email-copy">briec2000@emailasso.net</span>
-
-*Cette soirée marque le lancement officieux de la saison monstrueuse qui culminera avec le CarnaBal du 25 octobre !*
