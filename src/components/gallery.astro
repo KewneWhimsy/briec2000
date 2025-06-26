@@ -62,11 +62,13 @@ const {
     >
       <!-- Bouton fermer avec croix propre -->
       <button 
-        class="absolute top-2 right-2 z-10 w-7 h-7 bg-[var(--color-secondary)] text-white rounded-full flex items-center justify-center hover:opacity-80 text-2xl leading-none"
+        class="absolute top-2 right-2 z-10 w-7 h-7 bg-[var(--color-secondary)] text-white rounded-full flex items-center justify-center hover:opacity-80"
         popovertarget={`gallery-modal-${index}`}
         aria-label="Fermer"
       >
-        ×
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor">
+          <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
       </button>
       
       <!-- Image avec fond comme les miniatures -->
