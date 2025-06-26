@@ -9,8 +9,10 @@ import { getCollection } from "astro:content";
 import type { EventEntry } from "../../../../types";
 import Ghost from "../../../components/ghost.astro";
 
-// Récupérer l'événement CarnaBal
+// Récupérer tous les événements
 const eventsEntries = (await getCollection("events")) as EventEntry[];
+
+// Récupérer l'événement CarnaBal
 const carnaBal = eventsEntries.find(
   (entry: EventEntry) => entry.slug === "2025-10-25-carnabal"
 );
@@ -18,6 +20,41 @@ const carnaBal = eventsEntries.find(
 if (!carnaBal) {
   return Astro.redirect("/events/");
 }
+
+// Trouver la prochaine cantine
+const currentDate = new Date();
+const nextCantine = eventsEntries
+  .filter((event: EventEntry) => {
+    const eventDate = event.data.date instanceof Date ? 
+      event.data.date : 
+      new Date(event.data.date);
+      
+    return eventDate > currentDate && 
+           event.data.draft !== true && 
+           event.data.title.toLowerCase().includes('cantine');
+  })
+  .sort((a: EventEntry, b: EventEntry) => {
+    const dateA = a.data.date instanceof Date ? a.data.date : new Date(a.data.date);
+    const dateB = b.data.date instanceof Date ? b.data.date : new Date(b.data.date);
+    return dateA.getTime() - dateB.getTime();
+  })[0];
+
+// Fallback : la cantine la plus récente (passée) si aucune prochaine cantine
+const mostRecentCantine = !nextCantine ? eventsEntries
+  .filter((event: EventEntry) => {
+    const eventDate = event.data.date instanceof Date ? 
+      event.data.date : 
+      new Date(event.data.date);
+      
+    return eventDate <= currentDate && 
+           event.data.draft !== true && 
+           event.data.title.toLowerCase().includes('cantine');
+  })
+  .sort((a: EventEntry, b: EventEntry) => {
+    const dateA = a.data.date instanceof Date ? a.data.date : new Date(a.data.date);
+    const dateB = b.data.date instanceof Date ? b.data.date : new Date(b.data.date);
+    return dateB.getTime() - dateA.getTime();
+  })[0] : null;
 
 // Récupérer le contenu
 const contentRender = await carnaBal.render();
@@ -277,7 +314,7 @@ const previewPages = [
     />
 
     <!-- Ateliers préparatoires -->
-    <section id="ateliers" class="my-10">
+    <section id="ateliers" class="my-10 hidden">
       <h2 class="text-2xl mb-6 border-b pb-2">Ateliers préparatoires</h2>
 
       <p class="mb-6">
@@ -337,7 +374,7 @@ const previewPages = [
     </section>
 
     <!-- Cantines financement -->
-    <section id="cantines" class="mb-10">
+    <section id="cantines" class="my-10">
       <h2 class="text-2xl mb-6 border-b pb-2">
         Comment nous finançons l'événement
       </h2>
@@ -363,7 +400,11 @@ const previewPages = [
         </div>
 
         <div class="text-center mt-6">
-          <a href="/cantines/" class="btn">Découvrir les cantines mensuelles</a>
+          {nextCantine ? (
+            <a href={`/events/${nextCantine.slug}/`} class="btn">Ok, il y a quoi au menu ?</a>
+          ) : mostRecentCantine ? (
+            <a href={`/events/${mostRecentCantine.slug}/`} class="btn">Ok, il y a quoi au menu ?</a>
+          ) : null}
         </div>
       </div>
     </section>
