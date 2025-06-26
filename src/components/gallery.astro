@@ -1,0 +1,139 @@
+---
+// src/components/gallery.astro
+// Composant générique pour afficher une galerie d'images avec modal
+
+import OptimizeImage from './optimize_image.astro';
+
+export interface GalleryItem {
+  src: string;
+  alt: string;
+  title: string;
+}
+
+export interface Props {
+  items: GalleryItem[];
+  title?: string;
+  description?: string;
+  className?: string;
+  modalDescription?: string;
+}
+
+const { 
+  items, 
+  title = "Galerie d'images",
+  description = "Cliquez sur une image pour l'agrandir",
+  className = "",
+  modalDescription = "Cliquez pour fermer"
+} = Astro.props;
+---
+
+<div class={`gallery-container ${className}`}>
+  {title && <h2 class="text-xl mb-4">{title}</h2>}
+  {description && <p class="text-sm mb-6 italic opacity-70">{description}</p>}
+  
+  <div class="flex justify-center">
+    <div class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory">
+      {items.map((item, index) => (
+        <div class="flex-none w-40 snap-center">
+          <div class="bg-[color:rgba(var(--color-primary-rgb),0.05)] rounded-lg shadow-md overflow-hidden">
+            <button 
+              class="gallery-trigger w-full h-80 block cursor-pointer hover:opacity-80 transition-opacity"
+              popovertarget={`gallery-modal-${index}`}
+              aria-label={`Agrandir ${item.title}`}
+            >
+              <OptimizeImage
+                src={item.src}
+                alt={item.alt}
+                class="w-full h-full object-cover object-top"
+                widths={[160, 320, 640]}
+                sizes="160px"
+                loading="lazy"
+              />
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+  
+  <!-- Popovers pour toutes les images -->
+  {items.map((item, index) => (
+    <div 
+      id={`gallery-modal-${index}`} 
+      class="gallery-modal rounded-xl border border-[var(--color-border)] overflow-hidden max-w-[600px] max-h-[90vh]" 
+      popover
+    >
+      <div class="flex justify-between items-center bg-[var(--color-secondary)] text-white px-4 py-3">
+        <h3 class="text-lg font-semibold m-0">{item.title}</h3>
+        <button 
+          class="text-xl px-2 bg-none border-0 text-white cursor-pointer hover:opacity-80"
+          popovertarget={`gallery-modal-${index}`}
+          aria-label="Fermer"
+        >
+          ✕
+        </button>
+      </div>
+      
+      <div class="bg-[var(--bg-color)] p-4 flex justify-center items-center">
+        <OptimizeImage
+          src={item.src}
+          alt={item.alt}
+          class="max-w-full max-h-[60vh] object-contain rounded-lg"
+          widths={[400, 800, 1200]}
+          sizes="(max-width: 767px) 90vw, 600px"
+          loading="lazy"
+        />
+      </div>
+      
+      <div class="bg-[var(--bg-color)] px-4 pb-4 border-t border-[var(--color-border)]">
+        <p class="text-center italic text-[var(--text-color)] opacity-80 text-sm m-0">
+          {modalDescription}
+        </p>
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  /* Popover avec transitions et centrage */
+  .gallery-modal {
+    /* Centrage manuel */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    margin: 0;
+    
+    /* État par défaut (fermé) */
+    opacity: 0;
+    transition: 
+      display 0.3s allow-discrete,
+      opacity 0.3s ease,
+      transform 0.3s ease;
+    transition-behavior: allow-discrete;
+  }
+
+  /* État ouvert */
+  .gallery-modal:popover-open {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    
+    /* @starting-style pour l'animation d'ouverture */
+    @starting-style {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.8);
+    }
+  }
+
+  /* Support pour prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-modal {
+      transition: display 0.3s allow-discrete;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    
+    .gallery-modal:popover-open {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+</style>
