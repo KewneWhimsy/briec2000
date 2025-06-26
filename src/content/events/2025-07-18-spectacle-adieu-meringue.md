@@ -4,6 +4,7 @@ date: 2025-07-18
 description: "Après-midi collective de déguisement suivie d'une soirée festive avec le spectacle \"Adieu Meringue\" de la compagnie Fil en bulle. Un fascinant cabaret de monstres !"
 location: "Base de loisirs Ti Glazik, Place de Ruthin, 29510 Briec"
 time: "14h : atelier déguisement collectif, 19h : début des festivités et spectacle"
+image: "/src/assets/events/meringue.jpg"
 price:
   - name: "Atelier déguisement"
     amount: 0
