@@ -5,7 +5,7 @@ description: "Venez créer votre costume de monstre ou de créature pour le Carn
 location: "Base de loisirs Ti Glazik, Place de Ruthin, 29510 Briec"
 time: "16-17 juillet : matin (10h-12h) avec l'espace-jeunes, après-midi (14h-17h) ouvert à tous·tes"
 price:
-  - name: "Participation libre"
+  - name: "Gratuit"
     amount: 0
 draft: false
 ---

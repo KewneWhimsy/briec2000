@@ -6,10 +6,8 @@ location: "Base de loisirs Ti Glazik, Place de Ruthin, 29510 Briec"
 time: "14h : atelier déguisement collectif, 19h : début des festivités et spectacle"
 image: "/src/assets/events/meringue.jpg"
 price:
-  - name: "Atelier déguisement"
+  - name: "Gratuit"
     amount: 0
-  - name: "Spectacle (tout public)"
-    amount: 5
 draft: false
 ---
 
