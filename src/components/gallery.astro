@@ -1,6 +1,6 @@
 ---
 // src/components/gallery.astro
-// Composant galerie simplifié avec approche KISS et écologique
+// Composant galerie avec navigation intégrée - approche KISS et écologique
 
 import OptimizeImage from './optimize_image.astro';
 
@@ -36,7 +36,6 @@ const {
           <div class="bg-[color:rgba(var(--color-primary-rgb),0.05)] rounded-lg shadow-md overflow-hidden">
             <button 
               class="gallery-trigger w-full h-80 block cursor-pointer hover:opacity-80 transition-opacity"
-              popovertarget={`gallery-modal-${index}`}
               aria-label={`Agrandir ${item.title}`}
             >
               <OptimizeImage
@@ -54,49 +53,67 @@ const {
     </div>
   </div>
   
-  {items.map((item, index) => (
-    <div 
-      id={`gallery-modal-${index}`} 
-      class="gallery-modal rounded-xl border border-[var(--color-border)] overflow-hidden max-w-[90vw] max-h-[90vh]" 
-      popover
+  <!-- Popover unique avec navigation -->
+  <div 
+    id="gallery-modal" 
+    class="gallery-modal rounded-xl border border-[var(--color-border)] overflow-hidden max-w-[95vw] max-h-[95vh]" 
+    popover
+    tabindex="-1"
+  >
+    <!-- Bouton fermer -->
+    <button 
+      class="absolute top-2 right-2 z-10 w-7 h-7 bg-[var(--color-secondary)] text-white rounded-full flex items-center justify-center hover:opacity-80"
+      popovertarget="gallery-modal"
+      aria-label="Fermer"
     >
-      <!-- Bouton fermer avec croix propre -->
-      <button 
-        class="absolute top-2 right-2 z-10 w-7 h-7 bg-[var(--color-secondary)] text-white rounded-full flex items-center justify-center hover:opacity-80"
-        popovertarget={`gallery-modal-${index}`}
-        aria-label="Fermer"
-      >
-        <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor">
-          <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </button>
+      <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor">
+        <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+    
+    <!-- Container image avec fond -->
+    <div class="bg-[color:rgba(var(--color-primary-rgb),0.05)] p-4 flex justify-center items-center relative min-h-[80vh]">
+      <img
+        id="gallery-current-image"
+        class="max-w-full max-h-[80vh] object-contain w-auto h-auto"
+        alt=""
+        loading="lazy"
+      />
       
-      <!-- Image avec fond comme les miniatures -->
-      <div class="bg-[color:rgba(var(--color-primary-rgb),0.05)] p-4 flex justify-center items-center">
-        <OptimizeImage
-          src={item.src}
-          alt={item.alt}
-          class="max-w-full max-h-[85vh] object-contain"
-          widths={[400, 800, 1200]}
-          sizes="(max-width: 767px) 90vw, 800px"
-          loading="lazy"
-        />
+      <!-- Navigation discrète en bas -->
+      <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-4 bg-black/50 rounded-full px-3 py-2">
+        <button 
+          id="gallery-prev"
+          class="w-6 h-6 text-white/80 hover:text-white transition-colors disabled:text-white/40 disabled:cursor-not-allowed"
+          aria-label="Image précédente"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        
+        <button 
+          id="gallery-next"
+          class="w-6 h-6 text-white/80 hover:text-white transition-colors disabled:text-white/40 disabled:cursor-not-allowed"
+          aria-label="Image suivante"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
       </div>
     </div>
-  ))}
+  </div>
 </div>
 
 <style>
   /* Popover avec transitions et centrage */
   .gallery-modal {
-    /* Centrage manuel */
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.8);
     margin: 0;
-    
-    /* État par défaut (fermé) */
     opacity: 0;
     transition: 
       display 0.3s allow-discrete,
@@ -105,19 +122,16 @@ const {
     transition-behavior: allow-discrete;
   }
 
-  /* État ouvert */
   .gallery-modal:popover-open {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
     
-    /* @starting-style pour l'animation d'ouverture */
     @starting-style {
       opacity: 0;
       transform: translate(-50%, -50%) scale(0.8);
     }
   }
 
-  /* Support pour prefers-reduced-motion */
   @media (prefers-reduced-motion: reduce) {
     .gallery-modal {
       transition: display 0.3s allow-discrete;
@@ -129,3 +143,93 @@ const {
     }
   }
 </style>
+
+<script>
+  // Script minimal pour la galerie avec navigation
+  function initGallery() {
+    const galleryContainers = document.querySelectorAll('.gallery-container');
+    
+    galleryContainers.forEach(galleryContainer => {
+      const triggers = galleryContainer.querySelectorAll('.gallery-trigger');
+      const modal = galleryContainer.querySelector('#gallery-modal') as HTMLElement;
+      const currentImage = galleryContainer.querySelector('#gallery-current-image') as HTMLImageElement;
+      const prevBtn = galleryContainer.querySelector('#gallery-prev') as HTMLButtonElement;
+      const nextBtn = galleryContainer.querySelector('#gallery-next') as HTMLButtonElement;
+
+      if (!modal || !currentImage || !prevBtn || !nextBtn || triggers.length === 0) return;
+
+      // Récupérer les données des images depuis le DOM
+      const galleryItems = Array.from(triggers).map((trigger, index) => {
+        const img = trigger.querySelector('img') as HTMLImageElement;
+        // Utiliser la source la plus haute résolution disponible
+        const highResSrc = img?.srcset ? 
+          img.srcset.split(',').pop()?.trim().split(' ')[0] || img.src :
+          img?.src || '';
+        return {
+          src: highResSrc,
+          alt: img?.alt || '',
+          index: index
+        };
+      });
+
+      let currentIndex = 0;
+
+      // Fonction pour mettre à jour l'affichage
+      function updateDisplay() {
+        const item = galleryItems[currentIndex];
+        if (item) {
+          currentImage.src = item.src;
+          currentImage.alt = item.alt;
+          
+          prevBtn.disabled = currentIndex === 0;
+          nextBtn.disabled = currentIndex === galleryItems.length - 1;
+        }
+      }
+
+      // Ouvrir la galerie sur clic d'une miniature
+      triggers.forEach((trigger, index) => {
+        trigger.addEventListener('click', () => {
+          currentIndex = index;
+          updateDisplay();
+          (modal as any).showPopover();
+          
+          // Forcer le focus sur le modal pour la navigation clavier
+          setTimeout(() => {
+            modal.focus();
+          }, 100);
+        });
+      });
+
+      // Navigation précédent
+      prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) {
+          currentIndex--;
+          updateDisplay();
+        }
+      });
+
+      // Navigation suivant
+      nextBtn.addEventListener('click', () => {
+        if (currentIndex < galleryItems.length - 1) {
+          currentIndex++;
+          updateDisplay();
+        }
+      });
+
+      // Navigation clavier
+      modal.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'ArrowLeft' && currentIndex > 0) {
+          currentIndex--;
+          updateDisplay();
+        } else if (e.key === 'ArrowRight' && currentIndex < galleryItems.length - 1) {
+          currentIndex++;
+          updateDisplay();
+        }
+      });
+    });
+  }
+
+  // Initialiser au chargement et lors des transitions Astro
+  document.addEventListener('DOMContentLoaded', initGallery);
+  document.addEventListener('astro:page-load', initGallery);
+</script>
