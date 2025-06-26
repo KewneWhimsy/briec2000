@@ -62,9 +62,9 @@ function formatDate(date: Date | string): string {
     )}
 
     {entry.data.price && entry.data.price.length > 0 && (
-      <div class="card mb-8 p-4">
+      <div class="card my-8 p-4 max-w-fit">
         <h2 class="text-xl mb-4">Tarifs</h2>
-        <ul class="list-disc ml-6">
+        <ul class="list-disc ml-6 leading-relaxed">
           {entry.data.price.map((price: Price) => (
             <li>{price.name}: {price.amount > 0 ? `${price.amount}€` : 'Gratuit'}</li>
           ))}
