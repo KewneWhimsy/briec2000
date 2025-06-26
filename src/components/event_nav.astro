@@ -1,0 +1,64 @@
+---
+// src/components/event_navigation.astro
+// Composant réutilisable pour la navigation entre événements
+
+import { getCollection } from 'astro:content';
+import type { EventEntry } from '../../types';
+
+export interface Props {
+  currentSlug: string;
+}
+
+const { currentSlug } = Astro.props;
+
+// Récupérer tous les événements
+const allEvents = await getCollection('events') as EventEntry[];
+
+// Filtrer et trier les événements non brouillons par date
+const sortedEvents = allEvents
+  .filter((event: EventEntry) => event.data.draft !== true)
+  .sort((a: EventEntry, b: EventEntry) => {
+    const dateA = a.data.date instanceof Date ? a.data.date : new Date(a.data.date);
+    const dateB = b.data.date instanceof Date ? b.data.date : new Date(b.data.date);
+    return dateA.getTime() - dateB.getTime();
+  });
+
+// Trouver l'index de l'événement actuel
+const currentIndex = sortedEvents.findIndex(event => event.slug === currentSlug);
+
+// Déterminer les événements précédent et suivant
+const previousEvent = currentIndex > 0 ? sortedEvents[currentIndex - 1] : null;
+const nextEvent = currentIndex < sortedEvents.length - 1 ? sortedEvents[currentIndex + 1] : null;
+---
+
+<nav class="border-t pt-8 mt-12">
+  <!-- Layout conditionnel : centré quand un seul bouton, justifié quand les deux -->
+  <div class={`flex flex-col sm:flex-row items-center gap-4 ${!previousEvent || !nextEvent ? 'justify-center' : 'justify-between'}`}>
+    
+    <!-- Événement précédent -->
+    {previousEvent ? (
+      <a href={`/events/${previousEvent.slug}/`} class="btn flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        <span class="hidden sm:inline">Précédent :</span>
+        <span class="max-w-32 truncate">{previousEvent.data.title}</span>
+      </a>
+    ) : null}
+
+    <!-- Tous les événements -->
+    <a href="/events/" class="btn">Tous les événements</a>
+
+    <!-- Événement suivant -->
+    {nextEvent ? (
+      <a href={`/events/${nextEvent.slug}/`} class="btn flex items-center gap-2">
+        <span class="max-w-32 truncate">{nextEvent.data.title}</span>
+        <span class="hidden sm:inline">: Suivant</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </a>
+    ) : null}
+
+  </div>
+</nav>

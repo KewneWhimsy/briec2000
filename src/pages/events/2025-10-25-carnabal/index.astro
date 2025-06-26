@@ -1,10 +1,11 @@
 ---
 // src/pages/events/2025-10-25-carnabal/index.astro
-// Page de l'événement CarnaBal avec une meilleure présentation visuelle
+// Page de l'événement CarnaBal avec navigation via composant
 
 import Layout from "../../../layouts/layout.astro";
 import PdfViewer from "../../../components/pdf_viewer.astro";
 import OptimizeImage from "../../../components/optimize_image.astro";
+import EventNavigation from "../../../components/event_nav.astro";
 import { getCollection } from "astro:content";
 import type { EventEntry } from "../../../../types";
 import Ghost from "../../../components/ghost.astro";
@@ -202,87 +203,8 @@ const previewPages = [
         </p>
       </div>
 
-      <!-- Infos pratiques stylées -->
-      <div class="event-info-wrapper">
-        <h3 class="text-xl mb-4 text-center">Informations pratiques</h3>
-        <div class="event-info-container">
-          <div class="event-info-card">
-            <div class="event-info-icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-              </svg>
-            </div>
-            <h4 class="event-info-title">DATE</h4>
-            <p class="event-info-value">samedi 25 octobre 2025</p>
-          </div>
-
-          <div class="event-info-card">
-            <div class="event-info-icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                <circle cx="12" cy="10" r="3"></circle>
-              </svg>
-            </div>
-            <h4 class="event-info-title">LIEU</h4>
-            <p class="event-info-value">
-              Départ: Place de Ruthin<br />
-              Arrivée: Salle La Briécoise, 29510 Briec
-            </p>
-          </div>
-
-          <div class="event-info-card">
-            <div class="event-info-icon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-            </div>
-            <h4 class="event-info-title">HORAIRES</h4>
-            <p class="event-info-value">
-              19h00: Rassemblement place de Ruthin<br />
-              19h30: Départ de la procession<br />
-              20h30: Festivités à l'Arthémuse
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Galerie de silhouettes pour mobile -->
-    <div class="silhouettes-gallery mb-10 md:hidden">
+    <div class="silhouettes-gallery mb-10">
       <h2 class="text-xl mb-4">Inspirations monstrueuses</h2>
       <div class="flex justify-center">
         <div class="flex gap-2 overflow-x-auto pb-4 mb-6 snap-x">
@@ -398,11 +320,9 @@ const previewPages = [
       </div>
     </section>
 
-    <!-- Boutons navigation -->
-    <div class="flex justify-between items-center mt-12">
-      <a href="/events/" class="btn">Tous les événements</a>
-      <a href="/" class="btn">Retour à l'accueil</a>
-    </div>
+    <!-- Utilisation du composant de navigation -->
+    <EventNavigation currentSlug={carnaBal.slug} />
+
   </article>
   <Ghost 
     className="hidden md:block rotate-y-180"
@@ -410,6 +330,7 @@ const previewPages = [
   />
 </Layout>
 
+<!-- CSS conservé uniquement pour les spécificités visuelles de cette page -->
 <style>
   /* Styles spécifiques pour la page CarnaBal */
   .event-hero {
@@ -609,49 +530,6 @@ const previewPages = [
   .cantine-info {
     border-color: var(--color-secondary);
     background-color: rgba(var(--color-primary-rgb), 0.05);
-  }
-
-  /* Timeline pour les ateliers */
-  .timeline {
-    position: relative;
-    margin-left: 1rem;
-  }
-
-  .timeline::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 2px;
-    background-color: var(--color-border);
-  }
-
-  .timeline-item {
-    position: relative;
-    padding-left: 2rem;
-    padding-bottom: 1.5rem;
-  }
-
-  .timeline-item::before {
-    content: "";
-    position: absolute;
-    left: -5px;
-    top: 6px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: var(--color-primary);
-  }
-
-  .timeline-date {
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-    color: var(--color-primary);
-  }
-
-  .timeline-content {
-    position: relative;
   }
 
   /* Responsive tweaks */
