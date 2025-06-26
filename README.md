@@ -28,7 +28,7 @@ src/
 │   ├── config.ts           # Configuration des collections
 │   ├── events/             # Événements
 │   │   ├── 2025-06-02-cantine-juin.md
-│   │   └── 2025-10-31-carnabal.md
+│   │   └── 2025-10-25-carnabal.md
 │   ├── cantines/          # Informations sur les cantines
 │   │   └── cantines-info.md
 │   └── pages/             # Pages générales
