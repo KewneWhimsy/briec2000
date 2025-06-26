@@ -4,7 +4,7 @@ date: 2025-07-17
 description: "Venez créer votre costume de monstre ou de créature pour le CarnaBal d'octobre ! Ateliers ouverts à tous les âges sur 2 jours à Ti Glazik."
 location: "Base de loisirs Ti Glazik, Place de Ruthin, 29510 Briec"
 time: "16-17 juillet : matin (10h-12h) avec l'espace-jeunes, après-midi (14h-17h) ouvert à tous·tes"
-image: "/src/assets/events/confection.png"
+image: "/src/assets/events/loup.png"
 price:
   - name: "Gratuit"
     amount: 0

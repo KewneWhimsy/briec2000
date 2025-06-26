@@ -31,7 +31,7 @@ const previousEvent = currentIndex > 0 ? sortedEvents[currentIndex - 1] : null;
 const nextEvent = currentIndex < sortedEvents.length - 1 ? sortedEvents[currentIndex + 1] : null;
 ---
 
-<nav class="border-t pt-8 mt-12">
+<nav class="border-t pt-8 mt-12" style="border-color: var(--color-border);">
   <!-- Layout conditionnel : centré quand un seul bouton, justifié quand les deux -->
   <div class={`flex flex-col sm:flex-row items-center gap-4 ${!previousEvent || !nextEvent ? 'justify-center' : 'justify-between'}`}>
     
