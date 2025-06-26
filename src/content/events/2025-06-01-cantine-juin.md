@@ -1,7 +1,7 @@
 ---
 title: "Cantine du dimanche 1er Juin"
 date: 2025-06-01
-description: "Venez découvrir notre cantine du mois de juin avec un menu spécial façon tajine."
+description: "Venez découvrir notre cantine du mois de juin avec son bon chili fait avec amour !."
 location: "Ti Glazik, Place de Ruthin, 29510 Briec"
 time: "Retrait des plats entre 18h et 20h"
 image: "/src/assets/events/repas.png"
@@ -23,9 +23,9 @@ draft: false
 
 Notre menu de juin propose :
 - Une petite salade fraîche de saison
-- Un plat principal "façon tajine" avec semoule, accompagné d'amandes, abricots, raisins secs et légumes
+- Chili avec riz, épices douces, raisins secs et légumes
 - Option végétarienne : protéine de soja
-- Option carnée : poulet fermier
+- Option carnée : viande hachée
 
 ## Informations pratiques
 
