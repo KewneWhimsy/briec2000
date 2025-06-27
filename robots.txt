@@ -1,23 +1,14 @@
 # robots.txt pour Briec2000
-# Association locale à Briec-de-l'Odet
-
-# Autoriser tous les robots pour un site associatif public
 User-agent: *
 Allow: /
 
-# Bloquer les dossiers techniques (si présents)
+# Dossiers techniques
 Disallow: /admin/
 Disallow: /.well-known/
 Disallow: /api/
 Disallow: /_astro/
 
-# Fichiers à ne pas indexer
-Disallow: /favicon.ico
-Disallow: /robots.txt
-
-# Sitemap généré automatiquement par Astro
-Sitemap: https://briec2000.fr/sitemap-index.xml
-
-# Directive pour les sites éco-responsables
-# Réduire la fréquence d'exploration pour l'impact environnemental
+# Eco-responsable : réduire la fréquence d'exploration
 Crawl-delay: 5
+
+Sitemap: https://briec2000.fr/sitemap-index.xml
