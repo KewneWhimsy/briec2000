@@ -4,6 +4,7 @@ import Footer from "./footer.astro";
 import SidebarMenu from "../components/sidebar_menu.astro";
 import ThemeSwitcher from "../components/theme_switcher.astro";
 import LayoutScripts from "../components/layout_scripts.astro";
+import OptimizeImage from "../components/optimize_image.astro";
 import { Font } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
@@ -70,14 +71,19 @@ const mobileMenuItems = [
         <ThemeSwitcher />
       </div>
       
-      <div class="flex justify-between items-center">
-        <div class="w-[36px]"></div>
-        <span class="text-lg font-medium" style="color: var(--color-primary);">
-          Briec2000
-        </span>
+      <div class="flex justify-end items-center">
+        <!-- Logo dans le coin supérieur droit -->
+        <a href="/" class="flex items-center" aria-label="Retour à l'accueil">
+          <OptimizeImage
+            src="/src/assets/bfuturnobg.png"
+            alt="Logo Briec2000"
+            class="h-12 w-auto theme-filtered"
+            loading="eager"
+          />
+        </a>
       </div>
 
-      <nav class="simple-nav pt-6">
+      <nav class="simple-nav pt-3">
         <ul class="flex flex-wrap gap-x-4 gap-y-3 justify-center">
           {mobileMenuItems.map((item) => (
             <li>
@@ -104,7 +110,17 @@ const mobileMenuItems = [
           class="hidden md:block sticky top-6 self-start h-auto max-h-[calc(100vh-3rem)] pb-6"
           transition:persist
         >
-          <div class="h-28"></div>
+          <!-- Logo desktop avec espacement optimal -->
+          <div class="flex mt-15 mb-4">
+            <a href="/" class="flex items-center" aria-label="Retour à l'accueil" transition:name="bfutur">
+              <OptimizeImage
+                src="/src/assets/bfuturnobg.png"
+                alt="Logo Briec2000"
+                class="h-15 w-auto theme-filtered"
+                loading="eager"
+              />
+            </a>
+          </div>
           <SidebarMenu transition:persist />
         </div>
 
