@@ -27,6 +27,6 @@ Venez créer votre alter ego monstrueux à la base de loisirs de Ti Glazik. Brie
 - Nous apportons suffisamment de matériel pour que vous n'ayez pas besoin d'apporter quelque chose, cependant, si vous avez chez vous un bout de bric ou de broc qui vous plait et que vous avez envie d'utiliser, amenez-le !
 - Adapté à tous les niveaux, de débutant·e à expert·e en bricolage, avec ou sans idée.
 
-**Contact et informations :** <span class="email-copy">briec2000@emailasso.net</span>
+**Contact et informations :** <span class="email-copy">briec2000[at]emailasso.net</span>
 
 *Ces ateliers font partie du projet CarnaBal des monstres et créatures.*

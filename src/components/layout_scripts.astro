@@ -84,7 +84,7 @@
 <!-- Script pour gérer les interactions utilisateur -->
 <script>
   /**
-   * Gère à la fois le prevent default pour les emails et la copie du menu
+   * Gère la copie du menu et des emails
    */
   function initCopyFunctions() {
     // Créer une notification générique pour toute fonctionnalité de copie
@@ -116,16 +116,18 @@
                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
-          <span>Menu copié !</span>
+          <span id="notification-text">Copié !</span>
         `;
         document.body.appendChild(notification);
       }
     }
 
-    // Fonction simplifiée pour afficher la notification
-    function showNotification() {
+    // Fonction pour afficher la notification avec texte personnalisé
+    function showNotification(text = "Copié !") {
       const notification = document.getElementById("copy-notification");
-      if (notification) {
+      const textElement = document.getElementById("notification-text");
+      if (notification && textElement) {
+        textElement.textContent = text;
         notification.style.transform = "translateX(0)";
         notification.style.opacity = "1";
 
@@ -136,16 +138,24 @@
       }
     }
 
-    // 1. Empêcher le comportement par défaut des liens d'e-mail
-    document.querySelectorAll(".email-copy").forEach((link) => {
+    // 1. Gérer la copie des emails
+    document.querySelectorAll(".email-copy").forEach((element) => {
       // Éviter les doubles listeners
-      if (link.getAttribute("data-initialized") === "true") return;
+      if (element.getAttribute("data-initialized") === "true") return;
 
-      link.addEventListener("click", (e) => {
+      element.addEventListener("click", async (e) => {
         e.preventDefault();
+        
+        try {
+          createNotificationIfNeeded();
+          await navigator.clipboard.writeText("briec2000@emailasso.net");
+          showNotification("Email copié !");
+        } catch (err) {
+          console.error("Erreur de copie:", err);
+        }
       });
 
-      link.setAttribute("data-initialized", "true");
+      element.setAttribute("data-initialized", "true");
     });
 
     // 2. Gérer la copie du menu
@@ -178,7 +188,7 @@
           }, 2000);
 
           // Afficher la notification
-          showNotification();
+          showNotification("Menu copié !");
         } catch (err) {
           console.error("Erreur de copie:", err);
         }

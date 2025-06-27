@@ -15,7 +15,7 @@ price:
   - name: "Dessert sur place"
     amount: 1
 menu: "Petite salade, plat principal façon tajine avec semoule (amandes, abricots, raisins secs, légumes, protéine de soja ou poulet)"
-reservation: "Par mail à briec2000@emailasso.net"
+reservation: "Par mail à briec2000[at]emailasso.net"
 updated: 2025-04-01
 ---
 
@@ -32,7 +32,7 @@ Chaque premier dimanche du mois, Briec2000 organise une cantine mensuel à Ti Gl
 
 ## Comment ça marche?
 
-1. **Réservez** en envoyant un mail à <span class="email-copy">briec2000@emailasso.net</span> (précisez votre nom, le nombre de repas souhaités et si vous voulez des demi-portions)
+1. **Réservez** en envoyant un mail à <span class="email-copy">briec2000[at]emailasso.net</span> (précisez votre nom, le nombre de repas souhaités et si vous voulez des demi-portions)
 2. **Venez avec vos contenants** le jour J pour un repas à emporter
 3. **Ou restez sur place** pour déguster votre repas et profiter des desserts faits maison à 1€
 

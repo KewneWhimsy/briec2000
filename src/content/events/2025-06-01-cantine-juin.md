@@ -31,7 +31,7 @@ Notre menu de juin propose :
 
 - **Apportez vos contenants** pour les repas à emporter
 - Les desserts sont disponibles sur place uniquement (1€)
-- Réservation par mail à <span class="email-copy">briec2000@emailasso.net</span>
+- Réservation par mail à <span class="email-copy">briec2000[at]emailasso.net</span>
 
 ## Soutenir l'association
 

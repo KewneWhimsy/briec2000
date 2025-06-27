@@ -313,7 +313,6 @@ a {
 .email-copy {
   text-decoration: underline;
   cursor: pointer;
-  user-select: all;
 }
 
 /* ============== RESPONSIVE =============== */

@@ -45,7 +45,7 @@ cuisine.
 - Le repas est à emporter dans vos propres contenants propres, entre 18h et 20h, ou à manger sur place
 (dites-le nous !)
 - Les desserts sont disponibles sur place uniquement (1€) - au choix parmi les desserts maison !
-- Uniquement sur réservation à faire avant le 2 juillet par mail à <span class="email-copy">briec2000@emailasso.net</span> ou sur place au centre social (dans une petite boite, demandez à l'accueil !).
+- Uniquement sur réservation à faire avant le 2 juillet par mail à <span class="email-copy">briec2000[at]emailasso.net</span> ou sur place au centre social (dans une petite boite, demandez à l'accueil !).
 
 ## Soutenir l'association
 

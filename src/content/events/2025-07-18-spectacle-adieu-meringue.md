@@ -44,4 +44,4 @@ L'ensemble des activités de la base de loisirs est gratuite : <a href="https://
 
 **Repas et buvette sur place**
 
-**Réservations et informations :** <span class="email-copy">briec2000@emailasso.net</span>
+**Réservations et informations :** <span class="email-copy">briec2000[at]emailasso.net</span>

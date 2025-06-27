@@ -93,7 +93,7 @@ Chaque premier dimanche du mois, nous proposons une cantine mensuelle :
 
 **Menu type** : Petite salade, plat principal "façon tajine" avec semoule (amandes, abricots, raisins secs, légumes, protéine de soja ou poulet)
 
-**Réservations** : Par mail à briec2000@emailasso.net
+**Réservations** : Par mail à briec2000[at]emailasso.net
 
 *Pensez à apporter vos contenants propres pour les repas à emporter !*
 
@@ -105,7 +105,7 @@ Chaque premier dimanche du mois, nous proposons une cantine mensuelle :
 
 ## 📢 Contact
 
-- **Email** : briec2000@emailasso.net
+- **Email** : briec2000[at]emailasso.net
 
 ## 🤝 Soutenir l'association
 
