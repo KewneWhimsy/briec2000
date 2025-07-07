@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import OptimizeImage from '../components/optimize_image.astro';
 import type { EventEntry } from '../../types';
 import Ghost from '../components/ghost.astro';
+import Bule from '../components/bule.astro';
 
 // Récupérer tous les événements non brouillons
 const allEvents = await getCollection('events') as EventEntry[];
@@ -120,6 +121,7 @@ const sortedYears = Object.keys(eventsByYear)
   className="hidden md:block rotate-x-180"
   style="bottom: 8%; right: 8%;"
   />
+  <Bule className="hidden md:block" style="bottom: 400px; left: 200px;" />
 </Layout>
 
 <style>

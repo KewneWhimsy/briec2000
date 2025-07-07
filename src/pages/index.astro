@@ -5,6 +5,7 @@ import { getCollection } from 'astro:content';
 import type { EventEntry, CantineEntry, Price } from '../../types';
 import MenuCantine from '../components/menu_cantine.astro';
 import Ghost from '../components/ghost.astro';
+import Bule from '../components/bule.astro';
 
 // Importer les informations de build
 import buildInfo from '../data/build-info.json';
@@ -173,6 +174,7 @@ function formatDate(date: Date | string): string {
     className="hidden md:block"
     style="bottom: 5%; left: 5%;"
   />
+  <Bule className="hidden md:block" style="bottom: 20px; right: 50px;" />
 </Layout>
 
 <style>
