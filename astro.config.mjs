@@ -49,6 +49,11 @@ export default defineConfig({
         name: "Andika",
         cssVariable: "--font-andika"
       },
+      {
+        provider: fontProviders.google(),
+        name: "Press Start 2P",
+        cssVariable: "--font-start"
+      },
     ],
   },
   
