@@ -10,6 +10,7 @@ import Gallery from "../../../components/gallery.astro";
 import { getCollection } from "astro:content";
 import type { EventEntry } from "../../../../types";
 import Ghost from "../../../components/ghost.astro";
+import Bule from "../../../components/bule.astro";
 
 // Récupérer tous les événements
 const eventsEntries = (await getCollection("events")) as EventEntry[];
@@ -415,4 +416,5 @@ const previewPages = [
     className="hidden md:block rotate-y-180"
     style="top: 15%; right: 12%;"
   />
+  <Bule className="hidden md:block rotate-y-180" style="top: 300px; right: 280px;" />
 </Layout>

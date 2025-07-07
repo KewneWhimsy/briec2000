@@ -5,6 +5,7 @@ import EventNavigation from "../../components/event_nav.astro";
 import { getCollection } from "astro:content";
 import type { EventEntry, Price } from "../../../types";
 import Ghost from "../../components/ghost.astro";
+import Bule from "../../components/bule.astro";
 
 // Générer toutes les routes pour les événements
 export async function getStaticPaths() {
@@ -88,4 +89,5 @@ function formatDate(date: Date | string): string {
     <EventNavigation currentSlug={entry.slug} />
   </article>
   <Ghost className="hidden md:block rotate-y-180" style="top: 8%; right: 8%;" />
+  <Bule className="hidden md:block rotate-y-180" style="top: 300px; right: 240px;" />
 </Layout>
