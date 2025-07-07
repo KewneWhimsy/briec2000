@@ -1,15 +1,39 @@
 ---
-title: "Aprem déguisement et spectacle \"Adieu Meringue\""
+title: "16-17-18 juillet : Ateliers et spectacle \"Adieu Meringue\""
 date: 2025-07-18
 description: "Après-midi collective de déguisement suivie d'une soirée festive avec le spectacle \"Adieu Meringue\" de la compagnie Fil en bulle. Un fascinant cabaret de monstres !"
 location: "Base de loisirs Ti Glazik, Place de Ruthin, 29510 Briec"
-time: "15h : atelier déguisement collectif, 17h déambulation monstrueuse dans le bourg, 18h30 : Repas à la base de loisirs, 20h30 : spectacle"
+time: "voir détails plus bas"
 image: "/src/assets/events/meringue.jpg"
 price:
   - name: "Gratuit"
     amount: 0
 draft: false
 ---
+
+# 16-17 juillet
+
+## Préparez votre transformation monstrueuse !
+
+Venez créer votre alter ego monstrueux à la base de loisirs de Ti Glazik. Briec 2000 vous fournit tout ce qu'il faut pour fabriquer des bouts de créatures, faites naitre vos monstres, ou préparez-en pour d'autres qui viendront les habiter !
+
+### Programme des ateliers
+
+**Mercredi 16 et jeudi 17 juillet :**
+- **10h-12h** : Ateliers réservés à l'espace-jeunes
+- **14h-17h** : Ateliers ouverts à tous·tes (enfants, ados, adultes)
+
+## Informations pratiques
+
+- **Participation libre** - venez comme vous êtes, rejoignez l'atelier ou quittez-le quand vous voulez, surtout repartez transformé·e !
+- Nous apportons suffisamment de matériel pour que vous n'ayez pas besoin d'apporter quelque chose, cependant, si vous avez chez vous un bout de bric ou de broc qui vous plait et que vous avez envie d'utiliser, amenez-le !
+- Adapté à tous les niveaux, de débutant·e à expert·e en bricolage, avec ou sans idée.
+
+**Contact et informations :** <span class="email-copy">briec2000[at]emailasso.net</span>
+
+*Ces ateliers font partie du projet CarnaBal des monstres et créatures.*
+
+# 18 juillet
 
 ## On se retrouve à 15h pour se transformer !
 
