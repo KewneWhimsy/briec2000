@@ -158,6 +158,26 @@
       element.setAttribute("data-initialized", "true");
     });
 
+    // 1,5. Gérer la copie des emails (temporaire)
+    document.querySelectorAll(".base-copy").forEach((element) => {
+      // Éviter les doubles listeners
+      if (element.getAttribute("data-initialized") === "true") return;
+
+      element.addEventListener("click", async (e) => {
+        e.preventDefault();
+        
+        try {
+          createNotificationIfNeeded();
+          await navigator.clipboard.writeText("basedeloisirs@glazik.bzh");
+          showNotification("Email copié !");
+        } catch (err) {
+          console.error("Erreur de copie:", err);
+        }
+      });
+
+      element.setAttribute("data-initialized", "true");
+    });
+
     // 2. Gérer la copie du menu
     document.querySelectorAll(".copy-menu-btn").forEach((button) => {
       // Éviter les doubles listeners

@@ -342,6 +342,10 @@ a {
   cursor: pointer;
 }
 
+.base-copy {
+  text-decoration: underline;
+  cursor: pointer;
+}
 /* ============== RESPONSIVE =============== */
 
 @media (max-width: 767px) {

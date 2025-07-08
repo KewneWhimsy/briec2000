@@ -45,6 +45,8 @@ Que vous ayez participé ou non aux ateliers des jours précédents, venez nous 
 Le menu est en cours de chaudronnerie, revenez plus tard !
 Briec 2000 concocte une cantine spéciale, toujours au profit du CarnaBal !
 
+Si vous souhaitez être certain·e d'avoir une part au repas du soir, nous vous conseillons de réserver à cette adresse : <span class="base-copy">basedeloisirs[at]glazik.bzh</span> ou par téléphone au 02 98 57 70 91. Le prix du repas est en cours de calcul, mais devrait se trouver aux alentours de 7€.
+
 ## Le spectacle : "Adieu Meringue"
 
 ### Par la compagnie Fil en bulle - 20h30
