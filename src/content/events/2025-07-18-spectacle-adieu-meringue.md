@@ -1,7 +1,7 @@
 ---
 title: "16-17-18 juillet : Ateliers et spectacle \"Adieu Meringue\""
 date: 2025-07-18
-description: "Après-midi collective de déguisement suivie d'une soirée festive avec le spectacle \"Adieu Meringue\" de la compagnie Fil en bulle. Un fascinant cabaret de monstres !"
+description: "Deux jours d'ateliers monstrueux et une après-midi de déguisement collective suivie du spectacle Adieu Meringue à la base de loisirs !"
 location: "Base de loisirs Ti Glazik, Place de Ruthin, 29510 Briec"
 time: "voir détails plus bas"
 image: "/src/assets/events/meringue.jpg"

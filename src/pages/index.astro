@@ -121,13 +121,13 @@ function formatDate(date: Date | string): string {
               )}
             </section>
 
-            <div class="mb-6">
+            <div class="my-6">
               <p class="text-base leading-relaxed">{nextEvent.data.description}</p>
             </div>
             
             {
       nextEvent.data.price && nextEvent.data.price.length > 0 && (
-        <div class="inline-block card my-8 p-4">
+        <div class="inline-block card mt-2 mb-4 p-4">
           <h2 class="text-xl mb-4">Tarifs</h2>
           <ul class="list-disc ml-6 leading-relaxed">
             {nextEvent.data.price.map((price: Price) => (
