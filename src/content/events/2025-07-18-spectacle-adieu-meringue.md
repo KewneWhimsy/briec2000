@@ -37,15 +37,18 @@ Venez créer votre alter ego monstrueux à la base de loisirs de Ti Glazik. Brie
 
 ## On se retrouve à 15h pour se transformer !
 
-Que vous ayez participé ou non aux ateliers des jours précédents, venez nous retrouver à la base de loisirs avec vos peaux de monstres à revêtir. On s'habille tous ensemble, pimpe nos tentacules, ajuste nos canines et nos poses inhumaines avant d'aller parader dans les rues pour inviter les gens au repas suivi du spectacle à la base de loisirs. 
+Que vous ayez participé ou non aux ateliers des jours précédents, venez nous retrouver à la base de loisirs avec vos peaux de monstres à revêtir. On s'habille tous ensemble, pimpe nos tentacules, ajuste nos canines et nos poses inhumaines avant de s'ambiancer à la base de loisirs et d'inviter les gens au repas suivi du spectacle Adieu Meringue. 
 
 
-## Repas à 19h30
+## Repas à 19h00
 
-Le menu est en cours de chaudronnerie, revenez plus tard !
-Briec 2000 concocte une cantine spéciale, toujours au profit du CarnaBal !
+Briec 2000 concocte une cantine spéciale, toujours au profit du CarnaBal ! Cette fois, nous proposons des bánh mì : des sandwichs vietnamiens incroyablement délicieux. Et pour le dessert, des muffins aux myrtilles absolument succulents.
 
-Si vous souhaitez être certain·e d'avoir une part au repas du soir, nous vous conseillons de réserver à cette adresse : <span class="base-copy">basedeloisirs[at]glazik.bzh</span> ou par téléphone au 02 98 57 70 91. Le prix du repas est en cours de calcul, mais devrait se trouver aux alentours de 7€.
+Si vous souhaitez être certain·e d'avoir une part au repas du soir, réservez à cette adresse : <span class="base-copy">basedeloisirs[at]glazik.bzh</span> ou par téléphone au 02 98 57 70 91.
+
+bánh mì (6€)
+Muffin à la myrtille (1,5€)
+
 
 ## Le spectacle : "Adieu Meringue"
 
@@ -63,7 +66,7 @@ Heureusement, Meringue a toujours une solution à bas prix pour nous débarrasse
 
 ### Tarifs
 - **Après midi déguisement** : gratuit
-- **Repas** : prix fixe (en cours de calcul)
+- **Repas** : bánh mì (6€), muffin à la myrtille (1,5€)
 - **Spectacle** : gratuit
 
 L'ensemble des activités de la base de loisirs est gratuite : <a href="https://www.calameo.com/read/006759657ae56e0d57728/" target="_blank" rel="noopener noreferrer">programme complet</a>
