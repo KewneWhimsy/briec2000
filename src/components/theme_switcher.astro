@@ -15,16 +15,17 @@ type Theme = {
 
 // Définir les thèmes disponibles avec leurs couleurs caractéristiques
 const themes: Theme[] = [
-  // Thèmes standard clair
   {
-    id: "lavande",
-    name: "Lavande",
+    id: "vanille-violet",
+    name: "Vanille & Violet",
     type: "light",
-    bgColor: "#f5f0fa",
-    primaryColor: "#7c5295",
-    secondaryColor: "#583869",
-    featured: true, // Thème par défaut, toujours affiché
+    bgColor: "#fff8e1",
+    primaryColor: "#5b21b6",
+    secondaryColor: "#4f1e99",
+    isAccessible: true,
+    featured: true, // Thème accesible clair, toujours affiché
   },
+  // Thèmes standard clair
   {
     id: "bleu-canard",
     name: "Bleu Canard",
@@ -54,16 +55,7 @@ const themes: Theme[] = [
   },
 
   // Thèmes accessibles
-  {
-    id: "vanille-violet",
-    name: "Vanille & Violet",
-    type: "light",
-    bgColor: "#fff8e1",
-    primaryColor: "#5b21b6",
-    secondaryColor: "#4f1e99",
-    isAccessible: true,
-    featured: true, // Thème accesible clair, toujours affiché
-  },
+  
   {
     id: "champagne-acier",
     name: "Champagne & Acier",
@@ -72,6 +64,7 @@ const themes: Theme[] = [
     primaryColor: "#475569",
     secondaryColor: "#334155",
     isAccessible: true,
+    featured: true, // Thème accesible clair, toujours affiché
   },
   {
     id: "sunrise",
@@ -152,7 +145,7 @@ const themes: Theme[] = [
 const featuredThemes = themes.filter((theme) => theme.featured);
 
 // Pour le rendu côté serveur, obtenir le thème actuel à partir de la session ou par défaut
-const defaultTheme = "lavande";
+const defaultTheme = "vanille-violet";
 ---
 
 <div class="theme-switcher" id="theme-switcher" transition:persist>
@@ -275,15 +268,6 @@ const defaultTheme = "lavande";
 <style is:global>
   /* Styles des thèmes - compactés pour gagner de l'espace */
   :root,
-  html[data-theme="lavande"] {
-    --color-primary: #7c5295;
-    --color-secondary: #9a6db9;
-    --color-accent: #f7ca44;
-    --bg-color: #f5f0fa;
-    --text-color: #2d2235;
-    --color-border: #e5d8f0;
-    --color-primary-rgb: 124, 82, 149;
-  }
   html[data-theme="lavande-sombre"] {
     --color-primary: #a57fbb;
     --color-secondary: #8460a0;
@@ -643,7 +627,7 @@ const defaultTheme = "lavande";
     const currentTheme =
       document.documentElement.getAttribute("data-theme") ||
       localStorage.getItem("selected-theme") ||
-      "lavande";
+      "vanille-violet";
 
     if (currentTheme) {
       document
@@ -665,7 +649,7 @@ const defaultTheme = "lavande";
     const currentTheme =
       document.documentElement.getAttribute("data-theme") ||
       localStorage.getItem("selected-theme") ||
-      "lavande";
+      "vanille-violet";
 
     // Appliquer le thème au nouveau document
     event.newDocument.documentElement.setAttribute("data-theme", currentTheme);
