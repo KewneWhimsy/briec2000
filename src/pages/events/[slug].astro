@@ -39,7 +39,10 @@ function formatDate(date: Date | string): string {
 }
 ---
 
-<Layout title={`${entry.data.title} - Briec2000`}>
+<Layout 
+  title={`${entry.data.title} - Briec2000`} 
+  description={entry.data.description || `${entry.data.title} le ${formatDate(entry.data.date)} à ${entry.data.location}. Événement organisé par l'association Briec2000.`}
+>
   <article class="max-w-3xl">
     <header>
       <h1 class="mb-4">{entry.data.title}</h1>

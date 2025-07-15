@@ -11,4 +11,4 @@ Disallow: /_astro/
 # Eco-responsable : réduire la fréquence d'exploration
 Crawl-delay: 5
 
-Sitemap: https://briec2000.fr/sitemap-index.xml
+Sitemap: https://briec2000.fr/sitemap.xml
