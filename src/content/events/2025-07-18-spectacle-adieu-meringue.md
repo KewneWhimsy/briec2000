@@ -46,9 +46,18 @@ Briec 2000 concocte une cantine spéciale, toujours au profit du CarnaBal ! Cett
 
 Si vous souhaitez être certain·e d'avoir une part au repas du soir, réservez à cette adresse : <span class="base-copy">basedeloisirs[at]glazik.bzh</span> ou par téléphone au 02 98 57 70 91.
 
-bánh mì (6€)
-Muffin à la myrtille (1,5€)
+bánh mì boeuf (6€)
+Sandwich vietnamien au bœuf mariné à la citronnelle, carottes, radis, concombre, salade, coriandre*, mayonnaise, servi dans une baguette française.
 
+bánh mì oeuf (6€)
+Sandwich vietnamien à l'omelette sauce citronnelle, carottes, radis, concombre, salade, coriandre*, mayonnaise, servi dans une baguette française.
+
+*Si tu fais partie des personnes qui pensent que la coriandre a le goût du savon, nous avons une alternative pour toi (sans coriandre, ou à la ciboulette). 
+Les sandwichs sont montés sur place, il est donc possible d'adapter la garniture en fonction de vos goûts et dégoûts. 
+Sans gluten : servi dans une assiette.
+
+Muffin à la myrtille (1,5€)
+Tout est dans le nom, un muffin, aux myrtilles. Miam !
 
 ## Le spectacle : "Adieu Meringue"
 
