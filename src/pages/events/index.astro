@@ -5,6 +5,7 @@ import OptimizeImage from '../../components/optimize_image.astro';
 import type { EventEntry } from '../../../types';
 import Ghost from '../../components/ghost.astro';
 import Bule from '../../components/bule.astro';
+import Loup from '../../components/loup.astro';
 
 // Récupérer tous les événements non brouillons
 const allEvents = await getCollection('events') as EventEntry[];
@@ -100,6 +101,7 @@ function formatDate(date: Date | string): string {
   style="top: 8%; right: 8%;"
   />
   <Bule className="hidden md:block" style="top: 200px; right: 220px;" />
+  <Loup className="hidden md:block" style="top: 310px; right: 5%;" />
 </Layout>
 
 <style>

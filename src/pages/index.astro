@@ -9,6 +9,7 @@ import Bule from '../components/bule.astro';
 
 // Importer les informations de build
 import buildInfo from '../data/build-info.json';
+import Loup from '../components/loup.astro';
 
 // Récupérer tous les événements
 const allEvents = await getCollection('events') as EventEntry[];
@@ -178,6 +179,7 @@ function formatDate(date: Date | string): string {
     style="bottom: 5%; left: 5%;"
   />
   <Bule className="hidden md:block" style="bottom: 20px; right: 50px;" />
+  <Loup className="hidden md:block" style="bottom: 150px; right: 120px;" />
 </Layout>
 
 <style>

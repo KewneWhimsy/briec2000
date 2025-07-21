@@ -1,6 +1,6 @@
 ---
-// src/components/ghost.astro
-// Fantôme simple qui utilise les filtres thématiques globaux
+// src/components/bule.astro
+// Bonhomme bule simple qui utilise les filtres thématiques globaux
 
 import OptimizeImage from './optimize_image.astro';
 
@@ -20,11 +20,11 @@ const {
   style={style}
 >
   <OptimizeImage 
-    src="/src/assets/ghost500x500.png" 
-    alt="ooOOOOooo" 
+    src="/src/assets/loup500x500.png" 
+    alt="loup bonhomme" 
     widths={[125]}
-    class="ghost-img theme-filtered"
+    class="bule-img theme-filtered"
     loading="lazy"
-    transition:name="ghost"
+    transition:name="loup"
   />
 </div>
