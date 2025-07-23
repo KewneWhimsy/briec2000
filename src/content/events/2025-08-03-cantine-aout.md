@@ -34,8 +34,8 @@ cuisine.
 **Plat principal :** Pâtes  
 *Pâtes et ses sauces maisons*
 
-**Option végétarienne :** Escalope milanaise 
-**Option carnée :** Seitan à la milanaise
+**Option végétarienne :** Seitan à la milanaise
+**Option carnée :** Escalope milanaise
 
 **Dessert :** Au choix parmi les desserts maison !  
 *Disponibles sur place uniquement*
