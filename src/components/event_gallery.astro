@@ -2,7 +2,6 @@
 // src/components/event_gallery.astro
 // Composant pour afficher la galerie d'un événement (jusqu'à 3 miniatures)
 
-import { Picture } from 'astro:assets';
 import { loadEventGallery } from '../utils/gallery';
 import type { EventEntry } from '../../types';
 import OptimizeImage from './optimize_image.astro';
@@ -27,6 +26,18 @@ if (!gallery) {
 
 // Limiter les miniatures affichées
 const thumbnails = gallery.photos.slice(0, maxThumbnails);
+
+// Import des images pour récupérer les URLs optimisées
+const images = import.meta.glob('/src/assets/galleries/**/*.{png,jpg,jpeg,webp,avif}', { 
+  eager: true,
+  import: 'default'
+}) as Record<string, any>;
+
+// Fonction pour obtenir l'URL réelle de l'image optimisée
+function getOptimizedImageUrl(imagePath: string): string {
+  const imageObj = images[imagePath];
+  return imageObj?.src || imagePath;
+}
 ---
 
 {gallery && (
@@ -39,6 +50,7 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
             class="gallery-trigger w-full h-32 block cursor-pointer hover:opacity-80 transition-opacity rounded-lg overflow-hidden bg-[color:rgba(var(--color-primary-rgb),0.05)]"
             data-gallery-id={event.slug}
             data-start-index={index}
+            data-optimized-src={getOptimizedImageUrl(photo.src)}
             aria-label={`Voir la galerie de ${event.data.title}, photo ${index + 1}`}
           >
             <OptimizeImage
@@ -122,6 +134,7 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
             <button 
               class="gallery-thumb flex-none w-16 h-12 rounded overflow-hidden border-2 border-transparent hover:border-[var(--color-primary)] transition-colors"
               data-index={index}
+              data-optimized-src={getOptimizedImageUrl(photo.src)}
               aria-label={`Voir photo ${index + 1}`}
             >
               <OptimizeImage
@@ -137,49 +150,36 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
         </div>
       </div>
     </div>
-
-    <!-- Données pour le script dans des attributs data -->
-    <div 
-      id={`gallery-data-${event.slug}`}
-      data-gallery-photos={JSON.stringify(gallery.photos.map(photo => ({
-        src: photo.src,
-        alt: photo.alt
-      })))}
-      style="display: none;"
-    ></div>
   </section>
 )}
 
 <script>
   // Script pour gérer les galeries d'événements
   function initEventGalleries() {
-    document.querySelectorAll('[id^="gallery-data-"]').forEach(dataElement => {
-      const galleryId = dataElement.id.replace('gallery-data-', '');
+    document.querySelectorAll('[data-gallery-id]').forEach(trigger => {
+      const galleryId = trigger.getAttribute('data-gallery-id');
       if (!galleryId) return;
 
-      const galleryDataAttr = dataElement.getAttribute('data-gallery-photos');
-      if (!galleryDataAttr) return;
-
-      let galleryData: Array<{src: string, alt: string}>;
-      try {
-        galleryData = JSON.parse(galleryDataAttr);
-      } catch (e) {
-        console.error('Erreur de parsing JSON pour la galerie:', e);
-        return;
-      }
       const modal = document.getElementById(`gallery-modal-${galleryId}`);
       const currentImage = document.getElementById(`gallery-current-${galleryId}`) as HTMLImageElement;
       const prevBtn = document.getElementById(`gallery-prev-${galleryId}`);
       const nextBtn = document.getElementById(`gallery-next-${galleryId}`);
       
-      if (!modal || !currentImage || !prevBtn || !nextBtn || galleryData.length === 0) return;
+      if (!modal || !currentImage || !prevBtn || !nextBtn) return;
+
+      // Récupérer toutes les images de cette galerie depuis les miniatures
+      const thumbs = document.querySelectorAll(`#gallery-modal-${galleryId} .gallery-thumb`);
+      const galleryData = Array.from(thumbs).map(thumb => ({
+        src: thumb.getAttribute('data-optimized-src') || '',
+        alt: thumb.querySelector('img')?.alt || ''
+      }));
 
       let currentIndex = 0;
 
       // Fonction pour mettre à jour l'affichage
       function updateDisplay() {
         const item = galleryData[currentIndex];
-        if (item) {
+        if (item && item.src) {
           currentImage.src = item.src;
           currentImage.alt = item.alt;
           
@@ -188,23 +188,21 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
           (nextBtn as HTMLButtonElement).disabled = currentIndex === galleryData.length - 1;
           
           // Mettre à jour les miniatures actives
-          document.querySelectorAll(`#gallery-modal-${galleryId} .gallery-thumb`).forEach((thumb, index) => {
+          thumbs.forEach((thumb, index) => {
             thumb.classList.toggle('active', index === currentIndex);
           });
         }
       }
 
-      // Ouvrir la galerie depuis les miniatures
-      document.querySelectorAll(`[data-gallery-id="${galleryId}"]`).forEach(trigger => {
-        trigger.addEventListener('click', (e) => {
-          e.preventDefault();
-          const startIndex = parseInt(trigger.getAttribute('data-start-index') || '0');
-          currentIndex = startIndex;
-          updateDisplay();
-          (modal as any).showPopover();
-          
-          setTimeout(() => modal.focus(), 100);
-        });
+      // Ouvrir la galerie depuis le trigger principal
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        const startIndex = parseInt(trigger.getAttribute('data-start-index') || '0');
+        currentIndex = startIndex;
+        updateDisplay();
+        (modal as any).showPopover();
+        
+        setTimeout(() => modal.focus(), 100);
       });
 
       // Navigation précédent/suivant
@@ -223,7 +221,7 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
       });
 
       // Navigation par miniatures
-      document.querySelectorAll(`#gallery-modal-${galleryId} .gallery-thumb`).forEach((thumb, index) => {
+      thumbs.forEach((thumb, index) => {
         thumb.addEventListener('click', () => {
           currentIndex = index;
           updateDisplay();
