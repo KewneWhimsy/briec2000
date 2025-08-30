@@ -41,13 +41,13 @@ function getOptimizedImageUrl(imagePath: string): string {
 ---
 
 {gallery && (
-  <section class="event-gallery mb-8">
+  <section class="event-gallery m-8">
     
     <div class="flex gap-3 overflow-x-auto pb-4">
       {thumbnails.map((photo, index) => (
         <div class="flex-none w-32">
           <button 
-            class="gallery-trigger w-full h-32 block cursor-pointer hover:opacity-80 transition-opacity rounded-lg overflow-hidden bg-[color:rgba(var(--color-primary-rgb),0.05)]"
+            class="gallery-trigger my-2 w-full h-32 block cursor-pointer hover:opacity-80 transition-opacity rounded-lg overflow-hidden bg-[color:rgba(var(--color-primary-rgb),0.05)]"
             data-gallery-id={event.slug}
             data-start-index={index}
             data-optimized-src={getOptimizedImageUrl(photo.src)}
@@ -97,7 +97,7 @@ function getOptimizedImageUrl(imagePath: string): string {
       </div>
       
       <!-- Image principale -->
-      <div class="bg-[color:rgba(var(--color-primary-rgb),0.05)] p-4 flex justify-center items-center relative min-h-[60vh]">
+      <div class="bg-black p-4 flex justify-center items-center relative min-h-[60vh]">
         <img
           id={`gallery-current-${event.slug}`}
           class="max-w-full max-h-[60vh] object-contain w-auto h-auto"
