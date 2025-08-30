@@ -58,7 +58,7 @@ function getOptimizedImageUrl(imagePath: string): string {
               alt={photo.alt}
               class="w-full h-full object-cover"
               widths={[128, 256]}
-              sizes="128px"
+              sizes="256px"
               loading="lazy"
             />
           </button>
@@ -82,7 +82,7 @@ function getOptimizedImageUrl(imagePath: string): string {
       <!-- Header avec info et bouton fermer -->
       <div class="bg-[var(--color-secondary)] text-white p-3 flex justify-between items-center">
         <div>
-          <h3 class="font-medium">{event.data.title}</h3>
+          <h3 class="font-medium" style="color: white;">{event.data.title}</h3>
           <p class="text-sm opacity-90">Par {gallery.photographer}</p>
         </div>
         <button 
