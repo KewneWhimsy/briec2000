@@ -1,7 +1,7 @@
 // src/content/config.ts
 import { defineCollection, z } from 'astro:content';
 
-// Définition du schéma pour les événements
+// Définition du schéma pour les événements avec galerie optionnelle
 const events = defineCollection({
   schema: z.object({
     title: z.string(),
@@ -14,6 +14,10 @@ const events = defineCollection({
       name: z.string(),
       amount: z.number(),
     })).optional(),
+    gallery: z.object({
+      photographer: z.string(),
+      coverImageIndex: z.number().default(0),
+    }).optional(),
     draft: z.boolean().default(false),
   }),
 });

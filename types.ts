@@ -10,3 +10,9 @@ export interface Price {
   name: string;
   amount: number;
 }
+
+// Type for gallery configuration in events
+export interface GalleryConfig {
+  photographer: string;
+  coverImageIndex?: number;
+}

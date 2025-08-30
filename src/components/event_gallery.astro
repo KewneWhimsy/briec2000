@@ -1,0 +1,256 @@
+---
+// src/components/event_gallery.astro
+// Composant pour afficher la galerie d'un événement (jusqu'à 3 miniatures)
+
+import { Picture } from 'astro:assets';
+import { loadEventGallery } from '../utils/gallery';
+import type { EventEntry } from '../../types';
+import OptimizeImage from './optimize_image.astro';
+
+export interface Props {
+  event: EventEntry;
+  maxThumbnails?: number;
+}
+
+const { 
+  event, 
+  maxThumbnails = 3 
+} = Astro.props;
+
+// Charger la galerie de l'événement
+const gallery = await loadEventGallery(event.slug, event);
+
+// Si pas de galerie, ne rien afficher
+if (!gallery) {
+  return null;
+}
+
+// Limiter les miniatures affichées
+const thumbnails = gallery.photos.slice(0, maxThumbnails);
+---
+
+{gallery && (
+  <section class="event-gallery mb-8">
+    
+    <div class="flex gap-3 overflow-x-auto pb-4">
+      {thumbnails.map((photo, index) => (
+        <div class="flex-none w-32">
+          <button 
+            class="gallery-trigger w-full h-32 block cursor-pointer hover:opacity-80 transition-opacity rounded-lg overflow-hidden bg-[color:rgba(var(--color-primary-rgb),0.05)]"
+            data-gallery-id={event.slug}
+            data-start-index={index}
+            aria-label={`Voir la galerie de ${event.data.title}, photo ${index + 1}`}
+          >
+            <OptimizeImage
+              src={photo.src}
+              alt={photo.alt}
+              class="w-full h-full object-cover"
+              widths={[128, 256]}
+              sizes="128px"
+              loading="lazy"
+            />
+          </button>
+        </div>
+      ))}
+      
+      {gallery.photos.length > maxThumbnails && (
+        <div class="flex-none w-32 h-32 flex items-center justify-center text-sm opacity-60 border border-dashed border-[var(--color-border)] rounded-lg">
+          +{gallery.photos.length - maxThumbnails} photo{gallery.photos.length - maxThumbnails > 1 ? 's' : ''}
+        </div>
+      )}
+    </div>
+
+    <!-- Modal galerie intégrée -->
+    <div 
+      id={`gallery-modal-${event.slug}`}
+      class="gallery-modal rounded-xl border border-[var(--color-border)] overflow-hidden max-w-[95vw] max-h-[95vh]" 
+      popover
+      tabindex="-1"
+    >
+      <!-- Header avec info et bouton fermer -->
+      <div class="bg-[var(--color-secondary)] text-white p-3 flex justify-between items-center">
+        <div>
+          <h3 class="font-medium">{event.data.title}</h3>
+          <p class="text-sm opacity-90">Par {gallery.photographer}</p>
+        </div>
+        <button 
+          class="w-7 h-7 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
+          popovertarget={`gallery-modal-${event.slug}`}
+          aria-label="Fermer"
+        >
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+            <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Image principale -->
+      <div class="bg-[color:rgba(var(--color-primary-rgb),0.05)] p-4 flex justify-center items-center relative min-h-[60vh]">
+        <img
+          id={`gallery-current-${event.slug}`}
+          class="max-w-full max-h-[60vh] object-contain w-auto h-auto"
+          alt=""
+          loading="lazy"
+        />
+        
+        <!-- Navigation principale (gauche/droite) -->
+        <button 
+          id={`gallery-prev-${event.slug}`}
+          class="absolute left-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-[var(--color-secondary)] text-white rounded-full flex items-center justify-center hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
+          aria-label="Image précédente"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        
+        <button 
+          id={`gallery-next-${event.slug}`}
+          class="absolute right-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-[var(--color-secondary)] text-white rounded-full flex items-center justify-center hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
+          aria-label="Image suivante"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Barre de miniatures horizontale -->
+      <div class="p-3 bg-[var(--bg-color)] border-t border-[var(--color-border)]">
+        <div class="flex gap-2 overflow-x-auto pb-2">
+          {gallery.photos.map((photo, index) => (
+            <button 
+              class="gallery-thumb flex-none w-16 h-12 rounded overflow-hidden border-2 border-transparent hover:border-[var(--color-primary)] transition-colors"
+              data-index={index}
+              aria-label={`Voir photo ${index + 1}`}
+            >
+              <OptimizeImage
+                src={photo.src}
+                alt={photo.alt}
+                class="w-full h-full object-cover"
+                widths={[64, 128]}
+                sizes="64px"
+                loading="lazy"
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Données pour le script dans des attributs data -->
+    <div 
+      id={`gallery-data-${event.slug}`}
+      data-gallery-photos={JSON.stringify(gallery.photos.map(photo => ({
+        src: photo.src,
+        alt: photo.alt
+      })))}
+      style="display: none;"
+    ></div>
+  </section>
+)}
+
+<script>
+  // Script pour gérer les galeries d'événements
+  function initEventGalleries() {
+    document.querySelectorAll('[id^="gallery-data-"]').forEach(dataElement => {
+      const galleryId = dataElement.id.replace('gallery-data-', '');
+      if (!galleryId) return;
+
+      const galleryDataAttr = dataElement.getAttribute('data-gallery-photos');
+      if (!galleryDataAttr) return;
+
+      let galleryData: Array<{src: string, alt: string}>;
+      try {
+        galleryData = JSON.parse(galleryDataAttr);
+      } catch (e) {
+        console.error('Erreur de parsing JSON pour la galerie:', e);
+        return;
+      }
+      const modal = document.getElementById(`gallery-modal-${galleryId}`);
+      const currentImage = document.getElementById(`gallery-current-${galleryId}`) as HTMLImageElement;
+      const prevBtn = document.getElementById(`gallery-prev-${galleryId}`);
+      const nextBtn = document.getElementById(`gallery-next-${galleryId}`);
+      
+      if (!modal || !currentImage || !prevBtn || !nextBtn || galleryData.length === 0) return;
+
+      let currentIndex = 0;
+
+      // Fonction pour mettre à jour l'affichage
+      function updateDisplay() {
+        const item = galleryData[currentIndex];
+        if (item) {
+          currentImage.src = item.src;
+          currentImage.alt = item.alt;
+          
+          // Mettre à jour les boutons de navigation
+          (prevBtn as HTMLButtonElement).disabled = currentIndex === 0;
+          (nextBtn as HTMLButtonElement).disabled = currentIndex === galleryData.length - 1;
+          
+          // Mettre à jour les miniatures actives
+          document.querySelectorAll(`#gallery-modal-${galleryId} .gallery-thumb`).forEach((thumb, index) => {
+            thumb.classList.toggle('active', index === currentIndex);
+          });
+        }
+      }
+
+      // Ouvrir la galerie depuis les miniatures
+      document.querySelectorAll(`[data-gallery-id="${galleryId}"]`).forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+          e.preventDefault();
+          const startIndex = parseInt(trigger.getAttribute('data-start-index') || '0');
+          currentIndex = startIndex;
+          updateDisplay();
+          (modal as any).showPopover();
+          
+          setTimeout(() => modal.focus(), 100);
+        });
+      });
+
+      // Navigation précédent/suivant
+      prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) {
+          currentIndex--;
+          updateDisplay();
+        }
+      });
+
+      nextBtn.addEventListener('click', () => {
+        if (currentIndex < galleryData.length - 1) {
+          currentIndex++;
+          updateDisplay();
+        }
+      });
+
+      // Navigation par miniatures
+      document.querySelectorAll(`#gallery-modal-${galleryId} .gallery-thumb`).forEach((thumb, index) => {
+        thumb.addEventListener('click', () => {
+          currentIndex = index;
+          updateDisplay();
+        });
+      });
+
+      // Navigation clavier
+      modal.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'ArrowLeft' && currentIndex > 0) {
+          currentIndex--;
+          updateDisplay();
+        } else if (e.key === 'ArrowRight' && currentIndex < galleryData.length - 1) {
+          currentIndex++;
+          updateDisplay();
+        }
+      });
+    });
+  }
+
+  // Initialiser au chargement et lors des transitions Astro
+  document.addEventListener('DOMContentLoaded', initEventGalleries);
+  document.addEventListener('astro:page-load', initEventGalleries);
+  
+  // Initialiser immédiatement si déjà chargé
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initEventGalleries);
+  } else {
+    initEventGalleries();
+  }
+</script>

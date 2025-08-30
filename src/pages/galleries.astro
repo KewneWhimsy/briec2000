@@ -1,0 +1,72 @@
+---
+// src/pages/galleries.astro
+import Layout from '../layouts/layout.astro';
+import OptimizeImage from '../components/optimize_image.astro';
+import EventGallery from '../components/event_gallery.astro';
+import { getCollection } from 'astro:content';
+import { loadAllGalleries } from '../utils/gallery';
+import type { EventEntry } from '../../types';
+import Ghost from '../components/ghost.astro';
+import Bule from '../components/bule.astro';
+import Loup from '../components/loup.astro';
+
+// Récupérer tous les événements
+const allEvents = await getCollection('events') as EventEntry[];
+
+// Charger toutes les galeries disponibles
+const galleries = await loadAllGalleries(allEvents);
+
+// Formater la date en français
+function formatDate(date: Date | string): string {
+  const dateObj = date instanceof Date ? date : new Date(date);
+  const options: Intl.DateTimeFormatOptions = { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  };
+  return dateObj.toLocaleDateString('fr-FR', options);
+}
+---
+
+<Layout 
+  title="Galeries photos - Briec2000" 
+  description="Découvrez les photos de nos événements : cantines mensuelles, ateliers créatifs et moments festifs de l'association Briec2000 à Briec."
+>
+  <section class="max-w-4xl">
+    <h1 class="mb-8">Galeries photos</h1>
+
+    {galleries.length > 0 ? (
+      <div class="space-y-12">
+        {galleries.map((gallery) => (
+          <div class="gallery-event-section">
+            <!-- En-tête de la galerie -->
+            <div class="mb-6">
+              <h2 class="text-xl mb-2">{gallery.event.data.title}</h2>
+              <div class="flex justify-between items-center text-sm opacity-70">
+                <span>{formatDate(gallery.event.data.date)}</span>
+                <span>Par {gallery.photographer} • {gallery.photos.length} photo{gallery.photos.length > 1 ? 's' : ''}</span>
+              </div>
+            </div>
+            
+            <!-- Réutiliser le composant EventGallery -->
+            <EventGallery event={gallery.event} maxThumbnails={6} />
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="card p-6 text-center">
+        <p class="mb-4">Aucune galerie photo n'est disponible pour le moment.</p>
+        <p class="text-sm opacity-70">Les photos de nos événements seront ajoutées ici au fur et à mesure.</p>
+      </div>
+    )}
+    
+    <div class="text-center mt-12">
+      <a href="/events/" class="btn mr-4">Événements</a>
+      <a href="/" class="btn">Retour à l'accueil</a>
+    </div>
+  </section>
+
+  <Ghost className="hidden md:block" style="top: 10%; right: 8%;" />
+  <Bule className="hidden md:block" style="top: 250px; right: 200px;" />
+  <Loup className="hidden md:block" style="top: 320px; right: 120px;" />
+</Layout>

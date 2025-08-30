@@ -2,6 +2,7 @@
 import Layout from "../../layouts/layout.astro";
 import OptimizeImage from "../../components/optimize_image.astro";
 import EventNavigation from "../../components/event_nav.astro";
+import EventGallery from "../../components/event_gallery.astro";
 import { getCollection } from "astro:content";
 import type { EventEntry, Price } from "../../../types";
 import Ghost from "../../components/ghost.astro";
@@ -90,8 +91,12 @@ function formatDate(date: Date | string): string {
       <Content />
     </div>
 
+    <!-- Galerie de l'événement (si disponible) -->
+    <EventGallery event={entry} />
+
     <EventNavigation currentSlug={entry.slug} />
   </article>
+  
   <Ghost className="hidden md:block rotate-y-180" style="top: 8%; right: 8%;" />
   <Bule className="hidden md:block rotate-y-180" style="top: 300px; right: 240px;" />
   <Loup className="hidden md:block" style="top: 315px; right: 123px;" />

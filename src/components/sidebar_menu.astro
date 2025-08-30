@@ -7,6 +7,7 @@ const menuItems = [
   { title: "Accueil", url: "/" },
   { title: "À venir", url: "/events/" },
   { title: "Le carnabal", url: "/events/2025-10-25-carnabal/" },
+  { title: "Galeries", url: "/galleries/" },
   { title: "Archives", url: "/archives/" },
 ];
 
@@ -37,6 +38,7 @@ function isActive(itemUrl: string): boolean {
     </ul>
   </nav>
 </aside>
+
 <script>
   // Écouteur pour les changements d'URL
   window.addEventListener("popstate", () => {
@@ -102,6 +104,7 @@ function isActive(itemUrl: string): boolean {
     return currentPath.endsWith(itemUrl);
   }
 </script>
+
 <style>
   .sidebar-menu {
     min-width: 180px;
@@ -126,7 +129,7 @@ function isActive(itemUrl: string): boolean {
   .sidebar-link.active {
     color: var(--color-primary) !important;
     font-weight: 500;
-    /* Astuce: rendre la transition du trait indépendante de l'état active */
+    /* Astuce : rendre la transition du trait indépendante de l'état active */
     --trait-scale: 1;
   }
   

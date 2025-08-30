@@ -8,6 +8,9 @@ image: "/src/assets/events/meringue.jpg"
 price:
   - name: "Gratuit"
     amount: 0
+gallery:
+  photographer: "Nom du photographe"
+  # coverImageIndex: 0  # Optionnel, par défaut la première photo
 draft: false
 ---
 
