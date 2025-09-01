@@ -1,6 +1,6 @@
 ---
 // src/components/event_gallery.astro
-// Composant pour afficher la galerie d'un événement avec swipe mobile et images optimisées
+// Fix pour les photos trop petites dans le popup
 
 import { loadEventGallery } from '../utils/gallery';
 import type { EventEntry } from '../../types';
@@ -67,8 +67,8 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
             src={photo.src}
             alt={photo.alt}
             class="gallery-source-img"
-            widths={[400, 800, 1200]}
-            sizes="(max-width: 767px) 100vw, 800px"
+            widths={[800, 1200, 1600]}
+            sizes="(max-width: 767px) 90vw, 1200px"
             loading="lazy"
           />
         </div>
@@ -106,7 +106,7 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
           <!-- Les sources seront ajoutées dynamiquement par JavaScript -->
           <img
             id={`gallery-current-${event.slug}`}
-            class="max-w-full max-h-[70vh] object-contain w-auto h-auto"
+            class="gallery-main-image"
             alt=""
             loading="eager"
           />
@@ -163,6 +163,15 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
 )}
 
 <style>
+  /* Image principale - prend tout l'espace disponible */
+  .gallery-main-image {
+    max-width: 100vw;
+    max-height: 70vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
   /* Styles de centrage avec positionnement plus haut */
   .gallery-modal {
     position: fixed;
@@ -239,7 +248,7 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
 </style>
 
 <script>
-  // Script pour gérer les galeries d'événements avec support swipe et formats optimisés
+  // Script simplifié pour gérer les galeries d'événements
   function initEventGalleries() {
     document.querySelectorAll('[data-gallery-id]').forEach(trigger => {
       const galleryId = trigger.getAttribute('data-gallery-id');
@@ -288,11 +297,6 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
       const thumbs = modal.querySelectorAll('.gallery-thumb');
 
       let currentIndex = 0;
-      
-      // Variables pour le swipe
-      let startX = 0;
-      let startY = 0;
-      let isSwipeStarted = false;
 
       // Fonction pour mettre à jour l'affichage avec les sources optimisées
       function updateDisplay() {
@@ -315,9 +319,6 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
           currentImage.srcset = item.img.srcset;
           currentImage.alt = item.img.alt;
           if (item.img.sizes) currentImage.sizes = item.img.sizes;
-          
-          // Précharger les images adjacentes
-          preloadAdjacentImages();
           
           // Mettre à jour les boutons de navigation
           (prevBtn as HTMLButtonElement).disabled = currentIndex === 0;
@@ -346,20 +347,6 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
             }
           }
         }
-      }
-
-      // Fonction pour précharger les images adjacentes
-      function preloadAdjacentImages() {
-        const indicesToPreload = [currentIndex - 1, currentIndex + 1, currentIndex + 2];
-        
-        indicesToPreload.forEach(index => {
-          if (index >= 0 && index < galleryData.length) {
-            const item = galleryData[index];
-            // Précharger uniquement l'image principale pour l'instant
-            const img = new Image();
-            img.src = item.img.src;
-          }
-        });
       }
 
       // Navigation functions
@@ -411,49 +398,24 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
         }
       });
 
-      // Gestion du swipe
+      // Gestion tactile mobile simplifiée
+      let startX = 0;
+      
       galleryViewer.addEventListener('touchstart', (e) => {
-        const touch = (e as TouchEvent).touches[0];
-        startX = touch.clientX;
-        startY = touch.clientY;
-        isSwipeStarted = true;
+        startX = (e as TouchEvent).touches[0].clientX;
       }, { passive: true });
 
-      galleryViewer.addEventListener('touchmove', (e) => {
-        if (!isSwipeStarted) return;
-        
-        const touch = (e as TouchEvent).touches[0];
-        const deltaX = touch.clientX - startX;
-        const deltaY = touch.clientY - startY;
-        
-        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 20) {
-          e.preventDefault();
-        }
-      }, { passive: false });
-
       galleryViewer.addEventListener('touchend', (e) => {
-        if (!isSwipeStarted) return;
-        
-        const touch = (e as TouchEvent).changedTouches[0];
-        const endX = touch.clientX;
-        const endY = touch.clientY;
-        
+        const endX = (e as TouchEvent).changedTouches[0].clientX;
         const deltaX = endX - startX;
-        const deltaY = endY - startY;
         
-        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+        if (Math.abs(deltaX) > 50) {
           if (deltaX > 0) {
             goToPrev();
           } else {
             goToNext();
           }
         }
-        
-        isSwipeStarted = false;
-      }, { passive: true });
-
-      galleryViewer.addEventListener('touchcancel', () => {
-        isSwipeStarted = false;
       }, { passive: true });
     });
   }
