@@ -196,6 +196,7 @@ function getOptimizedImageUrl(imagePath: string): string {
   /* Style pour miniature active */
   .gallery-thumb.active {
     border-color: var(--color-primary);
+    border-width: 4px;
   }
 
   /* Styles pour les zones de navigation mobile */
@@ -275,6 +276,25 @@ function getOptimizedImageUrl(imagePath: string): string {
           thumbs.forEach((thumb, index) => {
             thumb.classList.toggle('active', index === currentIndex);
           });
+          
+          // Scroll automatique de la barre de miniatures
+          const activeThumbnail = thumbs[currentIndex];
+          if (activeThumbnail && modal) {
+            const thumbnailsContainer = modal.querySelector('.flex.gap-2.overflow-x-auto');
+            if (thumbnailsContainer) {
+              const containerWidth = thumbnailsContainer.clientWidth;
+              const thumbWidth = (activeThumbnail as HTMLElement).offsetWidth;
+              const thumbLeft = (activeThumbnail as HTMLElement).offsetLeft;
+              
+              // Calculer la position de scroll pour mieux centrer la miniature
+              const scrollLeft = thumbLeft - (containerWidth / 2) + (thumbWidth / 2);
+              
+              thumbnailsContainer.scrollTo({
+                left: Math.max(0, scrollLeft),
+                behavior: 'smooth'
+              });
+            }
+          }
         }
       }
 
@@ -319,8 +339,10 @@ function getOptimizedImageUrl(imagePath: string): string {
       // Navigation clavier
       modal.addEventListener('keydown', (e: KeyboardEvent) => {
         if (e.key === 'ArrowLeft') {
+          e.preventDefault();
           goToPrev();
         } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
           goToNext();
         }
       });
