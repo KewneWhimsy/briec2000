@@ -53,8 +53,15 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
       ))}
       
       {gallery.photos.length > maxThumbnails && (
-        <div class="my-auto flex-none w-32 h-32 flex items-center justify-center text-sm opacity-60 border border-dashed border-[var(--color-border)] rounded-lg">
-          +{gallery.photos.length - maxThumbnails} photo{gallery.photos.length - maxThumbnails > 1 ? 's' : ''}
+        <div class="flex-none w-32">
+          <button 
+            class="gallery-trigger my-2 w-full h-32 flex items-center justify-center text-sm opacity-60 border border-dashed border-[var(--color-border)] rounded-lg cursor-pointer hover:opacity-80 hover:border-[var(--color-primary)] transition-all bg-[color:rgba(var(--color-primary-rgb),0.05)]"
+            data-gallery-id={event.slug}
+            data-start-index={maxThumbnails}
+            aria-label={`Voir toute la galerie de ${event.data.title} (${gallery.photos.length} photos)`}
+          >
+            +{gallery.photos.length - maxThumbnails} photo{gallery.photos.length - maxThumbnails > 1 ? 's' : ''}
+          </button>
         </div>
       )}
     </div>
@@ -364,7 +371,7 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
         }
       }
 
-      // Ouvrir la galerie depuis le trigger principal
+      // Ouvrir la galerie depuis TOUS les triggers (miniatures ET carré "+X photos")
       trigger.addEventListener('click', (e) => {
         e.preventDefault();
         const startIndex = parseInt(trigger.getAttribute('data-start-index') || '0');
