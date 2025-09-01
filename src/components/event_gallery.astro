@@ -1,6 +1,6 @@
 ---
 // src/components/event_gallery.astro
-// Composant pour afficher la galerie d'un événement (jusqu'à 3 miniatures)
+// Composant pour afficher la galerie d'un événement avec swipe mobile
 
 import { loadEventGallery } from '../utils/gallery';
 import type { EventEntry } from '../../types';
@@ -96,19 +96,20 @@ function getOptimizedImageUrl(imagePath: string): string {
         </button>
       </div>
       
-      <!-- Image principale -->
-      <div class="bg-black p-4 flex justify-center items-center relative min-h-[60vh]">
+      <!-- Zone image avec swipe et navigation invisible -->
+      <div class="gallery-viewer bg-black relative min-h-[70vh] touch-pan-x">
         <img
           id={`gallery-current-${event.slug}`}
-          class="max-w-full max-h-[60vh] object-contain w-auto h-auto"
+          class="max-w-full max-h-[70vh] object-contain w-auto h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
           alt=""
           loading="lazy"
         />
         
-        <!-- Navigation principale (gauche/droite) -->
+        <!-- Zone tactile gauche (invisible mais cliquable) -->
         <button 
           id={`gallery-prev-${event.slug}`}
-          class="absolute left-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-[var(--color-secondary)] text-white rounded-full flex items-center justify-center hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
+          class="gallery-nav-zone absolute left-0 top-0 w-1/5 h-full z-10 opacity-0 flex items-center justify-start pl-4 md:opacity-100 md:w-10 md:h-10 md:left-4 md:top-1/2 md:-translate-y-1/2 md:justify-center md:pl-0 md:rounded-full hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
+          style="background-color: transparent; color: white; border: none;"
           aria-label="Image précédente"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -116,9 +117,11 @@ function getOptimizedImageUrl(imagePath: string): string {
           </svg>
         </button>
         
+        <!-- Zone tactile droite (invisible mais cliquable) -->
         <button 
           id={`gallery-next-${event.slug}`}
-          class="absolute right-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-[var(--color-secondary)] text-white rounded-full flex items-center justify-center hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
+          class="gallery-nav-zone absolute right-0 top-0 w-1/5 h-full z-10 opacity-0 flex items-center justify-end pr-4 md:opacity-100 md:w-10 md:h-10 md:right-4 md:top-1/2 md:-translate-y-1/2 md:justify-center md:pr-0 md:rounded-full hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
+          style="background-color: transparent; color: white; border: none;"
           aria-label="Image suivante"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -194,10 +197,42 @@ function getOptimizedImageUrl(imagePath: string): string {
   .gallery-thumb.active {
     border-color: var(--color-primary);
   }
+
+  /* Styles pour les zones de navigation mobile */
+  .gallery-nav-zone {
+    border: none;
+    cursor: pointer;
+  }
+
+  /* Desktop : fond de couleur pour les boutons */
+  @media (min-width: 768px) {
+    .gallery-nav-zone {
+      background-color: var(--color-secondary) !important;
+    }
+  }
+
+  /* Mobile : cacher complètement les boutons disabled */
+  @media (max-width: 767px) {
+    .gallery-nav-zone:disabled {
+      display: none;
+    }
+  }
+
+  /* Zone tactile avec feedback visuel discret au touch */
+  .gallery-nav-zone:active {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Support du swipe */
+  .gallery-viewer {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
 </style>
 
 <script>
-  // Script pour gérer les galeries d'événements
+  // Script pour gérer les galeries d'événements avec support swipe
   function initEventGalleries() {
     document.querySelectorAll('[data-gallery-id]').forEach(trigger => {
       const galleryId = trigger.getAttribute('data-gallery-id');
@@ -207,17 +242,23 @@ function getOptimizedImageUrl(imagePath: string): string {
       const currentImage = document.getElementById(`gallery-current-${galleryId}`) as HTMLImageElement;
       const prevBtn = document.getElementById(`gallery-prev-${galleryId}`);
       const nextBtn = document.getElementById(`gallery-next-${galleryId}`);
+      const galleryViewer = modal?.querySelector('.gallery-viewer');
       
-      if (!modal || !currentImage || !prevBtn || !nextBtn) return;
+      if (!modal || !currentImage || !prevBtn || !nextBtn || !galleryViewer) return;
 
       // Récupérer toutes les images de cette galerie depuis les miniatures
-      const thumbs = document.querySelectorAll(`#gallery-modal-${galleryId} .gallery-thumb`);
+      const thumbs = modal.querySelectorAll('.gallery-thumb');
       const galleryData = Array.from(thumbs).map(thumb => ({
         src: thumb.getAttribute('data-optimized-src') || '',
         alt: thumb.querySelector('img')?.alt || ''
       }));
 
       let currentIndex = 0;
+      
+      // Variables pour le swipe
+      let startX = 0;
+      let startY = 0;
+      let isSwipeStarted = false;
 
       // Fonction pour mettre à jour l'affichage
       function updateDisplay() {
@@ -237,6 +278,21 @@ function getOptimizedImageUrl(imagePath: string): string {
         }
       }
 
+      // Navigation functions
+      function goToPrev() {
+        if (currentIndex > 0) {
+          currentIndex--;
+          updateDisplay();
+        }
+      }
+
+      function goToNext() {
+        if (currentIndex < galleryData.length - 1) {
+          currentIndex++;
+          updateDisplay();
+        }
+      }
+
       // Ouvrir la galerie depuis le trigger principal
       trigger.addEventListener('click', (e) => {
         e.preventDefault();
@@ -248,20 +304,9 @@ function getOptimizedImageUrl(imagePath: string): string {
         setTimeout(() => modal.focus(), 100);
       });
 
-      // Navigation précédent/suivant
-      prevBtn.addEventListener('click', () => {
-        if (currentIndex > 0) {
-          currentIndex--;
-          updateDisplay();
-        }
-      });
-
-      nextBtn.addEventListener('click', () => {
-        if (currentIndex < galleryData.length - 1) {
-          currentIndex++;
-          updateDisplay();
-        }
-      });
+      // Navigation boutons
+      prevBtn.addEventListener('click', goToPrev);
+      nextBtn.addEventListener('click', goToNext);
 
       // Navigation par miniatures
       thumbs.forEach((thumb, index) => {
@@ -273,14 +318,61 @@ function getOptimizedImageUrl(imagePath: string): string {
 
       // Navigation clavier
       modal.addEventListener('keydown', (e: KeyboardEvent) => {
-        if (e.key === 'ArrowLeft' && currentIndex > 0) {
-          currentIndex--;
-          updateDisplay();
-        } else if (e.key === 'ArrowRight' && currentIndex < galleryData.length - 1) {
-          currentIndex++;
-          updateDisplay();
+        if (e.key === 'ArrowLeft') {
+          goToPrev();
+        } else if (e.key === 'ArrowRight') {
+          goToNext();
         }
       });
+
+      // Gestion du swipe - approche KISS avec gestion améliorée des conflits
+      galleryViewer.addEventListener('touchstart', (e) => {
+        const touch = (e as TouchEvent).touches[0];
+        startX = touch.clientX;
+        startY = touch.clientY;
+        isSwipeStarted = true;
+      }, { passive: true });
+
+      galleryViewer.addEventListener('touchmove', (e) => {
+        if (!isSwipeStarted) return;
+        
+        const touch = (e as TouchEvent).touches[0];
+        const deltaX = touch.clientX - startX;
+        const deltaY = touch.clientY - startY;
+        
+        // Si mouvement horizontal significatif, empêcher le scroll
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 20) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      galleryViewer.addEventListener('touchend', (e) => {
+        if (!isSwipeStarted) return;
+        
+        const touch = (e as TouchEvent).changedTouches[0];
+        const endX = touch.clientX;
+        const endY = touch.clientY;
+        
+        const deltaX = endX - startX;
+        const deltaY = endY - startY;
+        
+        // Vérifier que c'est bien un swipe horizontal
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+          if (deltaX > 0) {
+            // Swipe vers la droite = image précédente
+            goToPrev();
+          } else {
+            // Swipe vers la gauche = image suivante
+            goToNext();
+          }
+        }
+        
+        isSwipeStarted = false;
+      }, { passive: true });
+
+      galleryViewer.addEventListener('touchcancel', () => {
+        isSwipeStarted = false;
+      }, { passive: true });
     });
   }
 
