@@ -9,7 +9,7 @@ price:
   - name: "Gratuit"
     amount: 0
 gallery:
-  photographer: "Nom du photographe"
+  photographer: "Vincent Douat"
   # coverImageIndex: 0  # Optionnel, par défaut la première photo
 draft: false
 ---

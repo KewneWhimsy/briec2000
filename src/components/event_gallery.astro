@@ -66,7 +66,7 @@ function getOptimizedImageUrl(imagePath: string): string {
       ))}
       
       {gallery.photos.length > maxThumbnails && (
-        <div class="flex-none w-32 h-32 flex items-center justify-center text-sm opacity-60 border border-dashed border-[var(--color-border)] rounded-lg">
+        <div class="my-auto flex-none w-32 h-32 flex items-center justify-center text-sm opacity-60 border border-dashed border-[var(--color-border)] rounded-lg">
           +{gallery.photos.length - maxThumbnails} photo{gallery.photos.length - maxThumbnails > 1 ? 's' : ''}
         </div>
       )}
@@ -83,7 +83,7 @@ function getOptimizedImageUrl(imagePath: string): string {
       <div class="bg-[var(--color-secondary)] text-white p-3 flex justify-between items-center">
         <div>
           <h3 class="font-medium" style="color: white;">{event.data.title}</h3>
-          <p class="text-sm opacity-90">Par {gallery.photographer}</p>
+          <p class="text-sm opacity-90">Photos de {gallery.photographer}</p>
         </div>
         <button 
           class="w-7 h-7 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
