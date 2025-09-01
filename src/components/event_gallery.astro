@@ -1,6 +1,6 @@
 ---
 // src/components/event_gallery.astro
-// Composant pour afficher la galerie d'un événement avec swipe mobile
+// Composant pour afficher la galerie d'un événement avec swipe mobile et images optimisées
 
 import { loadEventGallery } from '../utils/gallery';
 import type { EventEntry } from '../../types';
@@ -26,18 +26,6 @@ if (!gallery) {
 
 // Limiter les miniatures affichées
 const thumbnails = gallery.photos.slice(0, maxThumbnails);
-
-// Import des images pour récupérer les URLs optimisées
-const images = import.meta.glob('/src/assets/galleries/**/*.{png,jpg,jpeg,webp,avif}', { 
-  eager: true,
-  import: 'default'
-}) as Record<string, any>;
-
-// Fonction pour obtenir l'URL réelle de l'image optimisée
-function getOptimizedImageUrl(imagePath: string): string {
-  const imageObj = images[imagePath];
-  return imageObj?.src || imagePath;
-}
 ---
 
 {gallery && (
@@ -50,7 +38,6 @@ function getOptimizedImageUrl(imagePath: string): string {
             class="gallery-trigger my-2 w-full h-32 block cursor-pointer hover:opacity-80 transition-opacity rounded-lg overflow-hidden bg-[color:rgba(var(--color-primary-rgb),0.05)]"
             data-gallery-id={event.slug}
             data-start-index={index}
-            data-optimized-src={getOptimizedImageUrl(photo.src)}
             aria-label={`Voir la galerie de ${event.data.title}, photo ${index + 1}`}
           >
             <OptimizeImage
@@ -66,10 +53,26 @@ function getOptimizedImageUrl(imagePath: string): string {
       ))}
       
       {gallery.photos.length > maxThumbnails && (
-        <div class="my-auto flex-none w-32 h-32 flex items-center justify-center text-sm opacity-60 border border-dashed border-[var(--color-border)] rounded-lg">
+        <div class="flex-none w-32 h-32 flex items-center justify-center text-sm opacity-60 border border-dashed border-[var(--color-border)] rounded-lg">
           +{gallery.photos.length - maxThumbnails} photo{gallery.photos.length - maxThumbnails > 1 ? 's' : ''}
         </div>
       )}
+    </div>
+
+    <!-- Container caché avec toutes les images optimisées pour extraction des sources -->
+    <div class="hidden" aria-hidden="true">
+      {gallery.photos.map((photo, index) => (
+        <div class="gallery-optimized-source" data-photo-index={index}>
+          <OptimizeImage
+            src={photo.src}
+            alt={photo.alt}
+            class="gallery-source-img"
+            widths={[400, 800, 1200]}
+            sizes="(max-width: 767px) 100vw, 800px"
+            loading="lazy"
+          />
+        </div>
+      ))}
     </div>
 
     <!-- Modal galerie intégrée -->
@@ -83,7 +86,7 @@ function getOptimizedImageUrl(imagePath: string): string {
       <div class="bg-[var(--color-secondary)] text-white p-3 flex justify-between items-center">
         <div>
           <h3 class="font-medium" style="color: white;">{event.data.title}</h3>
-          <p class="text-sm opacity-90">Photos de {gallery.photographer}</p>
+          <p class="text-sm opacity-90">Par {gallery.photographer}</p>
         </div>
         <button 
           class="w-7 h-7 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
@@ -98,12 +101,16 @@ function getOptimizedImageUrl(imagePath: string): string {
       
       <!-- Zone image avec swipe et navigation invisible -->
       <div class="gallery-viewer bg-black relative min-h-[70vh] touch-pan-x">
-        <img
-          id={`gallery-current-${event.slug}`}
-          class="max-w-full max-h-[70vh] object-contain w-auto h-auto absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-          alt=""
-          loading="lazy"
-        />
+        <!-- Picture element qui sera mis à jour dynamiquement -->
+        <picture id={`gallery-picture-${event.slug}`} class="gallery-picture absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <!-- Les sources seront ajoutées dynamiquement par JavaScript -->
+          <img
+            id={`gallery-current-${event.slug}`}
+            class="max-w-full max-h-[70vh] object-contain w-auto h-auto"
+            alt=""
+            loading="eager"
+          />
+        </picture>
         
         <!-- Zone tactile gauche (invisible mais cliquable) -->
         <button 
@@ -137,7 +144,6 @@ function getOptimizedImageUrl(imagePath: string): string {
             <button 
               class="gallery-thumb flex-none w-16 h-12 rounded overflow-hidden border-2 border-transparent hover:border-[var(--color-primary)] transition-colors"
               data-index={index}
-              data-optimized-src={getOptimizedImageUrl(photo.src)}
               aria-label={`Voir photo ${index + 1}`}
             >
               <OptimizeImage
@@ -233,26 +239,53 @@ function getOptimizedImageUrl(imagePath: string): string {
 </style>
 
 <script>
-  // Script pour gérer les galeries d'événements avec support swipe
+  // Script pour gérer les galeries d'événements avec support swipe et formats optimisés
   function initEventGalleries() {
     document.querySelectorAll('[data-gallery-id]').forEach(trigger => {
       const galleryId = trigger.getAttribute('data-gallery-id');
       if (!galleryId) return;
 
       const modal = document.getElementById(`gallery-modal-${galleryId}`);
+      const picture = document.getElementById(`gallery-picture-${galleryId}`) as HTMLPictureElement;
       const currentImage = document.getElementById(`gallery-current-${galleryId}`) as HTMLImageElement;
       const prevBtn = document.getElementById(`gallery-prev-${galleryId}`);
       const nextBtn = document.getElementById(`gallery-next-${galleryId}`);
       const galleryViewer = modal?.querySelector('.gallery-viewer');
       
-      if (!modal || !currentImage || !prevBtn || !nextBtn || !galleryViewer) return;
+      if (!modal || !picture || !currentImage || !prevBtn || !nextBtn || !galleryViewer) return;
 
-      // Récupérer toutes les images de cette galerie depuis les miniatures
+      // Récupérer les sources optimisées depuis le DOM caché
+      const gallerySection = trigger.closest('.event-gallery');
+      const optimizedSources = gallerySection?.querySelectorAll('.gallery-optimized-source');
+      
+      if (!optimizedSources) return;
+
+      // Extraire les données de chaque image
+      const galleryData: any[] = [];
+      optimizedSources.forEach((sourceDiv, index) => {
+        const pictureEl = sourceDiv.querySelector('picture');
+        if (pictureEl) {
+          const sources = pictureEl.querySelectorAll('source');
+          const img = pictureEl.querySelector('img');
+          
+          galleryData.push({
+            sources: Array.from(sources).map(source => ({
+              srcset: source.srcset,
+              type: source.type,
+              sizes: source.sizes
+            })),
+            img: {
+              src: img?.src || '',
+              srcset: img?.srcset || '',
+              alt: img?.alt || '',
+              sizes: img?.sizes || ''
+            }
+          });
+        }
+      });
+
+      // Récupérer toutes les miniatures
       const thumbs = modal.querySelectorAll('.gallery-thumb');
-      const galleryData = Array.from(thumbs).map(thumb => ({
-        src: thumb.getAttribute('data-optimized-src') || '',
-        alt: thumb.querySelector('img')?.alt || ''
-      }));
 
       let currentIndex = 0;
       
@@ -261,12 +294,30 @@ function getOptimizedImageUrl(imagePath: string): string {
       let startY = 0;
       let isSwipeStarted = false;
 
-      // Fonction pour mettre à jour l'affichage
+      // Fonction pour mettre à jour l'affichage avec les sources optimisées
       function updateDisplay() {
         const item = galleryData[currentIndex];
-        if (item && item.src) {
-          currentImage.src = item.src;
-          currentImage.alt = item.alt;
+        if (item) {
+          // Supprimer les anciennes sources
+          picture.querySelectorAll('source').forEach(source => source.remove());
+          
+          // Ajouter les nouvelles sources (AVIF, WebP, etc.)
+          item.sources.forEach((sourceData: any) => {
+            const source = document.createElement('source');
+            source.srcset = sourceData.srcset;
+            source.type = sourceData.type;
+            if (sourceData.sizes) source.sizes = sourceData.sizes;
+            picture.insertBefore(source, currentImage);
+          });
+          
+          // Mettre à jour l'image de fallback
+          currentImage.src = item.img.src;
+          currentImage.srcset = item.img.srcset;
+          currentImage.alt = item.img.alt;
+          if (item.img.sizes) currentImage.sizes = item.img.sizes;
+          
+          // Précharger les images adjacentes
+          preloadAdjacentImages();
           
           // Mettre à jour les boutons de navigation
           (prevBtn as HTMLButtonElement).disabled = currentIndex === 0;
@@ -286,7 +337,6 @@ function getOptimizedImageUrl(imagePath: string): string {
               const thumbWidth = (activeThumbnail as HTMLElement).offsetWidth;
               const thumbLeft = (activeThumbnail as HTMLElement).offsetLeft;
               
-              // Calculer la position de scroll pour mieux centrer la miniature
               const scrollLeft = thumbLeft - (containerWidth / 2) + (thumbWidth / 2);
               
               thumbnailsContainer.scrollTo({
@@ -296,6 +346,20 @@ function getOptimizedImageUrl(imagePath: string): string {
             }
           }
         }
+      }
+
+      // Fonction pour précharger les images adjacentes
+      function preloadAdjacentImages() {
+        const indicesToPreload = [currentIndex - 1, currentIndex + 1, currentIndex + 2];
+        
+        indicesToPreload.forEach(index => {
+          if (index >= 0 && index < galleryData.length) {
+            const item = galleryData[index];
+            // Précharger uniquement l'image principale pour l'instant
+            const img = new Image();
+            img.src = item.img.src;
+          }
+        });
       }
 
       // Navigation functions
@@ -347,7 +411,7 @@ function getOptimizedImageUrl(imagePath: string): string {
         }
       });
 
-      // Gestion du swipe - approche KISS avec gestion améliorée des conflits
+      // Gestion du swipe
       galleryViewer.addEventListener('touchstart', (e) => {
         const touch = (e as TouchEvent).touches[0];
         startX = touch.clientX;
@@ -362,7 +426,6 @@ function getOptimizedImageUrl(imagePath: string): string {
         const deltaX = touch.clientX - startX;
         const deltaY = touch.clientY - startY;
         
-        // Si mouvement horizontal significatif, empêcher le scroll
         if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 20) {
           e.preventDefault();
         }
@@ -378,13 +441,10 @@ function getOptimizedImageUrl(imagePath: string): string {
         const deltaX = endX - startX;
         const deltaY = endY - startY;
         
-        // Vérifier que c'est bien un swipe horizontal
         if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
           if (deltaX > 0) {
-            // Swipe vers la droite = image précédente
             goToPrev();
           } else {
-            // Swipe vers la gauche = image suivante
             goToNext();
           }
         }
