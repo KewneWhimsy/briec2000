@@ -53,7 +53,7 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
       ))}
       
       {gallery.photos.length > maxThumbnails && (
-        <div class="flex-none w-32 h-32 flex items-center justify-center text-sm opacity-60 border border-dashed border-[var(--color-border)] rounded-lg">
+        <div class="my-auto flex-none w-32 h-32 flex items-center justify-center text-sm opacity-60 border border-dashed border-[var(--color-border)] rounded-lg">
           +{gallery.photos.length - maxThumbnails} photo{gallery.photos.length - maxThumbnails > 1 ? 's' : ''}
         </div>
       )}
