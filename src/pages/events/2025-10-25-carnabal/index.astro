@@ -7,6 +7,7 @@ import PdfViewer from "../../../components/pdf_viewer.astro";
 import OptimizeImage from "../../../components/optimize_image.astro";
 import EventNavigation from "../../../components/event_nav.astro";
 import Gallery from "../../../components/gallery.astro";
+import Accordion from "../../../components/accordion.astro";
 import { getCollection } from "astro:content";
 import type { EventEntry } from "../../../../types";
 import Ghost from "../../../components/ghost.astro";
@@ -24,57 +25,6 @@ const carnaBal = eventsEntries.find(
 if (!carnaBal) {
   return Astro.redirect("/events/");
 }
-
-// Trouver la prochaine cantine
-const currentDate = new Date();
-const nextCantine = eventsEntries
-  .filter((event: EventEntry) => {
-    const eventDate =
-      event.data.date instanceof Date
-        ? event.data.date
-        : new Date(event.data.date);
-
-    return (
-      eventDate > currentDate &&
-      event.data.draft !== true &&
-      event.data.title.toLowerCase().includes("cantine")
-    );
-  })
-  .sort((a: EventEntry, b: EventEntry) => {
-    const dateA =
-      a.data.date instanceof Date ? a.data.date : new Date(a.data.date);
-    const dateB =
-      b.data.date instanceof Date ? b.data.date : new Date(b.data.date);
-    return dateA.getTime() - dateB.getTime();
-  })[0];
-
-// Fallback : la cantine la plus récente si aucune prochaine
-const mostRecentCantine = !nextCantine
-  ? eventsEntries
-      .filter((event: EventEntry) => {
-        const eventDate =
-          event.data.date instanceof Date
-            ? event.data.date
-            : new Date(event.data.date);
-
-        return (
-          eventDate <= currentDate &&
-          event.data.draft !== true &&
-          event.data.title.toLowerCase().includes("cantine")
-        );
-      })
-      .sort((a: EventEntry, b: EventEntry) => {
-        const dateA =
-          a.data.date instanceof Date ? a.data.date : new Date(a.data.date);
-        const dateB =
-          b.data.date instanceof Date ? b.data.date : new Date(b.data.date);
-        return dateB.getTime() - dateA.getTime();
-      })[0]
-  : null;
-
-// Récupérer le contenu
-const contentRender = await carnaBal.render();
-const { Content } = contentRender;
 
 // Chemins des silhouettes avec métadonnées
 const silhouettes = [
@@ -171,22 +121,6 @@ const previewPages = [
 
         <!-- Boutons d'action -->
         <div class="flex flex-wrap gap-4">
-          <!-- <a href="#programme" class="btn inline-flex items-center gap-2">
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              ></path>
-            </svg>
-            Voir le programme
-          </a>-->
           <a
             href={pdfPath}
             download="CarnaBal_des_monstres_2025.pdf"
@@ -210,6 +144,7 @@ const previewPages = [
         </div>
       </div>
     </div>
+
     <!-- Image du CarnaBal -->
     <div class="my-10 text-center">
       <OptimizeImage
@@ -221,6 +156,7 @@ const previewPages = [
         transition:name={`event-image-2025-10-25-carnabal`}
       />
     </div>
+
     <!-- Histoire et origine -->
     <section
       class="card bg-[color:rgba(var(--color-primary-rgb),0.03)] p-8 my-10 rounded-xl border-t-4 border-t-[color:var(--color-primary)] shadow-lg"
@@ -261,20 +197,33 @@ const previewPages = [
         </p>
       </div>
     </section>
-    <!-- Présentation des artistes -->
-    <section id="artistes" class="my-10">
-      <h2 class="text-2xl mb-6 border-b pb-2">Les artistes du CarnaBal</h2>
 
-      <div class="space-y-6">
-        <!-- Adrien Contoux -->
-        <div class="flex-1">
-          <h3 class="text-lg font-medium mb-2">
-            Adrien Choque & Alitché - Contes monstrueux
-          </h3>
-          <p class="text-sm opacity-75 mb-1">📅 15h au Centre social SIVOM</p>
-          
+    <!-- Accordéons des artistes -->
+    <section id="artistes" class="my-10">
+      <h1 class="text-2xl mb-6 border-b pb-2">Les artistes du CarnaBal</h1>
+
+      <div class="space-y-4">
+        <!-- Adrien Choque & Alitché -->
+        <Accordion
+          title="Contes - Adrien Choque & Alitché"
+          creature="ghost"
+          id="contes"
+        >
+          <h3 class="text-sm opacity-75 mb-4">📅 15h au Centre social SIVOM</h3>
+
+          <p class="leading-relaxed mb-3">
+            Adrien et Alitché ont échafaudé un plan d'histoires de monstres à
+            vous porter à vos oreilles.
+          </p>
+          <p class="leading-relaxed mb-4">
+            Tout public et gratuit. Dans la salle forum du centre social du pays
+            Glazik.
+          </p>
+
           <!-- Image des conteurs -->
-          <div class="mb-4 bg-[color:rgba(var(--color-primary-rgb),0.05)] rounded-lg overflow-hidden flex items-center justify-center p-4">
+          <div
+            class="bg-[color:rgba(var(--color-primary-rgb),0.05)] rounded-lg overflow-hidden flex items-center justify-center p-4"
+          >
             <OptimizeImage
               src="/src/assets/contesnobg.png"
               alt="Illustration contes monstrueux"
@@ -284,107 +233,104 @@ const previewPages = [
               loading="lazy"
             />
           </div>
-          
-          <p class="leading-relaxed mb-3">
-            Adrien et Alitché ont échafaudé un plan d'histoires de monstres à
-            vous porter à vos oreilles.
-          </p>
-          <p class="leading-relaxed">
-            Tout public et gratuit. Dans la salle
-            forum du centre social du pays Glazik.
-          </p>
-        </div>
+        </Accordion>
 
         <!-- Iono Lutrev -->
-        <div class="flex-1">
-          <h3 class="text-lg font-medium mb-2">Iono Lutrev</h3>
-          <p class="text-sm opacity-75 mb-2">
+        <Accordion title="Concert - Iono Lutrev" creature="bule" id="iono">
+          <h3 class="text-sm opacity-75 mb-4">
             Power-duo électro-rock MÉGALOSCHLAG®
+          </h3>
+
+          <p class="leading-relaxed mb-3">
+            Solenne Garnier, soutenue par le groove de Capitaine Couette à la
+            batterie, joue à la fois du synthétiseur et de la trompette.
           </p>
-          
+          <p class="leading-relaxed mb-4">
+            Grande prêtresse du MEGALO-SCHLAG, c'est-à-dire l'équilibre parfait
+            entre virtuosité technique et rien-à-foutrisme. Une électro-pop
+            garage qui groove !
+          </p>
+
           <!-- Vidéo YouTube -->
-          <div class="mb-4 aspect-video bg-black rounded-lg overflow-hidden">
-            <iframe 
+          <div class="aspect-video bg-black rounded-lg overflow-hidden">
+            <iframe
               class="w-full h-full"
               src="https://www.youtube-nocookie.com/embed/t3PfHVWrtms"
               title="Iono Lutrev - Vidéo de présentation"
               allow="clipboard-write; encrypted-media;"
               allowfullscreen
-              loading="lazy">
+              loading="lazy"
+            >
             </iframe>
           </div>
-          
-          <p class="leading-relaxed mb-3">
-            Solenne Garnier, soutenue par le groove de Capitaine Couette à la batterie, 
-            joue à la fois du synthétiseur et de la trompette.
-          </p>
-          <p class="leading-relaxed">
-            Grande prêtresse du MEGALO-SCHLAG, c'est-à-dire l'équilibre parfait
-            entre virtuosité technique et rien-à-foutrisme. Une électro-pop
-            garage qui groove !
-          </p>
-        </div>
+        </Accordion>
 
         <!-- Casiomaha -->
-        <div class="flex-1">
-          <h3 class="text-lg font-medium mb-2">Casiomaha</h3>
-          <p class="text-sm opacity-75 mb-2">Duo pop-punk synthétique tribal</p>
-          
+        <Accordion title="Concert - Casiomaha" creature="loup" id="casiomaha">
+          <h3 class="text-sm opacity-75 mb-4">
+            Duo pop-punk synthétique tribal
+          </h3>
+
+          <p class="leading-relaxed mb-3">
+            Mahawatchi & Casiowatcha se connaissent depuis longtemps. Ils
+            composent à partir de vieux synthés cheap des années 80.
+          </p>
+          <p class="leading-relaxed mb-4">
+            Sur scène, les musiciens arborent d'impressionnants masques de
+            l'artiste-plasticienne <strong>Odette Picaud</strong>, apportant à
+            leur musique pop-punk synthétique, une ambiance tribale, envoûtante
+            et énigmatique, pleine d'énergie positive et rebelle.
+          </p>
+
           <!-- Vidéo YouTube -->
-          <div class="mb-4 aspect-video bg-black rounded-lg overflow-hidden">
-            <iframe 
+          <div class="aspect-video bg-black rounded-lg overflow-hidden">
+            <iframe
               class="w-full h-full"
               src="https://www.youtube-nocookie.com/embed/_e7BmAoSavg"
               title="Casiomaha - Vidéo de présentation"
               allow="clipboard-write; encrypted-media;"
               allowfullscreen
-              loading="lazy">
+              loading="lazy"
+            >
             </iframe>
           </div>
-          
-          <p class="leading-relaxed mb-3">
-            Mahawatchi & Casiowatcha se connaissent depuis longtemps. Ils
-            composent à partir de vieux synthés cheap des années 80.
-          </p>
-          <p class="leading-relaxed">
-            Sur scène, les musiciens arborent d'impressionnants masques de
-            l'artiste-plasticienne <strong>Odette Picaud</strong>, apportant à leur musique
-            pop-punk synthétique, une ambiance tribale, envoûtante et
-            énigmatique, pleine d'énergie positive et rebelle.
-          </p>
-        </div>
+        </Accordion>
 
         <!-- Kick & Flûte -->
-        <div class="flex-1">
-          <h3 class="text-lg font-medium mb-2">Kick & Flûte</h3>
-          <p class="text-sm opacity-75 mb-2">Duo électro-techno & clarinette</p>
-          
-          <!-- Vidéo YouTube -->
-          <div class="mb-4 aspect-video bg-black rounded-lg overflow-hidden">
-            <iframe 
-              class="w-full h-full"
-              src="https://www.youtube-nocookie.com/embed/hiphWgSHcoE"
-              title="Kick & Flûte - Vidéo de présentation"
-              allow="clipboard-write; encrypted-media;"
-              allowfullscreen
-              loading="lazy">
-            </iframe>
-          </div>
-          
+        <Accordion title="Concert - Kick & Flûte" creature="ghost" id="kick">
+          <h3 class="text-sm opacity-75 mb-4">
+            Duo électro-techno & clarinette
+          </h3>
+
           <p class="leading-relaxed mb-3">
             Gabriel Siancas et Sébastien Turner proposent une formation entre
             machines électroniques, clarinette et voix, qui mélange les musiques
             du monde et la techno. Dance floor music, électro-techno du futur et
             clarinette virevoltante !
           </p>
-          <p class="leading-relaxed">
+          <p class="leading-relaxed mb-4">
             Un duo d'une musique brute et dansante, sensible, exigeante et
             hybride. Les genres musicaux s'y mêlent sans distinctions d'espèces
             : musiques populaires ou savantes, traditionnelles ou électroniques,
             tout est permis.
           </p>
-        </div>
+
+          <!-- Vidéo YouTube -->
+          <div class="aspect-video bg-black rounded-lg overflow-hidden">
+            <iframe
+              class="w-full h-full"
+              src="https://www.youtube-nocookie.com/embed/hiphWgSHcoE"
+              title="Kick & Flûte - Vidéo de présentation"
+              allow="clipboard-write; encrypted-media;"
+              allowfullscreen
+              loading="lazy"
+            >
+            </iframe>
+          </div>
+        </Accordion>
+      </div>
     </section>
+
     <!-- Galerie de silhouettes monstrueuses -->
     <!-- Galerie de silhouettes pour mobile sans popup -->
     <div class="mb-10 sm:hidden">
@@ -438,7 +384,7 @@ const previewPages = [
         <div
           class="card p-6 bg-[color:rgba(var(--color-primary-rgb),0.03)] hover:bg-[color:rgba(var(--color-primary-rgb),0.05)] transition-colors"
         >
-          <h3 class="text-lg mb-3 flex items-center gap-2">
+          <h2 class="text-lg mb-3 flex items-center gap-2">
             <svg
               class="w-5 h-5 text-[color:var(--color-primary)]"
               fill="none"
@@ -451,7 +397,7 @@ const previewPages = [
               <path d="M14.8 14.8 20 20"></path>
             </svg>
             Atelier costume avant soirée crêpe
-          </h3>
+          </h2>
           <p class="mb-3 font-medium">13 septembre au SIVOM</p>
           <p class="text-sm mb-4 opacity-80">
             Création de costumes avec matériaux à partir de 16h. <br />Tout
@@ -470,6 +416,7 @@ const previewPages = [
         </p>
       </div>
     </section>
+
     <!-- Galerie de silhouettes pour desktop avec popup -->
     <Gallery
       items={silhouettes}

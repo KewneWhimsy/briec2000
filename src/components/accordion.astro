@@ -1,0 +1,94 @@
+---
+// src/components/accordion.astro
+// Composant accordéon réutilisable avec bonhommes et police --font-start
+
+import OptimizeImage from './optimize_image.astro';
+
+export interface Props {
+  title: string;
+  creature: 'ghost' | 'bule' | 'loup';
+  id: string; // ID unique pour chaque accordéon
+  className?: string;
+}
+
+const { 
+  title, 
+  creature, 
+  id,
+  className = ""
+} = Astro.props;
+
+// Mapping des créatures vers leurs images
+const creatureImages = {
+  ghost: "/src/assets/ghost500x500.png",
+  bule: "/src/assets/bule500x500.png",
+  loup: "/src/assets/loup500x500.png"
+};
+
+const creatureSrc = creatureImages[creature];
+---
+
+<div class={`accordion-item border border-[var(--color-border)] rounded-lg overflow-hidden bg-[var(--bg-color)] shadow-sm ${className}`}>
+  <input 
+    type="checkbox" 
+    id={`accordion-${id}`}
+    class="sr-only"
+  />
+  <label 
+    for={`accordion-${id}`}
+    class="block w-full px-6 py-4 bg-[color:rgba(var(--color-primary-rgb),0.05)] hover:bg-[color:rgba(var(--color-primary-rgb),0.08)] transition-colors duration-200 cursor-pointer"
+  >
+    <div class="flex items-center justify-between">
+      <span class="accordion-title">
+        {title}
+      </span>
+      <div class="accordion-toggle select-none w-12 h-12 transition-transform duration-300">
+        <OptimizeImage
+          src={creatureSrc}
+          alt="Toggle"
+          class="w-full h-full theme-filtered"
+          widths={[128]}
+        />
+      </div>
+    </div>
+  </label>
+  <div class="accordion-content max-h-0 overflow-hidden transition-all duration-300">
+    <div class="px-6 py-6 bg-[var(--bg-color)] border-t border-[var(--color-border)]">
+      <slot />
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Styles pour l'accordéon */
+  .accordion-title {
+    font-family: var(--font-start);
+    font-weight: bold;
+    color: var(--color-primary);
+    font-size: 1.125rem;
+  }
+  
+  .accordion-item input[type="checkbox"]:checked + label .accordion-toggle {
+    transform: rotateY(180deg);
+  }
+  
+  .accordion-item input[type="checkbox"]:checked ~ .accordion-content {
+    max-height: 2000px;
+    padding-bottom: 1rem;
+  }
+  
+  /* Support pour prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    .accordion-toggle {
+      transition: none;
+    }
+    
+    .accordion-content {
+      transition: none;
+    }
+    
+    .accordion-item input[type="checkbox"]:checked + label .accordion-toggle {
+      transform: none;
+    }
+  }
+</style>
