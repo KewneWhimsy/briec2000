@@ -105,9 +105,9 @@ const previewPages = [
 ];
 ---
 
-<Layout 
-  title={`${carnaBal.data.title} - Briec2000`} 
-  description="CarnaBal des monstres le 25 octobre 2025 à Briec : parade festive puis grande fête avec concerts à l'Arthémuse. Événement ouvert à tous par Briec2000."
+<Layout
+  title="CarnaBal des monstres - 25 octobre 2025 - Briec2000"
+  description="CarnaBal des monstres le 25 octobre 2025 à Briec : parade festive à 17h puis grande fête avec concerts à l'Arthémuse jusqu'à 1h. Événement ouvert à tous par Briec2000."
 >
   <article class="max-w-4xl">
     <!-- Section d'introduction avec silhouettes -->
@@ -149,28 +149,29 @@ const previewPages = [
         <div
           class="inline-block bg-[color:var(--color-secondary)] text-white px-3 py-1 rounded-full text-sm font-medium mb-4"
         >
-          25 Octobre 2025
+          Samedi 25 Octobre 2025
         </div>
         <h1
           class="text-3xl md:text-4xl leading-tight mb-4 text-[color:var(--color-primary)]"
         >
-          {carnaBal.data.title}
+          CarnaBal des monstres
         </h1>
         <p class="text-lg mb-6 italic max-w-xl leading-relaxed">
-          Entre dans la saison sombre en célébrant notre nature sauvage et
-          monstrueuse !
+          Entre dans la saison sombre en faisant la fête sous des costumes
+          sauvages !
         </p>
 
         <!-- Métadonnées de l'événement -->
-        <div class="flex flex-col sm:flex-row flex-wrap gap-4 mb-8 text-sm">
-          <div><strong>Date:</strong> samedi 25 octobre 2025</div>
-          <div><strong>Lieu:</strong> {carnaBal.data.location}</div>
-          <div><strong>Horaires:</strong> {carnaBal.data.time}</div>
+        <div class="flex flex-col gap-2 mb-8 text-sm">
+          <div>
+            <strong>📍 Lieux :</strong> Centre social SIVOM + Place de Ruthin + Salle
+            Arthémuse
+          </div>
         </div>
 
         <!-- Boutons d'action -->
         <div class="flex flex-wrap gap-4">
-          <a href="#ateliers" class="btn inline-flex items-center gap-2">
+          <!-- <a href="#programme" class="btn inline-flex items-center gap-2">
             <svg
               class="w-4 h-4"
               fill="none"
@@ -181,11 +182,11 @@ const previewPages = [
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 stroke-width="2"
-                d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
               ></path>
             </svg>
-            Ateliers de confection
-          </a>
+            Voir le programme
+          </a>-->
           <a
             href={pdfPath}
             download="CarnaBal_des_monstres_2025.pdf"
@@ -215,7 +216,7 @@ const previewPages = [
       class="card bg-[color:rgba(var(--color-primary-rgb),0.03)] p-8 my-10 rounded-xl border-t-4 border-t-[color:var(--color-primary)] shadow-lg"
     >
       <h2 class="text-2xl mb-6 text-center border-b pb-2">
-        Le CarnaBal des monstres et créatures
+        L'esprit du CarnaBal
       </h2>
 
       <div class="space-y-4 leading-relaxed">
@@ -250,7 +251,85 @@ const previewPages = [
         </p>
       </div>
     </section>
+    <!-- Présentation des artistes -->
+    <section id="artistes" class="my-10">
+      <h2 class="text-2xl mb-6 border-b pb-2">Les artistes du CarnaBal</h2>
 
+      <div class="space-y-6">
+        <!-- Adrien Contoux -->
+        <div class="flex-1">
+          <h3 class="text-lg font-medium mb-2">
+            Adrien Choque & Alitché - Contes monstrueux
+          </h3>
+          <p class="text-sm opacity-75 mb-1">📅 15h au Centre social SIVOM</p>
+          <p class="text-sm leading-relaxed mb-3">
+            Adrien et Alitché ont échafaudé un plan d'histoires de monstres à
+            vous porter à vos oreilles.
+          </p>
+          <p class="text-sm leading-relaxed">
+            Tout public et gratuit. Dans la salle
+            forum du centre social du pays Glazik.
+          </p>
+        </div>
+        <!-- Casiomaha -->
+        <div class="flex-1">
+          <h3 class="text-lg font-medium mb-2">Casiomaha</h3>
+          <p class="text-sm opacity-75 mb-2">Duo pop-punk synthétique tribal</p>
+          <p class="text-sm leading-relaxed mb-3">
+            Mahawatchi & Casiowatcha se connaissent depuis longtemps. Ils
+            composent à partir de vieux synthés cheap des années 80.
+          </p>
+          <p class="text-sm leading-relaxed">
+            Sur scène, les musiciens arborent d'impressionnants masques de
+            l’artiste-plasticienne Odette Picaud, apportant à leur musique
+            pop-punk synthétique, une ambiance tribale, envoûtante et
+            énigmatique, pleine d'énergie positive et rebelle.
+          </p>
+        </div>
+
+        <!-- Iono Lutrev -->
+        <div class="flex-1">
+          <h3 class="text-lg font-medium mb-2">Iono Lutrev</h3>
+          <p class="text-sm opacity-75 mb-2">
+            Power-duo électro-rock MÉGALOSCHLAG®
+          </p>
+          <p class="text-sm leading-relaxed mb-3">
+            Solenne Garnier, soutenue par le groove de Capitaine Couette à la batterie, 
+            joue à la fois du synthétiseur et de la trompette.
+          </p>
+          <p class="text-sm leading-relaxed">
+            Grande prêtresse du MEGALO-SCHLAG, c'est-à-dire l'équilibre parfait
+            entre virtuosité technique et rien-à-foutrisme. Une électro-pop
+            garage qui groove !
+          </p>
+        </div>
+
+        <!-- Kick & Flûte -->
+        <div class="flex-1">
+          <h3 class="text-lg font-medium mb-2">Kick & Flûte</h3>
+          <p class="text-sm opacity-75 mb-2">Duo électro-techno & clarinette</p>
+          <p class="text-sm leading-relaxed mb-3">
+            Gabriel Siancas et Sébastien Turner proposent une formation entre
+            machines électroniques, clarinette et voix, qui mélange les musiques
+            du monde et la techno. Dance floor music, électro-techno du futur et
+            clarinette virevoltante !
+          </p>
+          <p class="text-sm leading-relaxed">
+            Un duo d'une musique brute et dansante, sensible, exigeante et
+            hybride. Les genres musicaux s'y mêlent sans distinctions d'espèces
+            : musiques populaires ou savantes, traditionnelles ou électroniques,
+            tout est permis.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-6 text-center">
+        <p class="text-sm italic opacity-70">
+          Tous ces artistes se produiront lors de la soirée à l'Arthémuse à
+          partir de 19h !
+        </p>
+      </div>
+    </section>
     <!-- Galerie de silhouettes monstrueuses -->
     <!-- Galerie de silhouettes pour mobile sans popup -->
     <div class="mb-10 sm:hidden">
@@ -276,13 +355,6 @@ const previewPages = [
         </div>
       </div>
     </div>
-    <!-- Galerie de silhouettes pour desktop avec popup -->
-    <Gallery
-      items={silhouettes}
-      title="Inspirations monstrueuses"
-      description="Cliquez sur une silhouette pour l'agrandir"
-      className="my-10 hidden sm:block"
-    />
 
     <!-- Composant PdfViewer -->
     <PdfViewer
@@ -294,13 +366,18 @@ const previewPages = [
     />
 
     <!-- Ateliers préparatoires -->
-    <section id="ateliers" class="my-10">
-      <h2 class="text-2xl mb-6 border-b pb-2">Préparez votre costume !</h2>
-
-      <p class="mb-6">
-        Pour celles et ceux qui voudraient s'atteler à la préparation de leur
-        costume, l'association propose des ateliers et activités en juillet :
-      </p>
+    <section id="ateliers" class="my-8">
+      <!-- 🎭 Déguisez-vous ! -->
+      <div
+        class="mb-6 p-4 bg-[color:rgba(var(--color-secondary-rgb,131,197,190),0.1)] rounded-lg border-l-4 border-l-[color:var(--color-secondary)]"
+      >
+        <p class="font-medium mb-2">🎭 Déguisez-vous !</p>
+        <p class="text-sm">
+          L'esprit du CarnaBal, c'est de venir déguisé·e en monstre ou créature
+          ! Laissez libre cours à votre créativité ou participez à nos ateliers
+          de préparation.
+        </p>
+      </div>
 
       <div class="grid gap-4 md:grid-cols-2 mb-8">
         <div
@@ -322,7 +399,8 @@ const previewPages = [
           </h3>
           <p class="mb-3 font-medium">13 septembre au SIVOM</p>
           <p class="text-sm mb-4 opacity-80">
-            Création de costumes avec matériaux fournis. Tout public.
+            Création de costumes avec matériaux à partir de 16h. <br />Tout
+            public.
           </p>
           <a href="/events/2025-09-13-monstres-et-bilig/" class="btn text-sm"
             >Voir les détails</a
@@ -333,54 +411,17 @@ const previewPages = [
       <div class="text-center">
         <p class="text-sm italic opacity-70">
           Ces ateliers vous permettront d'arriver le 25 octobre avec un costume
-          unique !
+          unique ! Mais vous pouvez aussi venir avec votre propre création.
         </p>
       </div>
     </section>
-
-    <!-- Cantines financement -->
-    <section id="cantines" class="my-10">
-      <h2 class="text-2xl mb-6 border-b pb-2">
-        Comment nous finançons l'événement
-      </h2>
-
-      <div class="card p-6 mb-8">
-        <h3 class="text-xl mb-4">Les cantines mensuelles</h3>
-        <p class="mb-4">
-          Pour faire naître ces monstres et récolter l'argent nécessaire à
-          l'événement, l'équipe de Briec 2000 propose depuis février, tous les
-          premiers dimanches de chaque mois, des repas à Ti Glazik.
-        </p>
-
-        <div
-          class="bg-[color:rgba(var(--color-primary-rgb),0.05)] border-l-4 border-l-[color:var(--color-secondary)] p-4 mb-4 rounded"
-        >
-          <p class="font-medium mb-2">Comment participer ?</p>
-          <ol class="list-decimal ml-6 space-y-2">
-            <li>
-              Réservez votre repas par email jusqu'au mercredi précédant la
-              cantine
-            </li>
-            <li>Venez chercher votre repas avec vos propres contenants</li>
-            <li>Service assuré par les monstres !</li>
-          </ol>
-        </div>
-
-        <div class="text-center mt-6">
-          {
-            nextCantine ? (
-              <a href={`/events/${nextCantine.slug}/`} class="btn">
-                Ok, il y a quoi au menu ?
-              </a>
-            ) : mostRecentCantine ? (
-              <a href={`/events/${mostRecentCantine.slug}/`} class="btn">
-                Ok, il y a quoi au menu ?
-              </a>
-            ) : null
-          }
-        </div>
-      </div>
-    </section>
+    <!-- Galerie de silhouettes pour desktop avec popup -->
+    <Gallery
+      items={silhouettes}
+      title="Inspirations monstrueuses"
+      description="Cliquez sur une silhouette pour l'agrandir"
+      className="my-10 hidden sm:block"
+    />
 
     <!-- Navigation entre événements -->
     <EventNavigation currentSlug={carnaBal.slug} />
@@ -390,6 +431,12 @@ const previewPages = [
     className="hidden md:block rotate-y-180"
     style="top: 15%; right: 12%;"
   />
-  <Bule className="hidden md:block rotate-y-180" style="top: 300px; right: 280px;" />
-  <Loup className="hidden md:block rotate-y-180" style="top: 335px; right: 173px;" />
+  <Bule
+    className="hidden md:block rotate-y-180"
+    style="top: 300px; right: 280px;"
+  />
+  <Loup
+    className="hidden md:block rotate-y-180"
+    style="top: 335px; right: 173px;"
+  />
 </Layout>
