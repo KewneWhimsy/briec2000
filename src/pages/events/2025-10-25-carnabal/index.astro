@@ -55,7 +55,7 @@ const previewPages = [
   "/pdf/preview/carnabal-page5.jpg",
   "/pdf/preview/carnabal-page6.jpg",
   "/pdf/preview/carnabal-page7.jpg",
-  "/pdf/preview/carnabal-page8.jpg",  
+  "/pdf/preview/carnabal-page8.jpg",
   "/pdf/preview/carnabal-page9.jpg",
 ];
 ---
@@ -112,7 +112,8 @@ const previewPages = [
           CarnaBal des monstres
         </h1>
         <p class="text-lg mb-6 italic max-w-xl leading-relaxed">
-          Fête l’arrivée de la saison sombre sous ton costume, infiltré parmi les monstres ! ATTENTION : Fun en approche !
+          Fête l’arrivée de la saison sombre sous ton costume, infiltré parmi
+          les monstres ! ATTENTION : Fun en approche !
         </p>
 
         <!-- Métadonnées de l'événement -->
@@ -202,15 +203,15 @@ const previewPages = [
       </div>
     </section>
 
-    <!-- Accordéons des artistes -->
-    <section id="artistes" class="my-10">
+    <!-- Accordéons des events -->
+    <section id="events" class="my-10">
       <h1 class="text-2xl mb-6 border-b pb-2">+ d'infos ?</h1>
 
       <div class="space-y-4">
         <!-- Adrien Choque & Alitché -->
         <Accordion
           title="Contes - Adrien Choque & Alitché"
-          creature="ghost"
+          creature="bule"
           id="contes"
         >
           <h3 class="text-sm opacity-75 mb-4">📅 15h au Centre social SIVOM</h3>
@@ -238,7 +239,28 @@ const previewPages = [
             />
           </div>
         </Accordion>
-
+        <!-- Parade costumée -->
+        <Accordion title="Parade costumée" creature="loup" id="parade">
+          <p class="leading-relaxed mb-3 text-pretty">
+            Faites disparaitre vos formes humaines sous votre costume de
+            monstre, et venez parader dans le bourg avec nous.
+            <br /><br />On prévoit que le trajet soit festif, et rythmé, mais on
+            ne vous en dit pas plus pour l'instant !
+          </p>
+        </Accordion>
+        <!-- Boum des mômes -->
+        <Accordion title="Boum des mômes" creature="ghost" id="boum">
+          <p class="leading-relaxed mb-3 text-pretty">
+            Parents, sortez du dancefloor, et restez sur le bord ! Avant qu'il
+            ne soit trop tard, on réserve une boum aux plus jeunes.
+            <br /><br />Une demie-heure de dancing pour laisser les enfants
+            exprimer leurs folies rythmiques et leurs plus beaux moovs
+            d'excitation débordante.
+            <br /><br />Attention : tout au long de la journée, de la soirée, y
+            compris durant cette boum, les enfants restent sous la
+            responsabilité et l’œil attentif de leur(s) accompagnateur·ice(s).
+          </p>
+        </Accordion>
         <!-- Iono Lutrev -->
         <Accordion title="Concert - Iono Lutrev" creature="bule" id="iono">
           <h3 class="text-sm opacity-75 mb-4">
@@ -307,10 +329,10 @@ const previewPages = [
           </h3>
 
           <p class="leading-relaxed mb-3">
-            Kick & Flûte proposent une formation entre
-            machines électroniques, clarinette et voix, qui mélange les musiques
-            du monde et la techno. Dance floor music, électro-techno du futur et
-            clarinette virevoltante !
+            Kick & Flûte proposent une formation entre machines électroniques,
+            clarinette et voix, qui mélange les musiques du monde et la techno.
+            Dance floor music, électro-techno du futur et clarinette
+            virevoltante !
           </p>
           <p class="leading-relaxed mb-4">
             Un duo d'une musique brute et dansante, sensible, exigeante et
@@ -404,8 +426,7 @@ const previewPages = [
           </h2>
           <p class="mb-3 font-medium">13 septembre au SIVOM</p>
           <p class="text-sm mb-4 opacity-80">
-            Création de costumes à partir de 16h. Tout
-            public.
+            Création de costumes à partir de 16h. Tout public.
           </p>
           <a href="/events/2025-09-13-monstres-et-bilig/" class="btn text-sm"
             >Voir les détails</a
