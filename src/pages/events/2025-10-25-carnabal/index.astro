@@ -272,6 +272,19 @@ const previewPages = [
             Adrien Choque & Alitché - Contes monstrueux
           </h3>
           <p class="text-sm opacity-75 mb-1">📅 15h au Centre social SIVOM</p>
+          
+          <!-- Image des conteurs -->
+          <div class="mb-4 bg-[color:rgba(var(--color-primary-rgb),0.05)] rounded-lg overflow-hidden flex items-center justify-center p-4">
+            <OptimizeImage
+              src="/src/assets/contesnobg.png"
+              alt="Illustration contes monstrueux"
+              class="w-auto max-h-48 sm:w-full h-auto sm:max-h-full object-contain theme-filtered"
+              widths={[300, 400]}
+              sizes="300px"
+              loading="lazy"
+            />
+          </div>
+          
           <p class="text-sm leading-relaxed mb-3">
             Adrien et Alitché ont échafaudé un plan d'histoires de monstres à
             vous porter à vos oreilles.
@@ -279,35 +292,6 @@ const previewPages = [
           <p class="text-sm leading-relaxed">
             Tout public et gratuit. Dans la salle
             forum du centre social du pays Glazik.
-          </p>
-        </div>
-        <!-- Casiomaha -->
-        <div class="flex-1">
-          <h3 class="text-lg font-medium mb-2">Casiomaha</h3>
-          <p class="text-sm opacity-75 mb-2">Duo pop-punk synthétique tribal</p>
-          
-          <!-- Vidéo YouTube -->
-          <div class="mb-4 aspect-video bg-black rounded-lg overflow-hidden">
-            <iframe 
-              class="w-full h-full"
-              src="https://www.youtube-nocookie.com/embed/_e7BmAoSavg"
-              title="Casiomaha - Vidéo de présentation"
-              frameborder="0"
-              allow="clipboard-write; encrypted-media;"
-              allowfullscreen
-              loading="lazy">
-            </iframe>
-          </div>
-          
-          <p class="text-sm leading-relaxed mb-3">
-            Mahawatchi & Casiowatcha se connaissent depuis longtemps. Ils
-            composent à partir de vieux synthés cheap des années 80.
-          </p>
-          <p class="text-sm leading-relaxed">
-            Sur scène, les musiciens arborent d'impressionnants masques de
-            l'artiste-plasticienne Odette Picaud, apportant à leur musique
-            pop-punk synthétique, une ambiance tribale, envoûtante et
-            énigmatique, pleine d'énergie positive et rebelle.
           </p>
         </div>
 
@@ -338,6 +322,35 @@ const previewPages = [
             Grande prêtresse du MEGALO-SCHLAG, c'est-à-dire l'équilibre parfait
             entre virtuosité technique et rien-à-foutrisme. Une électro-pop
             garage qui groove !
+          </p>
+        </div>
+
+        <!-- Casiomaha -->
+        <div class="flex-1">
+          <h3 class="text-lg font-medium mb-2">Casiomaha</h3>
+          <p class="text-sm opacity-75 mb-2">Duo pop-punk synthétique tribal</p>
+          
+          <!-- Vidéo YouTube -->
+          <div class="mb-4 aspect-video bg-black rounded-lg overflow-hidden">
+            <iframe 
+              class="w-full h-full"
+              src="https://www.youtube-nocookie.com/embed/_e7BmAoSavg"
+              title="Casiomaha - Vidéo de présentation"
+              allow="clipboard-write; encrypted-media;"
+              allowfullscreen
+              loading="lazy">
+            </iframe>
+          </div>
+          
+          <p class="text-sm leading-relaxed mb-3">
+            Mahawatchi & Casiowatcha se connaissent depuis longtemps. Ils
+            composent à partir de vieux synthés cheap des années 80.
+          </p>
+          <p class="text-sm leading-relaxed">
+            Sur scène, les musiciens arborent d'impressionnants masques de
+            l'artiste-plasticienne <strong>Odette Picaud</strong>, apportant à leur musique
+            pop-punk synthétique, une ambiance tribale, envoûtante et
+            énigmatique, pleine d'énergie positive et rebelle.
           </p>
         </div>
 

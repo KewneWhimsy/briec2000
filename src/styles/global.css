@@ -78,12 +78,6 @@ html[data-theme="gris-citron"] {
     saturate(1285%) hue-rotate(44deg) brightness(102%) contrast(94%);
 }
 
-/* Classe utilitaire pour appliquer le filtre thématique */
-.theme-filtered {
-  filter: var(--theme-filter);
-  transition: filter 0.3s ease;
-}
-
 /* ============== FILTRES THÉMATIQUES RÉUTILISABLES =============== */
 
 /* Arrière-plan coloré pour les thèmes sombres seulement */
@@ -328,6 +322,13 @@ a {
   user-select: none;
   z-index: 5;
 }
+
+/* Classe utilitaire pour appliquer le filtre de couleur */
+.theme-filtered {
+  filter: var(--theme-filter);
+  transition: filter 0.3s ease;
+}
+
 /* ============== RESPONSIVE =============== */
 
 @media (max-width: 767px) {
