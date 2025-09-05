@@ -6,6 +6,7 @@ import Layout from "../../../layouts/layout.astro";
 import PdfViewer from "../../../components/pdf_viewer.astro";
 import OptimizeImage from "../../../components/optimize_image.astro";
 import EventNavigation from "../../../components/event_nav.astro";
+import EventGallery from "../../../components/event_gallery.astro";
 import Gallery from "../../../components/gallery.astro";
 import Accordion from "../../../components/accordion.astro";
 import { getCollection } from "astro:content";
@@ -112,7 +113,7 @@ const previewPages = [
           CarnaBal des monstres
         </h1>
         <p class="text-lg mb-6 italic max-w-xl leading-relaxed">
-          Fête l’arrivée de la saison sombre sous ton costume, infiltré parmi
+          Fête l'arrivée de la saison sombre sous ton costume, infiltré parmi
           les monstres ! ATTENTION : Fun en approche !
         </p>
 
@@ -258,7 +259,7 @@ const previewPages = [
             d'excitation débordante.
             <br /><br />Attention : tout au long de la journée, de la soirée, y
             compris durant cette boum, les enfants restent sous la
-            responsabilité et l’œil attentif de leur(s) accompagnateur·ice(s).
+            responsabilité et l'œil attentif de leur(s) accompagnateur·ice(s).
           </p>
         </Accordion>
         <!-- Iono Lutrev -->
@@ -409,36 +410,11 @@ const previewPages = [
       </div>
     </section>
 
-    <!-- Galerie de silhouettes pour DESKTOP avec popup -->
-    <Gallery
-      items={silhouettes}
-      title="Inspirations monstrueuses"
-      description="Cliquez sur une silhouette pour l'agrandir"
-      className="my-10 hidden sm:block"
-    />
-    <!-- Galerie de silhouettes pour MOBILE sans popup -->
-    <div class="mb-10 sm:hidden">
+    
+    <!-- Galerie -->
+    <div class="mb-10">
       <h2 class="text-xl mb-4">Inspirations monstrueuses</h2>
-      <div class="flex justify-center">
-        <div class="flex gap-2 overflow-x-auto pb-4 snap-x snap-mandatory">
-          {
-            silhouettes.map((silhouette, index) => (
-              <div class="flex-none w-40 snap-center">
-                <div class="bg-[color:rgba(var(--color-primary-rgb),0.05)] rounded-lg shadow-md overflow-hidden">
-                  <OptimizeImage
-                    src={silhouette.src}
-                    alt={silhouette.alt}
-                    class="w-full h-80 object-cover object-top theme-filtered"
-                    widths={[160, 320]}
-                    sizes="160px"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-            ))
-          }
-        </div>
-      </div>
+      <EventGallery event={carnaBal} maxThumbnails={5} />
     </div>
     <!-- Navigation entre événements -->
     <EventNavigation currentSlug={carnaBal.slug} />
