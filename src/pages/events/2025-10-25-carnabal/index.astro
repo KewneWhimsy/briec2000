@@ -357,32 +357,6 @@ const previewPages = [
       </div>
     </section>
 
-    <!-- Galerie de silhouettes monstrueuses -->
-    <!-- Galerie de silhouettes pour mobile sans popup -->
-    <div class="mb-10 sm:hidden">
-      <h2 class="text-xl mb-4">Inspirations monstrueuses</h2>
-      <div class="flex justify-center">
-        <div class="flex gap-2 overflow-x-auto pb-4 snap-x snap-mandatory">
-          {
-            silhouettes.map((silhouette, index) => (
-              <div class="flex-none w-40 snap-center">
-                <div class="bg-[color:rgba(var(--color-primary-rgb),0.05)] rounded-lg shadow-md overflow-hidden">
-                  <OptimizeImage
-                    src={silhouette.src}
-                    alt={silhouette.alt}
-                    class="w-full h-80 object-cover object-top theme-filtered"
-                    widths={[160, 320]}
-                    sizes="160px"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-
     <!-- Composant PdfViewer -->
     <PdfViewer
       pdfPath={pdfPath}
@@ -435,14 +409,37 @@ const previewPages = [
       </div>
     </section>
 
-    <!-- Galerie de silhouettes pour desktop avec popup -->
+    <!-- Galerie de silhouettes pour DESKTOP avec popup -->
     <Gallery
       items={silhouettes}
       title="Inspirations monstrueuses"
       description="Cliquez sur une silhouette pour l'agrandir"
       className="my-10 hidden sm:block"
     />
-
+    <!-- Galerie de silhouettes pour MOBILE sans popup -->
+    <div class="mb-10 sm:hidden">
+      <h2 class="text-xl mb-4">Inspirations monstrueuses</h2>
+      <div class="flex justify-center">
+        <div class="flex gap-2 overflow-x-auto pb-4 snap-x snap-mandatory">
+          {
+            silhouettes.map((silhouette, index) => (
+              <div class="flex-none w-40 snap-center">
+                <div class="bg-[color:rgba(var(--color-primary-rgb),0.05)] rounded-lg shadow-md overflow-hidden">
+                  <OptimizeImage
+                    src={silhouette.src}
+                    alt={silhouette.alt}
+                    class="w-full h-80 object-cover object-top theme-filtered"
+                    widths={[160, 320]}
+                    sizes="160px"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
     <!-- Navigation entre événements -->
     <EventNavigation currentSlug={carnaBal.slug} />
   </article>
