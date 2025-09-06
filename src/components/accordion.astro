@@ -6,7 +6,7 @@ import OptimizeImage from './optimize_image.astro';
 
 export interface Props {
   title: string;
-  creature: 'ghost' | 'bule' | 'loup';
+  creature: 'ghost' | 'bule' | 'loup' | 'shy' | 'bell' | 'glob' | 'conte';
   id: string; // ID unique pour chaque accordéon
   className?: string;
 }
@@ -22,7 +22,12 @@ const {
 const creatureImages = {
   ghost: "/src/assets/ghost500x500.png",
   bule: "/src/assets/bule500x500.png",
-  loup: "/src/assets/loup500x500.png"
+  loup: "/src/assets/loup500x500.png",
+  shy: "/src/assets/shy500x500.png",
+  bell: "/src/assets/bell500x500.png",
+  glob: "/src/assets/glob500x500.png",
+  conte: "/src/assets/conte500x500.png"
+
 };
 
 const creatureSrc = creatureImages[creature];

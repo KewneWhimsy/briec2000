@@ -120,7 +120,7 @@ const previewPages = [
         <!-- Métadonnées de l'événement -->
         <div class="flex flex-col gap-2 mb-8">
           <div>
-            <strong>📍 Lieux :</strong> Centre social SIVOM + Place de Ruthin + Salle
+            <strong>📍 Briec de l'odet (29) :</strong> Centre social SIVOM + Place de Ruthin + Salle
             Arthémuse
           </div>
         </div>
@@ -157,8 +157,6 @@ const previewPages = [
         src="/src/assets/events/carnabal.jpg"
         alt="CarnaBal des monstres et créatures 2025"
         class="w-full max-w-2xl mx-auto rounded-lg shadow-lg"
-        widths={[400, 800, 1200]}
-        sizes="(max-width: 767px) 100vw, 800px"
         transition:name={`event-image-2025-10-25-carnabal`}
       />
     </div>
@@ -188,13 +186,45 @@ const previewPages = [
       <h1 class="text-2xl mb-6 border-b pb-2">+ d'infos ?</h1>
 
       <div class="space-y-4">
+
+        <!-- Expo Odette Picaud -->
+        <Accordion title="Expo - Odette Picaud" creature="bell" id="odette">
+          <h3 class="text-sm opacity-75 mb-4">
+            Expo - Odette Picaud
+          </h3>
+
+          <p class="leading-relaxed mb-3">
+            Odette Picaud est une plasticienne chamanique qui travaille sur la mémoire, 
+            coud et rapièce inlassablement des vieilles dentelles et des objets trouvés dans les greniers bretons 
+            pour en faire un vaudou très personnel.
+          </p>
+          
+          <p class="leading-relaxed mb-4">
+            Tissus, matières organiques, cornes et branchages sont cousus, attachés, ficelés, momifiés : Odette compose son monde, 
+            où l'on trouve des poupées à la fois punk et vaudou, des objets magiques, des capes de deuil pour fantômes chinois, 
+            des costumes pour un carnaval qui bat son plein dans son imaginaire.
+          </p>
+
+          <!-- Vidéo YouTube -->
+          <div class="aspect-video rounded-lg overflow-hidden">
+            <iframe
+              class="w-full h-full"
+              src="https://www.youtube-nocookie.com/embed/D8xPIAmse1g"
+              title="Odette Picaud - Glaneuse de mémoires"
+              allow="clipboard-write; encrypted-media;"
+              allowfullscreen
+              loading="lazy"
+            >
+            </iframe>
+          </div>
+        </Accordion>
         <!-- Adrien Choque & Alitché -->
         <Accordion
           title="Contes - Adrien Choque & Alitché"
-          creature="bule"
+          creature="conte"
           id="contes"
         >
-          <h3 class="text-sm opacity-75 mb-4">📅 15h au Centre social SIVOM</h3>
+          <h3 class="text-sm opacity-75 mb-4">📅 15h au Centre social SIVOM - Briec</h3>
 
           <p class="leading-relaxed mb-3">
             Adrien et Alitché ont échafaudé un plan d'histoires de monstres à
@@ -220,7 +250,8 @@ const previewPages = [
           </div>
         </Accordion>
         <!-- Parade costumée -->
-        <Accordion title="Parade costumée" creature="loup" id="parade">
+        <Accordion title="Parade costumée" creature="ghost" id="parade">
+          <h3 class="text-sm opacity-75 mb-4">📅 17h départ Place de Rutin - Briec</h3>
           <p class="leading-relaxed mb-3 text-pretty">
             Faites disparaitre vos formes humaines sous votre costume de
             monstre, et venez parader dans le bourg avec nous.
@@ -229,7 +260,7 @@ const previewPages = [
           </p>
         </Accordion>
         <!-- Boum des mômes -->
-        <Accordion title="Boum des mômes" creature="ghost" id="boum">
+        <Accordion title="Boum des mômes" creature="shy" id="boum">
           <p class="leading-relaxed mb-3 text-pretty">
             Parents, sortez du dancefloor, et restez sur le bord ! Avant qu'il
             ne soit trop tard, on réserve une boum aux plus jeunes.
@@ -303,7 +334,7 @@ const previewPages = [
         </Accordion>
 
         <!-- Kick & Flûte -->
-        <Accordion title="Concert - Kick & Flûte" creature="ghost" id="kick">
+        <Accordion title="Concert - Kick & Flûte" creature="glob" id="kick">
           <h3 class="text-sm opacity-75 mb-4">
             Duo électro-techno & clarinette
           </h3>
