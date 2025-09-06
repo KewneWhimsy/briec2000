@@ -113,8 +113,8 @@ const previewPages = [
           CarnaBal des monstres
         </h1>
         <p class="text-lg mb-6 italic max-w-xl leading-relaxed">
-          Dans cette journée pleine de drôleries, fêtons tous ensemble l’arrivée de la saison sombre, 
-          costumés et mêlés aux monstres... De 15h à 1h, chacun y trouvera sa place !
+          Toute une journée de folie collective pour accueillir la saison froide ! Costumés et transformés, 
+          de 15h à 1h, on fait la fête ensemble sans distinction d'espèce.
         </p>
 
         <!-- Métadonnées de l'événement -->
@@ -220,7 +220,7 @@ const previewPages = [
         </Accordion>
         <!-- Adrien Choque & Alitché -->
         <Accordion
-          title="Contes - Adrien Choque & Alitché"
+          title="Contes - Adrien & Alitché"
           creature="conte"
           id="contes"
         >
@@ -252,16 +252,30 @@ const previewPages = [
         <!-- Parade costumée -->
         <Accordion title="Parade costumée" creature="ghost" id="parade">
           <h3 class="text-sm opacity-75 mb-4">📅 17h départ Place de Rutin - Briec</h3>
-          <p class="leading-relaxed mb-3 text-pretty">
+          <p class="leading-relaxed mb-4 text-pretty">
             Faites disparaitre vos formes humaines sous votre costume de
             monstre, et venez parader dans le bourg avec nous.
             <br /><br />On prévoit que le trajet soit festif, et rythmé, mais on
             ne vous en dit pas plus pour l'instant !
           </p>
+
+          <!-- Image de la parade -->
+          <div
+            class="flex items-center justify-center"
+          >
+            <OptimizeImage
+              src="/src/assets/parade.png"
+              alt="Illustration de la parade costumée des monstres"
+              class="w-auto max-h-48 sm:w-full h-auto sm:max-h-full object-contain rounded-lg"
+              widths={[400, 600, 800]}
+              sizes="(max-width: 767px) 100vw, 600px"
+              loading="lazy"
+            />
+          </div>
         </Accordion>
         <!-- Boum des mômes -->
         <Accordion title="Boum des mômes" creature="shy" id="boum">
-          <p class="leading-relaxed mb-3 text-pretty">
+          <p class="leading-relaxed mb-4 text-pretty">
             Parents, sortez du dancefloor, et restez sur le bord ! Avant qu'il
             ne soit trop tard, on réserve une boum aux plus jeunes.
             <br /><br />Une demie-heure de dancing pour laisser les enfants
@@ -271,6 +285,20 @@ const previewPages = [
             compris durant cette boum, les enfants restent sous la
             responsabilité et l'œil attentif de leur(s) accompagnateur·ice(s).
           </p>
+
+          <!-- Image de la boum -->
+          <div
+            class="flex items-center justify-center"
+          >
+            <OptimizeImage
+              src="/src/assets/galleries/2025-07-18-spectacle-adieu-meringue/IMGC0477.jpg"
+              alt="Ambiance festive lors d'un événement Briec2000"
+              class="w-auto max-h-48 sm:w-full h-auto sm:max-h-full object-contain rounded-lg"
+              widths={[400, 600, 800]}
+              sizes="(max-width: 767px) 100vw, 600px"
+              loading="lazy"
+            />
+          </div>
         </Accordion>
         <!-- Iono Lutrev -->
         <Accordion title="Concert - Iono Lutrev" creature="bule" id="iono">
@@ -383,10 +411,10 @@ const previewPages = [
       <div
         class="mb-6 p-4 bg-[color:rgba(var(--color-secondary-rgb,131,197,190),0.1)] rounded-lg border-l-4 border-l-[color:var(--color-secondary)]"
       >
-        <p class="font-medium mb-2">🎭 Inventez-vous une créature !</p>
+        <p class="font-medium mb-2">👹 Libérez votre monstre intérieur !</p>
         <p class="text-sm text-balance">
-          Un drap, des branches, un masque de travers : au CarnaBal, tout se transforme. On se bricole un costume, 
-          on devient monstre, et on rejoint la foule bigarrée pour la fête collective !
+          Récup, bidouillage, imagination : au CarnaBal, les placards se vident et les monstres naissent. 
+          Costume fait-maison conseillé pour rejoindre la meute festive !
         </p>
       </div>
 
