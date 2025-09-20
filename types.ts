@@ -15,4 +15,5 @@ export interface Price {
 export interface GalleryConfig {
   photographer: string;
   coverImageIndex?: number;
+  title?: string;
 }

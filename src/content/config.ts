@@ -17,6 +17,7 @@ const events = defineCollection({
     gallery: z.object({
       photographer: z.string(),
       coverImageIndex: z.number().default(0),
+      title: z.string().optional(), // Titre personnalisé pour la galerie
     }).optional(),
     draft: z.boolean().default(false),
   }),

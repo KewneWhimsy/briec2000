@@ -41,7 +41,9 @@ function formatDate(date: Date | string): string {
           <div class="gallery-event-section">
             <!-- En-tête de la galerie -->
             <div class="mb-6">
-              <h2 class="text-xl mb-2">{gallery.event.data.title}</h2>
+              <h2 class="text-xl mb-2">
+                {gallery.event.data.gallery?.title || gallery.event.data.title}
+              </h2>
               <div class="flex justify-between items-center text-sm opacity-70">
                 <span>{formatDate(gallery.event.data.date)}</span>
                 <span>Photos de {gallery.photographer}</span>

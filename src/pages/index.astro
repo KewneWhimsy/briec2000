@@ -1,32 +1,38 @@
 ---
-import Layout from '../layouts/layout.astro';
-import OptimizeImage from '../components/optimize_image.astro';
-import { getCollection } from 'astro:content';
-import type { EventEntry, CantineEntry, Price } from '../../types';
-import MenuCantine from '../components/menu_cantine.astro';
-import Ghost from '../components/ghost.astro';
-import Bule from '../components/bule.astro';
+import Layout from "../layouts/layout.astro";
+import OptimizeImage from "../components/optimize_image.astro";
+import { getCollection } from "astro:content";
+import type { EventEntry, CantineEntry, Price } from "../../types";
+import MenuCantine from "../components/menu_cantine.astro";
+import EventGallery from "../components/event_gallery.astro";
+import Accordion from "../components/accordion.astro";
+import { loadAllGalleries } from "../utils/gallery";
+import Ghost from "../components/ghost.astro";
+import Bule from "../components/bule.astro";
+import Loup from "../components/loup.astro";
 
 // Importer les informations de build
-import buildInfo from '../data/build-info.json';
-import Loup from '../components/loup.astro';
+import buildInfo from "../data/build-info.json";
 
 // Récupérer tous les événements
-const allEvents = await getCollection('events') as EventEntry[];
+const allEvents = (await getCollection("events")) as EventEntry[];
 const currentDate = new Date();
 
 // Filtrer pour ne montrer que les événements à venir et non brouillons
 const upcomingEvents = allEvents
   .filter((event: EventEntry) => {
-    const eventDate = event.data.date instanceof Date ? 
-      event.data.date : 
-      new Date(event.data.date);
-      
+    const eventDate =
+      event.data.date instanceof Date
+        ? event.data.date
+        : new Date(event.data.date);
+
     return eventDate > currentDate && event.data.draft !== true;
   })
   .sort((a: EventEntry, b: EventEntry) => {
-    const dateA = a.data.date instanceof Date ? a.data.date : new Date(a.data.date);
-    const dateB = b.data.date instanceof Date ? b.data.date : new Date(b.data.date);
+    const dateA =
+      a.data.date instanceof Date ? a.data.date : new Date(a.data.date);
+    const dateB =
+      b.data.date instanceof Date ? b.data.date : new Date(b.data.date);
     return dateA.getTime() - dateB.getTime();
   });
 
@@ -34,150 +40,197 @@ const upcomingEvents = allEvents
 const nextEvent = upcomingEvents.length > 0 ? upcomingEvents[0] : null;
 
 // Trouver la prochaine cantine
-const nextCantine = upcomingEvents.find((event: EventEntry) => 
-  event.data.title.toLowerCase().includes('cantine')
+const nextCantine = upcomingEvents.find((event: EventEntry) =>
+  event.data.title.toLowerCase().includes("cantine")
 );
 
-// Récupérer les informations générales sur les cantines
-const cantinesCollection = await getCollection('cantines') as CantineEntry[];
-const cantineInfo = cantinesCollection.find((entry: CantineEntry) => 
-  entry.data.title === "Cantines Mensuelles"
-);
+// Charger toutes les galeries disponibles
+const allGalleries = await loadAllGalleries(allEvents);
 
 // Formater la date en français
 function formatDate(date: Date | string): string {
   const dateObj = date instanceof Date ? date : new Date(date);
-  const options: Intl.DateTimeFormatOptions = { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   };
-  return dateObj.toLocaleDateString('fr-FR', options);
+  return dateObj.toLocaleDateString("fr-FR", options);
 }
 ---
 
-<Layout 
-  title="Briec2000 - Association locale" 
+<Layout
+  title="Briec2000 - Association locale"
   description="Association Briec2000 organise cantines mensuelles le 1er dimanche du mois et événements culturels à Briec-de-l'Odet. CarnaBal des monstres le 25 octobre 2025."
 >
   <!-- Wrapper flex pour la mise en page desktop -->
   <div class="lg:flex lg:gap-8 xl:gap-20 lg:items-start relative">
-    
     <!-- Contenu principal avec max-width -->
     <div class="lg:flex-1 max-w-3xl">
       <h1 class="mb-8 briec2000">Briec2000</h1>
-      
+
       <div class="mb-8">
         <p class="text-lg leading-relaxed mb-4">
-          Briec 2000 c'est une petite équipe qui concocte un <strong>CarnaBal des monstres</strong> pour le <strong>25 octobre</strong>. 
-          Pour préparer ça, iels organisent des repas à emporter, des ateliers, des petits événements, 
+          Briec 2000 c'est une petite équipe qui concocte un <strong
+            >CarnaBal des monstres</strong
+          > pour le <strong>25 octobre</strong>. Pour préparer ça, iels
+          organisent des repas à emporter, des ateliers, des petits événements,
           <strong>viens nous rencontrer au prochain !</strong>
         </p>
-        
+
         <div class="contact-info mb-4">
-          <p><strong>Contact :</strong> <span class="email-copy">briec2000[at]emailasso.net</span></p>
+          <p>
+            <strong>Contact :</strong>
+            <span class="email-copy">briec2000[at]emailasso.net</span>
+          </p>
         </div>
-        
+
         <p class="text-sm opacity-70 italic">
           Dernière mise à jour le : {buildInfo.lastUpdate}
         </p>
       </div>
-      
-      {/* Menu du mois en version mobile */}
-      {nextCantine && (
-        <div class="xl:hidden mt-8 mb-10">
-          <MenuCantine isDesktop={false} />
-        </div>
-      )}
-      
-      {/* Section événement principal */}
-      {nextEvent && (
-        <div class="mb-6">
-          <h2 class="mb-6 border-b pb-2">Prochainement : {nextEvent.data.title}</h2>
-          <article>
-            <section class="flex justify-between gap-3">
-              <header class="my-6">
-                <p class="text-lg mb-2">
-                  <strong>Date :</strong> <time datetime={nextEvent.data.date.toISOString()}>
-                    {formatDate(nextEvent.data.date)}
-                  </time>
-                </p>
-                <p class="mb-2"><strong>Lieu :</strong> {nextEvent.data.location}</p>
-                <p><strong>Horaires :</strong> {nextEvent.data.time}</p>
-              </header>
 
-              {nextEvent.data.image && (
-                <div class="m-3">
-                  <a 
-                    href={`/events/${nextEvent.slug}/`} 
-                    class="event-image-link block rounded-lg overflow-hidden"
-                    aria-label={`Voir les détails de ${nextEvent.data.title}`}
-                  >
-                    <OptimizeImage 
-                      src={nextEvent.data.image} 
-                      alt={nextEvent.data.title} 
-                      class="w-auto max-h-72 rounded-lg"
-                      transition:name={`event-image-${nextEvent.slug}`}
-                    />
-                  </a>
+      {/* Menu du mois en version mobile */}
+      {
+        nextCantine && (
+          <div class="xl:hidden mt-8 mb-10">
+            <MenuCantine isDesktop={false} />
+          </div>
+        )
+      }
+
+      {/* Section événement principal */}
+      {
+        nextEvent && (
+          <div class="mb-10">
+            <h2 class="mb-6 border-b pb-2">
+              Prochainement : {nextEvent.data.title}
+            </h2>
+            <article>
+              <section class="flex justify-between gap-3">
+                <header class="my-6">
+                  <p class="text-lg mb-2">
+                    <strong>Date :</strong>{" "}
+                    <time datetime={nextEvent.data.date.toISOString()}>
+                      {formatDate(nextEvent.data.date)}
+                    </time>
+                  </p>
+                  <p class="mb-2">
+                    <strong>Lieu :</strong> {nextEvent.data.location}
+                  </p>
+                  <p>
+                    <strong>Horaires :</strong> {nextEvent.data.time}
+                  </p>
+                </header>
+
+                {nextEvent.data.image && (
+                  <div class="m-3">
+                    <a
+                      href={`/events/${nextEvent.slug}/`}
+                      class="event-image-link block rounded-lg overflow-hidden"
+                      aria-label={`Voir les détails de ${nextEvent.data.title}`}
+                    >
+                      <OptimizeImage
+                        src={nextEvent.data.image}
+                        alt={nextEvent.data.title}
+                        class="w-auto max-h-72 rounded-lg"
+                        transition:name={`event-image-${nextEvent.slug}`}
+                      />
+                    </a>
+                  </div>
+                )}
+              </section>
+
+              <div class="my-6">
+                <p class="text-base leading-relaxed">
+                  {nextEvent.data.description}
+                </p>
+              </div>
+
+              {nextEvent.data.price && nextEvent.data.price.length > 0 && (
+                <div class="inline-block card mt-2 mb-4 p-4">
+                  <h2 class="text-xl mb-4">Tarifs</h2>
+                  <ul class="list-disc ml-6 leading-relaxed">
+                    {nextEvent.data.price.map((price: Price) => (
+                      <li>
+                        {price.name.toLowerCase() === "gratuit"
+                          ? price.name
+                          : `${price.name}: ${price.amount > 0 ? `${price.amount}€` : "Gratuit"}`}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
-            </section>
 
-            <div class="my-6">
-              <p class="text-base leading-relaxed">{nextEvent.data.description}</p>
-            </div>
-            
-            {
-      nextEvent.data.price && nextEvent.data.price.length > 0 && (
-        <div class="inline-block card mt-2 mb-4 p-4">
-          <h2 class="text-xl mb-4">Tarifs</h2>
-          <ul class="list-disc ml-6 leading-relaxed">
-            {nextEvent.data.price.map((price: Price) => (
-              <li>
-                {price.name.toLowerCase() === "gratuit"
-                  ? price.name
-                  : `${price.name}: ${price.amount > 0 ? `${price.amount}€` : "Gratuit"}`}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )
-    }
+              <div class="flex gap-4 justify-center mt-6">
+                <a href={`/events/${nextEvent.slug}/`} class="btn-index">
+                  Voir les détails
+                </a>
+                <a href="/events/" class="btn-index">
+                  Tous les événements
+                </a>
+              </div>
+            </article>
+          </div>
+        )
+      }
 
-            <div class="flex gap-4 justify-center mt-6">
-              <a href={`/events/${nextEvent.slug}/`} class="btn-index">
-                Voir les détails
-              </a>
-              <a href="/events/" class="btn-index">
-                Tous les événements
-              </a>
-            </div>
-          </article>
-        </div>
-      )}
-      
+      {/* Section galeries - toutes dans un seul accordéon */}
+      {
+        allGalleries.length > 0 && (
+          <section class="mb-8">
+            <Accordion
+              title="Besoin d'inspiration ?"
+              creature="briec2000"
+              id="all-galleries"
+              className="gallery-accordion"
+            >
+              <div class="space-y-8">
+                {allGalleries.map((gallery) => (
+                  <div class="gallery-item">
+                    <div class="mb-4">
+                      <h3 class="text-lg mb-2">
+                        {gallery.event.data.gallery?.title ||
+                          gallery.event.data.title}
+                      </h3>
+                      <div class="flex justify-between items-center text-sm opacity-75">
+                        <span>{formatDate(gallery.event.data.date)}</span>
+                        <span>Photos de {gallery.photographer}</span>
+                      </div>
+                    </div>
+
+                    {/* Vérifier que la galerie a des photos avant d'afficher EventGallery */}
+                    {gallery.photos && gallery.photos.length > 0 && (
+                      <EventGallery event={gallery.event} maxThumbnails={4} />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </Accordion>
+          </section>
+        )
+      }
+
       <div class="hidden flex-col gap-4 pt-6 text-center">
         <div>
           <a href="/about/" class="btn">En savoir plus sur l'association</a>
         </div>
       </div>
     </div>
-    
+
     {/* Menu du mois en version desktop */}
-    {nextCantine && (
-      <div class="hidden xl:block lg:w-80 xl:w-96 lg:relative">
-        <MenuCantine isDesktop={true} />
-      </div>
-    )}
+    {
+      nextCantine && (
+        <div class="hidden xl:block lg:w-80 xl:w-96 lg:relative">
+          <MenuCantine isDesktop={true} />
+        </div>
+      )
+    }
   </div>
-  
+
   <!-- Un seul fantôme discret sous le sidebar menu -->
-  <Ghost 
-    className="hidden md:block"
-    style="bottom: 5%; left: 5%;"
-  />
+  <Ghost className="hidden md:block" style="bottom: 5%; left: 5%;" />
   <Bule className="hidden md:block" style="bottom: 20px; right: 50px;" />
   <Loup className="hidden md:block" style="bottom: 150px; right: 120px;" />
 </Layout>
@@ -193,5 +246,10 @@ function formatDate(date: Date | string): string {
   .event-image-link:focus {
     outline: 1px solid var(--color-primary);
     outline-offset: 2px;
+  }
+
+  /* Style spécifique pour les accordéons de galerie */
+  .gallery-accordion {
+    background-color: rgba(var(--color-primary-rgb), 0.02);
   }
 </style>

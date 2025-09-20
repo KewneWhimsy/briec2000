@@ -1,6 +1,6 @@
 ---
 // src/components/event_gallery.astro
-// Fix pour les photos trop petites dans le popup
+// Version sécurisée avec vérifications des sources d'images
 
 import { loadEventGallery } from '../utils/gallery';
 import type { EventEntry } from '../../types';
@@ -20,47 +20,57 @@ const {
 const gallery = await loadEventGallery(event.slug, event);
 
 // Si pas de galerie, ne rien afficher
-if (!gallery) {
+if (!gallery || !gallery.photos || gallery.photos.length === 0) {
+  return null;
+}
+
+// Filtrer les photos qui ont une source valide
+const validPhotos = gallery.photos.filter(photo => photo && photo.src);
+
+// Si pas de photos valides, ne rien afficher
+if (validPhotos.length === 0) {
   return null;
 }
 
 // Limiter les miniatures affichées
-const thumbnails = gallery.photos.slice(0, maxThumbnails);
+const thumbnails = validPhotos.slice(0, maxThumbnails);
 ---
 
-{gallery && (
-  <section class="event-gallery m-8">
+{gallery && validPhotos.length > 0 && (
+  <section class="event-gallery my-8 mx-2">
     
     <div class="flex gap-3 overflow-x-auto pb-4">
       {thumbnails.map((photo, index) => (
-        <div class="flex-none w-32">
-          <button 
-            class="gallery-trigger my-2 w-full h-32 block cursor-pointer hover:opacity-80 transition-opacity rounded-lg overflow-hidden bg-[color:rgba(var(--color-primary-rgb),0.05)]"
-            data-gallery-id={event.slug}
-            data-start-index={index}
-            aria-label={`Voir la galerie de ${event.data.title}, photo ${index + 1}`}
-          >
-            <OptimizeImage
-              src={photo.src}
-              alt={photo.alt}
-              class="w-full h-full object-cover"
-              widths={[128, 256]}
-              sizes="256px"
-              loading="lazy"
-            />
-          </button>
-        </div>
+        photo.src && (
+          <div class="flex-none w-32">
+            <button 
+              class="gallery-trigger my-2 w-full h-32 block cursor-pointer hover:opacity-80 transition-opacity rounded-lg overflow-hidden bg-[color:rgba(var(--color-primary-rgb),0.05)]"
+              data-gallery-id={event.slug}
+              data-start-index={index}
+              aria-label={`Voir la galerie de ${event.data.title}, photo ${index + 1}`}
+            >
+              <OptimizeImage
+                src={photo.src}
+                alt={photo.alt || `Photo ${index + 1}`}
+                class="w-full h-full object-cover"
+                widths={[128, 256]}
+                sizes="256px"
+                loading="lazy"
+              />
+            </button>
+          </div>
+        )
       ))}
       
-      {gallery.photos.length > maxThumbnails && (
+      {validPhotos.length > maxThumbnails && (
         <div class="flex-none w-32">
           <button 
             class="gallery-trigger my-2 w-full h-32 flex items-center justify-center text-sm opacity-60 border border-dashed border-[var(--color-border)] rounded-lg cursor-pointer hover:opacity-80 hover:border-[var(--color-primary)] transition-all bg-[color:rgba(var(--color-primary-rgb),0.05)]"
             data-gallery-id={event.slug}
             data-start-index={maxThumbnails}
-            aria-label={`Voir toute la galerie de ${event.data.title} (${gallery.photos.length} photos)`}
+            aria-label={`Voir toute la galerie de ${event.data.title} (${validPhotos.length} photos)`}
           >
-            +{gallery.photos.length - maxThumbnails} photo{gallery.photos.length - maxThumbnails > 1 ? 's' : ''}
+            +{validPhotos.length - maxThumbnails} photo{validPhotos.length - maxThumbnails > 1 ? 's' : ''}
           </button>
         </div>
       )}
@@ -68,17 +78,19 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
 
     <!-- Container caché avec toutes les images optimisées pour extraction des sources -->
     <div class="hidden" aria-hidden="true">
-      {gallery.photos.map((photo, index) => (
-        <div class="gallery-optimized-source" data-photo-index={index}>
-          <OptimizeImage
-            src={photo.src}
-            alt={photo.alt}
-            class="gallery-source-img"
-            widths={[800, 1200, 1600]}
-            sizes="(max-width: 767px) 90vw, 1200px"
-            loading="lazy"
-          />
-        </div>
+      {validPhotos.map((photo, index) => (
+        photo.src && (
+          <div class="gallery-optimized-source" data-photo-index={index}>
+            <OptimizeImage
+              src={photo.src}
+              alt={photo.alt || `Photo ${index + 1}`}
+              class="gallery-source-img"
+              widths={[800, 1200, 1600]}
+              sizes="(max-width: 767px) 90vw, 1200px"
+              loading="lazy"
+            />
+          </div>
+        )
       ))}
     </div>
 
@@ -92,7 +104,9 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
       <!-- Header avec info et bouton fermer -->
       <div class="bg-[var(--color-secondary)] text-white p-3 flex justify-between items-center">
         <div>
-          <h3 class="font-medium" style="color: white;">{event.data.title}</h3>
+          <h3 class="font-medium" style="color: white;">
+            {gallery.event.data.gallery?.title || gallery.event.data.title}
+          </h3>
           <p class="text-sm opacity-90">Photos de {gallery.photographer}</p>
         </div>
         <button 
@@ -147,21 +161,23 @@ const thumbnails = gallery.photos.slice(0, maxThumbnails);
       <!-- Barre de miniatures horizontale -->
       <div class="p-3 bg-[var(--bg-color)] border-t border-[var(--color-border)]">
         <div class="flex gap-2 overflow-x-auto pb-2">
-          {gallery.photos.map((photo, index) => (
-            <button 
-              class="gallery-thumb flex-none w-16 h-12 rounded overflow-hidden border-2 border-transparent hover:border-[var(--color-primary)] transition-colors"
-              data-index={index}
-              aria-label={`Voir photo ${index + 1}`}
-            >
-              <OptimizeImage
-                src={photo.src}
-                alt={photo.alt}
-                class="w-full h-full object-cover"
-                widths={[64, 128]}
-                sizes="64px"
-                loading="lazy"
-              />
-            </button>
+          {validPhotos.map((photo, index) => (
+            photo.src && (
+              <button 
+                class="gallery-thumb flex-none w-16 h-12 rounded overflow-hidden border-2 border-transparent hover:border-[var(--color-primary)] transition-colors"
+                data-index={index}
+                aria-label={`Voir photo ${index + 1}`}
+              >
+                <OptimizeImage
+                  src={photo.src}
+                  alt={photo.alt || `Photo ${index + 1}`}
+                  class="w-full h-full object-cover"
+                  widths={[64, 128]}
+                  sizes="64px"
+                  loading="lazy"
+                />
+              </button>
+            )
           ))}
         </div>
       </div>

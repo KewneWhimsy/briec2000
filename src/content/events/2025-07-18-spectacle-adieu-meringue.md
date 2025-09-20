@@ -10,6 +10,7 @@ price:
     amount: 0
 gallery:
   photographer: "Vincent Douat"
+  title: "Ateliers créatifs de cet été"
   # coverImageIndex: 0  # Optionnel, par défaut la première photo
 draft: false
 ---
