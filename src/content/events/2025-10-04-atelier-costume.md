@@ -23,8 +23,8 @@ draft: false
 
 Ce samedi 4 octobre, dernière cantine, dernier atelier avant le Carnabal des monstres !
 
-On vous invite à confectionner nos costumes et masques tous ensemble, dès 16h ! Pas de chichi, on vous montrera qu'on peut faire des monstres bien funs juste avec du bric et du broc ! N'hésitez pas à ramener trombones et bouts de ficelles qui vous inspirent un costume !
+On vous invite à confectionner costumes et masques tous ensemble, dès 16h ! Pas de panique, on vous montrera qu'on peut faire des monstres bien funs juste avec du bric et du broc ! N'hésitez pas à ramener trombones et bouts de ficelles qui vous inspirent.
 
-Suivi à partir de 19h de notre soirée crêpe ! Simple, efficace, délicieusement bon ! Et bien sûr une petite buvette pour se rincer le gosier, venez profiter de la soirée avec nous !
+Suivi à partir de 19h de notre soirée crêpes ! Simple, efficace, délicieux ! Et bien sûr une petite buvette pour se rincer le gosier, venez profiter de la soirée avec nous !
 
 **Réservation appréciée mais non obligatoire :** <span class="email-copy">briec2000[at]emailasso.net</span>
