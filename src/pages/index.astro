@@ -13,6 +13,7 @@ import Loup from "../components/loup.astro";
 
 // Importer les informations de build
 import buildInfo from "../data/build-info.json";
+import { mergeConfig } from "astro/config";
 
 // Récupérer tous les événements
 const allEvents = (await getCollection("events")) as EventEntry[];
@@ -90,7 +91,36 @@ function formatDate(date: Date | string): string {
           Dernière mise à jour le : {buildInfo.lastUpdate}
         </p>
       </div>
+      <section class="flex flex-col gap-6 [&_p]:text-xl">
+        <OptimizeImage
+          src="/src/assets/merci.png"
+          alt="Merci !"
+          class="mx-auto rounded-lg"
+        />
+        <h1 class="text-pretty">Bravo les monstres !</h1>
+        <p class="text-balance">
+          Vous avez fait briller nos yeux et chauffer nos cœurs, et nous avions
+          envie de vous remercier chaleureusement !
+        </p>
+        <p>
+          Merci beaucoup à toutes celles et ceux qui se sont investi auprès de
+          nous dans ce projet <span class="italic"
+            >-structures, associations, commerces, artistes, collectifs, public-</span
+          >
+          depuis longtemps ou depuis peu, de près ou de loin.
+        </p>
 
+        <p class="text-[var(--color-primary)] text-pretty">
+          Si vous avez envie de partager des images n'hésitez pas à nous les
+          envoyer (par mail) ou à les ajouter via l'application celebrate sur
+          l'album du CarnaBal : code <strong>7KEV7PHF</strong>
+        </p>
+
+        <p class="text-balance">
+          On vous partagera également les nôtres quand on sera enfin remis.e.s
+          de nos émotions !
+        </p>
+      </section>
       {/* Menu du mois en version mobile */}
       {
         nextCantine && (
@@ -178,6 +208,7 @@ function formatDate(date: Date | string): string {
 
       {/* Section galeries - toutes dans un seul accordéon */}
       {
+        /* 
         allGalleries.length > 0 && (
           <section class="mb-8">
             <Accordion
@@ -200,7 +231,7 @@ function formatDate(date: Date | string): string {
                       </div>
                     </div>
 
-                    {/* Vérifier que la galerie a des photos avant d'afficher EventGallery */}
+                    {/* Vérifier que la galerie a des photos avant d'afficher EventGallery 
                     {gallery.photos && gallery.photos.length > 0 && (
                       <EventGallery event={gallery.event} maxThumbnails={4} />
                     )}
@@ -210,6 +241,7 @@ function formatDate(date: Date | string): string {
             </Accordion>
           </section>
         )
+      */
       }
 
       <div class="hidden flex-col gap-4 pt-6 text-center">
