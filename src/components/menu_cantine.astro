@@ -88,7 +88,7 @@ function parseMenuFromMarkdown(event: EventEntry) {
 {nextCantine && (
   <div class={`menu-cantine-container rounded-lg overflow-hidden shadow-lg w-full ${isDesktop ? "fixed top-8 max-h-[90vh] overflow-y-auto max-w-96" : ""}`}>
     <!-- En-tête du menu -->
-    <div class="bg-[var(--color-secondary)] text-center p-3 relative flex justify-center">
+    <div class="bg-(--color-secondary) text-center p-3 relative flex justify-center">
       <div class="flex-1">
         <h3 class="text-xl font-bold tracking-wide" style="color: white;">La Cantine Mensuelle</h3>
         <p class="text-md italic text-white">Menu de {getMonthName(nextCantine.data.date)}</p>
@@ -108,7 +108,7 @@ function parseMenuFromMarkdown(event: EventEntry) {
     </div>
 
     <!-- Corps du menu -->
-    <div class="p-4 bg-[var(--bg-color)]">
+    <div class="p-4 bg-(--bg-color)">
       <div id="menu-content" class="space-y-4">
         {(() => {
           const menu = parseMenuFromMarkdown(nextCantine);
@@ -116,32 +116,32 @@ function parseMenuFromMarkdown(event: EventEntry) {
             <>
               <!-- Entrée -->
               <div class="menu-section">
-                <h4 class="course-title text-lg text-[var(--color-primary)] font-medium mb-2 pb-1 border-b border-[var(--color-border)] relative">
+                <h4 class="course-title text-lg text-(--color-primary) font-medium mb-2 pb-1 border-b border-(--color-border) relative">
                   Entrée
-                  <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-[var(--color-secondary)]"></span>
+                  <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-(--color-secondary)"></span>
                 </h4>
                 <div class="dish px-1">
-                  <p class="dish-name font-medium text-[var(--text-color)]">{menu.entree}</p>
+                  <p class="dish-name font-medium text-(--text-color)">{menu.entree}</p>
                 </div>
               </div>
 
               <!-- Plat Principal -->
               <div class="menu-section">
-                <h4 class="course-title text-lg text-[var(--color-primary)] font-medium mb-2 pb-1 border-b border-[var(--color-border)] relative">
+                <h4 class="course-title text-lg text-(--color-primary) font-medium mb-2 pb-1 border-b border-(--color-border) relative">
                   Plat Principal
-                  <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-[var(--color-secondary)]"></span>
+                  <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-(--color-secondary)"></span>
                 </h4>
                 <div class="dish px-1">
-                  <p class="dish-name font-medium mb-1 text-[var(--text-color)]">{menu.platPrincipal}</p>
-                  <p class="dish-description text-sm italic opacity-80 mb-3 leading-snug text-[var(--text-color)]">{menu.platDescription}</p>
+                  <p class="dish-name font-medium mb-1 text-(--text-color)">{menu.platPrincipal}</p>
+                  <p class="dish-description text-sm italic opacity-80 mb-3 leading-snug text-(--text-color)">{menu.platDescription}</p>
                   <div class="dish-options space-y-2">
                     <div class="option flex justify-between items-center text-sm p-2 rounded-md shadow-sm">
-                      <span class="option-label font-medium text-[var(--text-color)]">Option Végétarienne</span>
-                      <span class="option-detail italic opacity-80 text-[var(--text-color)]">{menu.optionVeg}</span>
+                      <span class="option-label font-medium text-(--text-color)">Option Végétarienne</span>
+                      <span class="option-detail italic opacity-80 text-(--text-color)">{menu.optionVeg}</span>
                     </div>
                     <div class="option flex justify-between items-center text-sm p-2 rounded-md shadow-sm">
-                      <span class="option-label font-medium text-[var(--text-color)]">Option Carnée</span>
-                      <span class="option-detail italic opacity-80 text-[var(--text-color)]">{menu.optionCarnee}</span>
+                      <span class="option-label font-medium text-(--text-color)">Option Carnée</span>
+                      <span class="option-detail italic opacity-80 text-(--text-color)">{menu.optionCarnee}</span>
                     </div>
                   </div>
                 </div>
@@ -149,13 +149,13 @@ function parseMenuFromMarkdown(event: EventEntry) {
 
               <!-- Dessert -->
               <div class="menu-section">
-                <h4 class="course-title text-lg text-[var(--color-primary)] font-medium mb-2 pb-1 border-b border-[var(--color-border)] relative">
+                <h4 class="course-title text-lg text-(--color-primary) font-medium mb-2 pb-1 border-b border-(--color-border) relative">
                   Dessert
-                  <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-[var(--color-secondary)]"></span>
+                  <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-(--color-secondary)"></span>
                 </h4>
                 <div class="dish px-1">
-                  <p class="dish-name font-medium mb-1 text-[var(--text-color)]">{menu.dessert}</p>
-                  <p class="dish-description text-sm italic opacity-80 text-[var(--text-color)]">{menu.dessertDesc}</p>
+                  <p class="dish-name font-medium mb-1 text-(--text-color)">{menu.dessert}</p>
+                  <p class="dish-description text-sm italic opacity-80 text-(--text-color)">{menu.dessertDesc}</p>
                 </div>
               </div>
             </>
@@ -164,16 +164,16 @@ function parseMenuFromMarkdown(event: EventEntry) {
       </div>
       
       <!-- Footer du menu -->
-      <div class="mt-4 pt-3 border-t border-[var(--color-border)] text-center text-balance">
-        <p class="menu-note text-sm italic opacity-70 mb-3 leading-snug text-[var(--text-color)]">
+      <div class="mt-4 pt-3 border-t border-(--color-border) text-center text-balance">
+        <p class="menu-note text-sm italic opacity-70 mb-3 leading-snug text-(--text-color)">
           Pensez à apporter vos contenants propres pour les repas à emporter.
         </p>
-        <p class="menu-note text-sm italic opacity-70 mb-3 leading-snug text-[var(--text-color)]">
+        <p class="menu-note text-sm italic opacity-70 mb-3 leading-snug text-(--text-color)">
           Réservation par mail <span class="email-copy">briec2000[at]emailasso.net</span> ou sur place au centre social
         </p>
         <a 
           href={`/events/${nextCantine.slug}/`} 
-          class="inline-block md:hidden px-4 py-2 bg-[var(--color-secondary)] rounded-md hover:opacity-90 transition-opacity"
+          class="inline-block md:hidden px-4 py-2 bg-(--color-secondary) rounded-md hover:opacity-90 transition-opacity"
           style="color: white; text-decoration: none;"
         >
           Voir les détails
