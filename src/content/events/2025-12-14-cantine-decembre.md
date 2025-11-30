@@ -18,6 +18,9 @@ price:
     amount: 1.5
   - name: "Vin chaud"
     amount: 3
+menuNotes:
+  - "Réservations obligatoires avant le vendredi 12 décembre sur HelloAsso"
+  - "Utilisez le code \"ESPECES\" pour payer sur place"
 draft: false
 ---
 
@@ -36,7 +39,7 @@ Notez : il est possible de ne faire que l'un, ou que l'autre (bien sûr).
 
 **Sandwich carné :** Saucisse de Toulouse (nature ou fumée) fromage à raclette, petite dose de légumes cuits au four (potimarron, oignon, champignon, patates)
 
-**Dessert :** Au choix parmi les desserts maison !  
+**Dessert :** Au choix sur place parmi les desserts maison !  
 *Disponibles sur place uniquement*
 
 ## Soutenir l'association

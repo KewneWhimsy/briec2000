@@ -19,6 +19,7 @@ const events = defineCollection({
       coverImageIndex: z.number().default(0),
       title: z.string().optional(), // Titre personnalisé pour la galerie
     }).optional(),
+    menuNotes: z.array(z.string()).optional(), // Notes personnalisées pour l'encart menu
     draft: z.boolean().default(false),
   }),
 });
