@@ -40,13 +40,13 @@ function parseMenuFromMarkdown(event: EventEntry) {
   const { body } = event;
   
   let menu = {
-    entree: "Petite salade fraîche de saison",
-    platPrincipal: "Plat du jour",
-    platDescription: "Légumes et saveurs du moment",
-    optionVeg: "Protéine végétale",
-    optionCarnee: "Poulet fermier",
-    dessert: "Assortiment de desserts maison",
-    dessertDesc: "Disponibles sur place uniquement"
+    entree: "",
+    platPrincipal: "",
+    platDescription: "",
+    optionVeg: "",
+    optionCarnee: "",
+    dessert: "",
+    dessertDesc: ""
   };
 
   const lines = body.split('\n');
@@ -54,12 +54,24 @@ function parseMenuFromMarkdown(event: EventEntry) {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
     
-    if (line.startsWith('**Entrée :**')) {
-      menu.entree = line.replace('**Entrée :**', '').trim();
+    // Gestion flexible des différents formats
+    if (line.startsWith('**Entrée :**') || line.startsWith('**Sandwich végé :**')) {
+      const content = line.replace(/^\*\*[^:]+:\*\*/, '').trim();
+      if (line.includes('végé')) {
+        menu.optionVeg = content;
+      } else {
+        menu.entree = content;
+      }
     }
     
-    if (line.startsWith('**Plat principal :**')) {
-      menu.platPrincipal = line.replace('**Plat principal :**', '').trim();
+    if (line.startsWith('**Plat principal :**') || line.startsWith('**Sandwich carné :**')) {
+      const content = line.replace(/^\*\*[^:]+:\*\*/, '').trim();
+      if (line.includes('carné')) {
+        menu.optionCarnee = content;
+      } else {
+        menu.platPrincipal = content;
+      }
+      // Lire la description sur la ligne suivante si elle commence par *
       if (i + 1 < lines.length && lines[i + 1].trim().startsWith('*')) {
         menu.platDescription = lines[i + 1].trim().replace(/^\*/, '').replace(/\*$/, '').trim();
       }
@@ -81,14 +93,20 @@ function parseMenuFromMarkdown(event: EventEntry) {
     }
   }
 
+  // Si on n'a pas trouvé d'entrée/plat principal, mais qu'on a des sandwichs, adapter l'affichage
+  if (!menu.entree && !menu.platPrincipal && (menu.optionVeg || menu.optionCarnee)) {
+    menu.platPrincipal = "Sandwichs chauds";
+    menu.platDescription = "Fromage à raclette fondu et garniture au choix";
+  }
+  
+  // Valeurs par défaut si rien n'est trouvé
+  if (!menu.dessert) {
+    menu.dessert = "Desserts maison";
+    menu.dessertDesc = "Disponibles sur place uniquement";
+  }
+
   return menu;
 }
-
-// Notes par défaut si aucune note personnalisée n'est fournie
-const defaultNotes = [
-  "Pensez à apporter vos contenants propres pour les repas à emporter.",
-  "Réservation par mail briec2000@emailasso.net ou sur place au centre social"
-];
 ---
 
 {nextCantine && (
@@ -120,50 +138,64 @@ const defaultNotes = [
           const menu = parseMenuFromMarkdown(nextCantine);
           return (
             <>
-              <!-- Entrée -->
-              <div class="menu-section">
-                <h4 class="course-title text-lg text-(--color-primary) font-medium mb-2 pb-1 border-b border-(--color-border) relative">
-                  Entrée
-                  <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-(--color-secondary)"></span>
-                </h4>
-                <div class="dish px-1">
-                  <p class="dish-name font-medium text-(--text-color)">{menu.entree}</p>
+              <!-- Entrée (optionnelle) -->
+              {menu.entree && (
+                <div class="menu-section">
+                  <h4 class="course-title text-lg text-(--color-primary) font-medium mb-2 pb-1 border-b border-(--color-border) relative">
+                    Entrée
+                    <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-(--color-secondary)"></span>
+                  </h4>
+                  <div class="dish px-1">
+                    <p class="dish-name font-medium text-(--text-color)">{menu.entree}</p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               <!-- Plat Principal -->
-              <div class="menu-section">
-                <h4 class="course-title text-lg text-(--color-primary) font-medium mb-2 pb-1 border-b border-(--color-border) relative">
-                  Plat Principal
-                  <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-(--color-secondary)"></span>
-                </h4>
-                <div class="dish px-1">
-                  <p class="dish-name font-medium mb-1 text-(--text-color)">{menu.platPrincipal}</p>
-                  <p class="dish-description text-sm italic opacity-80 mb-3 leading-snug text-(--text-color)">{menu.platDescription}</p>
-                  <div class="dish-options space-y-2">
-                    <div class="option flex justify-between items-center text-sm p-2 rounded-md shadow-sm">
-                      <span class="option-label font-medium text-(--text-color)">Option Végétarienne</span>
-                      <span class="option-detail italic opacity-80 text-(--text-color)">{menu.optionVeg}</span>
-                    </div>
-                    <div class="option flex justify-between items-center text-sm p-2 rounded-md shadow-sm">
-                      <span class="option-label font-medium text-(--text-color)">Option Carnée</span>
-                      <span class="option-detail italic opacity-80 text-(--text-color)">{menu.optionCarnee}</span>
+              {menu.platPrincipal && (
+                <div class="menu-section">
+                  <h4 class="course-title text-lg text-(--color-primary) font-medium mb-2 pb-1 border-b border-(--color-border) relative">
+                    Plat Principal
+                    <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-(--color-secondary)"></span>
+                  </h4>
+                  <div class="dish px-1">
+                    <p class="dish-name font-medium mb-1 text-(--text-color)">{menu.platPrincipal}</p>
+                    {menu.platDescription && (
+                      <p class="dish-description text-sm italic opacity-80 mb-3 leading-snug text-(--text-color)">{menu.platDescription}</p>
+                    )}
+                    <div class="dish-options space-y-3">
+                      {menu.optionVeg && (
+                        <div class="option p-2 rounded-md shadow-sm">
+                          <span class="option-label font-medium block mb-1 text-(--text-color)">Option Végétarienne</span>
+                          <span class="option-detail text-sm italic opacity-80 block leading-snug text-(--text-color)">{menu.optionVeg}</span>
+                        </div>
+                      )}
+                      {menu.optionCarnee && (
+                        <div class="option p-2 rounded-md shadow-sm">
+                          <span class="option-label font-medium block mb-1 text-(--text-color)">Option Carnée</span>
+                          <span class="option-detail text-sm italic opacity-80 block leading-snug text-(--text-color)">{menu.optionCarnee}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               <!-- Dessert -->
-              <div class="menu-section">
-                <h4 class="course-title text-lg text-(--color-primary) font-medium mb-2 pb-1 border-b border-(--color-border) relative">
-                  Dessert
-                  <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-(--color-secondary)"></span>
-                </h4>
-                <div class="dish px-1">
-                  <p class="dish-name font-medium mb-1 text-(--text-color)">{menu.dessert}</p>
-                  <p class="dish-description text-sm italic opacity-80 text-(--text-color)">{menu.dessertDesc}</p>
+              {menu.dessert && (
+                <div class="menu-section">
+                  <h4 class="course-title text-lg text-(--color-primary) font-medium mb-2 pb-1 border-b border-(--color-border) relative">
+                    Dessert
+                    <span class="absolute bottom-0 left-0 w-12 h-0.5 bg-(--color-secondary)"></span>
+                  </h4>
+                  <div class="dish px-1">
+                    <p class="dish-name font-medium mb-1 text-(--text-color)">{menu.dessert}</p>
+                    {menu.dessertDesc && (
+                      <p class="dish-description text-sm italic opacity-80 text-(--text-color)">{menu.dessertDesc}</p>
+                    )}
+                  </div>
                 </div>
-              </div>
+              )}
             </>
           );
         })()}
@@ -171,7 +203,10 @@ const defaultNotes = [
       
       <!-- Footer du menu avec notes personnalisables -->
       <div class="mt-4 pt-3 border-t border-(--color-border) text-center text-balance">
-        {(nextCantine.data.menuNotes || defaultNotes).map((note) => (
+        {(nextCantine.data.menuNotes || [
+          "Pensez à apporter vos contenants propres pour les repas à emporter.",
+          "Réservation par mail briec2000@emailasso.net ou sur place au centre social"
+        ]).map((note) => (
           <p class="menu-note text-sm italic opacity-70 mb-3 leading-snug text-(--text-color)">
             {note.includes('briec2000@emailasso.net') || note.includes('briec2000[at]emailasso.net') ? (
               <Fragment set:html={note.replace(/briec2000@emailasso\.net|briec2000\[at\]emailasso\.net/g, '<span class="email-copy">briec2000[at]emailasso.net</span>')} />
