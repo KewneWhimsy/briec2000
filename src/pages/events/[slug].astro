@@ -64,6 +64,7 @@ function formatDate(date: Date | string): string {
             src={entry.data.image}
             alt={entry.data.title}
             class="w-auto max-h-[500px] rounded-lg"
+            loading="eager"
             transition:name={`event-image-${entry.id}`}
           />
         </div>

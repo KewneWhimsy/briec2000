@@ -136,6 +136,7 @@ function formatDate(date: Date | string): string {
                         src={nextEvent.data.image}
                         alt={nextEvent.data.title}
                         class="w-auto max-h-72 rounded-lg"
+                        loading="eager"
                         transition:name={`event-image-${nextEvent.id}`}
                       />
                     </a>

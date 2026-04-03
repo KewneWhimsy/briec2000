@@ -65,12 +65,13 @@ function formatDate(date: Date | string): string {
                     class="event-image-link block rounded-lg overflow-hidden h-full"
                     aria-label={`Voir les détails de ${event.data.title}`}
                   >
-                    <OptimizeImage 
-                      src={event.data.image} 
-                      alt={event.data.title} 
+                    <OptimizeImage
+                      src={event.data.image}
+                      alt={event.data.title}
                       widths={[300, 600]}
                       sizes="(max-width: 767px) 100vw, 300px"
                       class="w-full h-full object-cover rounded-lg"
+                      loading="eager"
                       transition:name={`event-image-${event.id}`}
                     />
                   </a>
