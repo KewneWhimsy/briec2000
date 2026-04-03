@@ -4,7 +4,6 @@ import tailwindcss from "@tailwindcss/vite";
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  // URL de votre site en production
   site: 'https://briec2000.fr',
   
   experimental: {
