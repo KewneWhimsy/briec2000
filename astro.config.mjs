@@ -10,10 +10,9 @@ export default defineConfig({
   experimental: {
     fonts: [
       {
-        provider: fontProviders.local(),
+        provider: "local",
         name: "Champagne",
         cssVariable: "--font-champ",
-        options: {
         variants: [
           {
             weight: 400,
@@ -44,7 +43,6 @@ export default defineConfig({
             ],
           },
         ],
-      }
       },
       {
         provider: fontProviders.google(),
