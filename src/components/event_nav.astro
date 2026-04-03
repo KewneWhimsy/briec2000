@@ -24,7 +24,7 @@ const sortedEvents = allEvents
   });
 
 // Trouver l'index de l'événement actuel
-const currentIndex = sortedEvents.findIndex(event => event.slug === currentSlug);
+const currentIndex = sortedEvents.findIndex(event => event.id === currentSlug);
 
 // Déterminer les événements précédent et suivant
 const previousEvent = currentIndex > 0 ? sortedEvents[currentIndex - 1] : null;
@@ -37,7 +37,7 @@ const nextEvent = currentIndex < sortedEvents.length - 1 ? sortedEvents[currentI
     
     <!-- Événement précédent -->
     {previousEvent ? (
-      <a href={`/events/${previousEvent.slug}/`} class="btn flex items-center gap-2">
+      <a href={`/events/${previousEvent.id}/`} class="btn flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
@@ -51,7 +51,7 @@ const nextEvent = currentIndex < sortedEvents.length - 1 ? sortedEvents[currentI
 
     <!-- Événement suivant -->
     {nextEvent ? (
-      <a href={`/events/${nextEvent.slug}/`} class="btn flex items-center gap-2">
+      <a href={`/events/${nextEvent.id}/`} class="btn flex items-center gap-2">
         <span class="max-w-32 truncate">{nextEvent.data.title}</span>
         <span class="hidden sm:inline">: Suivant</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

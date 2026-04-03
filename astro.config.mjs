@@ -6,12 +6,12 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://briec2000.fr',
   
-  experimental: {
-    fonts: [
-      {
-        provider: "local",
-        name: "Champagne",
-        cssVariable: "--font-champ",
+  fonts: [
+    {
+      provider: fontProviders.local(),
+      name: "Champagne",
+      cssVariable: "--font-champ",
+      options: {
         variants: [
           {
             weight: 400,
@@ -43,18 +43,18 @@ export default defineConfig({
           },
         ],
       },
-      {
-        provider: fontProviders.google(),
-        name: "Andika",
-        cssVariable: "--font-andika"
-      },
-      {
-        provider: fontProviders.google(),
-        name: "Press Start 2P",
-        cssVariable: "--font-start"
-      },
-    ],
-  },
+    },
+    {
+      provider: fontProviders.google(),
+      name: "Andika",
+      cssVariable: "--font-andika"
+    },
+    {
+      provider: fontProviders.google(),
+      name: "Press Start 2P",
+      cssVariable: "--font-start"
+    },
+  ],
   
   trailingSlash: "always",
   

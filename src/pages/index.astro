@@ -128,7 +128,7 @@ function formatDate(date: Date | string): string {
                 {nextEvent.data.image && (
                   <div class="m-3">
                     <a
-                      href={`/events/${nextEvent.slug}/`}
+                      href={`/events/${nextEvent.id}/`}
                       class="event-image-link block rounded-lg overflow-hidden"
                       aria-label={`Voir les détails de ${nextEvent.data.title}`}
                     >
@@ -136,7 +136,7 @@ function formatDate(date: Date | string): string {
                         src={nextEvent.data.image}
                         alt={nextEvent.data.title}
                         class="w-auto max-h-72 rounded-lg"
-                        transition:name={`event-image-${nextEvent.slug}`}
+                        transition:name={`event-image-${nextEvent.id}`}
                       />
                     </a>
                   </div>
@@ -165,7 +165,7 @@ function formatDate(date: Date | string): string {
               )}
 
               <div class="flex gap-4 justify-center mt-6">
-                <a href={`/events/${nextEvent.slug}/`} class="btn-index">
+                <a href={`/events/${nextEvent.id}/`} class="btn-index">
                   Voir les détails
                 </a>
                 <a href="/events/" class="btn-index">

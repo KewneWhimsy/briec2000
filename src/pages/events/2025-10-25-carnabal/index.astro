@@ -20,7 +20,7 @@ const eventsEntries = (await getCollection("events")) as EventEntry[];
 
 // Récupérer l'événement CarnaBal
 const carnaBal = eventsEntries.find(
-  (entry: EventEntry) => entry.slug === "2025-10-25-carnabal"
+  (entry: EventEntry) => entry.id === "2025-10-25-carnabal"
 );
 
 if (!carnaBal) {
@@ -454,7 +454,7 @@ const previewPages = [
       <EventGallery event={carnaBal} maxThumbnails={5} />
     </div>
     <!-- Navigation entre événements -->
-    <EventNavigation currentSlug={carnaBal.slug} />
+    <EventNavigation currentSlug={carnaBal.id} />
   </article>
 
   <Ghost

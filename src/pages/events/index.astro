@@ -61,7 +61,7 @@ function formatDate(date: Date | string): string {
               {event.data.image && (
                 <div class="mb-4 overflow-hidden" style="height: 180px;">
                   <a 
-                    href={`/events/${event.slug}/`} 
+                    href={`/events/${event.id}/`} 
                     class="event-image-link block rounded-lg overflow-hidden h-full"
                     aria-label={`Voir les détails de ${event.data.title}`}
                   >
@@ -71,14 +71,14 @@ function formatDate(date: Date | string): string {
                       widths={[300, 600]}
                       sizes="(max-width: 767px) 100vw, 300px"
                       class="w-full h-full object-cover rounded-lg"
-                      transition:name={`event-image-${event.slug}`}
+                      transition:name={`event-image-${event.id}`}
                     />
                   </a>
                 </div>
               )}
               
               <p class="mb-4 grow">{event.data.description}</p>
-              <a href={`/events/${event.slug}/`} class="btn inline-block">Voir les détails</a>
+              <a href={`/events/${event.id}/`} class="btn inline-block">Voir les détails</a>
             </div>
           ))}
         </div>

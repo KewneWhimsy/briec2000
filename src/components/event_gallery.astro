@@ -17,7 +17,7 @@ const {
 } = Astro.props;
 
 // Charger la galerie de l'événement
-const gallery = await loadEventGallery(event.slug, event);
+const gallery = await loadEventGallery(event.id, event);
 
 // Si pas de galerie, ne rien afficher
 if (!gallery || !gallery.photos || gallery.photos.length === 0) {
@@ -45,7 +45,7 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
           <div class="flex-none w-32">
             <button 
               class="gallery-trigger my-2 w-full h-32 block cursor-pointer hover:opacity-80 transition-opacity rounded-lg overflow-hidden bg-[color:rgba(var(--color-primary-rgb),0.05)]"
-              data-gallery-id={event.slug}
+              data-gallery-id={event.id}
               data-start-index={index}
               aria-label={`Voir la galerie de ${event.data.title}, photo ${index + 1}`}
             >
@@ -66,7 +66,7 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
         <div class="flex-none w-32">
           <button 
             class="gallery-trigger my-2 w-full h-32 flex items-center justify-center text-sm opacity-60 border border-dashed border-[var(--color-border)] rounded-lg cursor-pointer hover:opacity-80 hover:border-[var(--color-primary)] transition-all bg-[color:rgba(var(--color-primary-rgb),0.05)]"
-            data-gallery-id={event.slug}
+            data-gallery-id={event.id}
             data-start-index={maxThumbnails}
             aria-label={`Voir toute la galerie de ${event.data.title} (${validPhotos.length} photos)`}
           >
@@ -96,7 +96,7 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
 
     <!-- Modal galerie intégrée -->
     <div 
-      id={`gallery-modal-${event.slug}`}
+      id={`gallery-modal-${event.id}`}
       class="gallery-modal rounded-xl border border-[var(--color-border)] overflow-hidden max-w-[95vw] max-h-[95vh]" 
       popover
       tabindex="-1"
@@ -111,7 +111,7 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
         </div>
         <button 
           class="w-7 h-7 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
-          popovertarget={`gallery-modal-${event.slug}`}
+          popovertarget={`gallery-modal-${event.id}`}
           aria-label="Fermer"
         >
           <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
@@ -123,10 +123,10 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
       <!-- Zone image avec swipe et navigation invisible -->
       <div class="gallery-viewer bg-black relative min-h-[70vh] touch-pan-x">
         <!-- Picture element qui sera mis à jour dynamiquement -->
-        <picture id={`gallery-picture-${event.slug}`} class="gallery-picture absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <picture id={`gallery-picture-${event.id}`} class="gallery-picture absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <!-- Les sources seront ajoutées dynamiquement par JavaScript -->
           <img
-            id={`gallery-current-${event.slug}`}
+            id={`gallery-current-${event.id}`}
             class="gallery-main-image"
             alt=""
             loading="eager"
@@ -135,7 +135,7 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
         
         <!-- Zone tactile gauche (invisible mais cliquable) -->
         <button 
-          id={`gallery-prev-${event.slug}`}
+          id={`gallery-prev-${event.id}`}
           class="gallery-nav-zone absolute left-0 top-0 w-1/12 h-full z-10 opacity-0 flex items-center justify-start pl-4 md:opacity-100 md:w-10 md:h-10 md:left-4 md:top-1/2 md:-translate-y-1/2 md:justify-center md:pl-0 md:rounded-full hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
           style="background-color: transparent; color: white; border: none;"
           aria-label="Image précédente"
@@ -147,7 +147,7 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
         
         <!-- Zone tactile droite (invisible mais cliquable) -->
         <button 
-          id={`gallery-next-${event.slug}`}
+          id={`gallery-next-${event.id}`}
           class="gallery-nav-zone absolute right-0 top-0 w-1/12 h-full z-10 opacity-0 flex items-center justify-end pr-4 md:opacity-100 md:w-10 md:h-10 md:right-4 md:top-1/2 md:-translate-y-1/2 md:justify-center md:pr-0 md:rounded-full hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
           style="background-color: transparent; color: white; border: none;"
           aria-label="Image suivante"

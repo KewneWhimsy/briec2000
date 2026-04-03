@@ -78,7 +78,7 @@ const sortedYears = Object.keys(eventsByYear)
                     {event.data.image && (
                       <div class="mb-3 overflow-hidden" style="height: 140px;">
                         <a 
-                          href={`/events/${event.slug}/`} 
+                          href={`/events/${event.id}/`} 
                           class="event-image-link block rounded-lg overflow-hidden h-full"
                           aria-label={`Voir les détails de ${event.data.title}`}
                         >
@@ -88,7 +88,7 @@ const sortedYears = Object.keys(eventsByYear)
                             widths={[200, 400]}
                             sizes="(max-width: 1023px) 100vw, 200px"
                             class="w-full h-full object-cover rounded-lg"
-                            transition:name={`event-image-${event.slug}`}
+                            transition:name={`event-image-${event.id}`}
                           />
                         </a>
                       </div>
@@ -101,7 +101,7 @@ const sortedYears = Object.keys(eventsByYear)
                     </p>
                     <p class="line-clamp-2 text-sm mb-3">{event.data.description}</p>
                     <div class="mt-auto">
-                      <a href={`/events/${event.slug}/`} class="btn-sm btn inline-block text-sm">Voir les détails</a>
+                      <a href={`/events/${event.id}/`} class="btn-sm btn inline-block text-sm">Voir les détails</a>
                     </div>
                   </div>
                 </div>

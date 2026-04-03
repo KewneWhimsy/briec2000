@@ -3,7 +3,7 @@ import Layout from "../../layouts/layout.astro";
 import OptimizeImage from "../../components/optimize_image.astro";
 import EventNavigation from "../../components/event_nav.astro";
 import EventGallery from "../../components/event_gallery.astro";
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import type { EventEntry, Price } from "../../../types";
 import Ghost from "../../components/ghost.astro";
 import Bule from "../../components/bule.astro";
@@ -13,7 +13,7 @@ import Loup from "../../components/loup.astro";
 export async function getStaticPaths() {
   const eventsEntries = (await getCollection("events")) as EventEntry[];
   return eventsEntries.map((entry: EventEntry) => ({
-    params: { slug: entry.slug },
+    params: { slug: entry.id },
     props: { entry },
   }));
 }
@@ -25,7 +25,7 @@ interface Props {
 
 // Récupérer l'événement spécifique
 const { entry } = Astro.props as Props;
-const contentRender = await entry.render();
+const contentRender = await render(entry);
 const { Content } = contentRender;
 
 // Formater la date en français
@@ -64,7 +64,7 @@ function formatDate(date: Date | string): string {
             src={entry.data.image}
             alt={entry.data.title}
             class="w-auto max-h-[500px] rounded-lg"
-            transition:name={`event-image-${entry.slug}`}
+            transition:name={`event-image-${entry.id}`}
           />
         </div>
       )
@@ -94,7 +94,7 @@ function formatDate(date: Date | string): string {
     <!-- Galerie de l'événement (si disponible) -->
     <EventGallery event={entry} />
 
-    <EventNavigation currentSlug={entry.slug} />
+    <EventNavigation currentSlug={entry.id} />
   </article>
   
   <Ghost className="hidden md:block rotate-y-180" style="top: 8%; right: 8%;" />

@@ -94,7 +94,7 @@ export async function loadAllGalleries(events: EventEntry[]): Promise<EventGalle
   const galleries: EventGallery[] = [];
   
   for (const event of events) {
-    const gallery = await loadEventGallery(event.slug, event);
+    const gallery = await loadEventGallery(event.id, event);
     if (gallery) {
       galleries.push(gallery);
     }

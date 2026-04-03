@@ -10,9 +10,9 @@
     "update-date": "bun -e \"const fs = require('fs'); const date = new Date().toLocaleDateString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'}); fs.writeFileSync('src/data/build-info.json', JSON.stringify({lastUpdate: date, buildDate: new Date().toISOString()}, null, 2)); console.log('Date mise à jour:', date);\""
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.4.1",
+    "@astrojs/sitemap": "^3.7.2",
     "@tailwindcss/vite": "^4.1.5",
-    "astro": "5.16.0",
+    "astro": "^6.1.3",
     "tailwindcss": "^4.1.5"
   }
 }
