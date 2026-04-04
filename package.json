@@ -3,10 +3,10 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "bunx --bun astro dev",
-    "build": "bun run update-date && bunx --bun astro build",
-    "preview": "bunx --bun astro preview",
-    "astro": "bunx --bun astro",
+    "dev": "bunx astro dev",
+    "build": "bun run update-date && bunx astro build",
+    "preview": "bunx astro preview",
+    "astro": "bunx astro",
     "update-date": "bun -e \"const fs = require('fs'); const date = new Date().toLocaleDateString('fr-FR', {day: 'numeric', month: 'long', year: 'numeric'}); fs.writeFileSync('src/data/build-info.json', JSON.stringify({lastUpdate: date, buildDate: new Date().toISOString()}, null, 2)); console.log('Date mise à jour:', date);\""
   },
   "dependencies": {
