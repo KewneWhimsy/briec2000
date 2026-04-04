@@ -23,6 +23,11 @@ const carnaBal = eventsEntries.find(
   (entry: EventEntry) => entry.id === "2025-10-25-carnabal"
 );
 
+// Récupérer l'événement Atelier préparatoire Monstres & Bilig
+const atelier = eventsEntries.find(
+  (entry: EventEntry) => entry.id === "2025-07-18-spectacle-adieu-meringue"
+);
+
 if (!carnaBal) {
   return Astro.redirect("/events/");
 }
@@ -68,7 +73,7 @@ const previewPages = [
   <article class="max-w-4xl">
     <!-- Section d'introduction avec silhouettes -->
     <div
-      class="relative overflow-hidden p-6 rounded-lg bg-[color:rgba(var(--color-primary-rgb),0.08)] min-h-96 flex items-center z-10 md:min-h-[500px]"
+      class="relative overflow-hidden p-6 rounded-lg bg-[rgba(var(--color-primary-rgb),0.08)] min-h-96 flex items-center z-10 md:min-h-[500px]"
     >
       <!-- Silhouettes en arrière-plan -->
       <div
@@ -85,7 +90,7 @@ const previewPages = [
         <OptimizeImage
           src={silhouettes[1].src}
           alt={silhouettes[1].alt}
-          class="absolute right-12 -bottom-36 w-60 h-auto rotate-[6deg] md:right-24 md:w-80"
+          class="absolute right-12 -bottom-36 w-60 h-auto rotate-6 md:right-24 md:w-80"
           widths={[250, 350]}
           sizes="250px"
           loading="lazy"
@@ -93,7 +98,7 @@ const previewPages = [
         <OptimizeImage
           src={silhouettes[2].src}
           alt={silhouettes[2].alt}
-          class="absolute right-48 top-12 w-48 h-auto scale-x-[-1] rotate-[-2deg] md:right-72 md:w-72"
+          class="absolute right-48 top-12 w-48 h-auto scale-x-[-1] -rotate-2 md:right-72 md:w-72"
           widths={[200, 300]}
           sizes="200px"
           loading="lazy"
@@ -103,12 +108,12 @@ const previewPages = [
       <!-- Contenu principal -->
       <div class="relative z-20 max-w-full sm:max-w-[80%]">
         <div
-          class="inline-block bg-[color:var(--color-secondary)] text-white px-3 py-1 rounded-full text-sm font-medium mb-4"
+          class="inline-block bg-(--color-secondary) text-white px-3 py-1 rounded-full text-sm font-medium mb-4"
         >
           Samedi 25 Octobre 2025
         </div>
         <h1
-          class="text-3xl md:text-4xl leading-tight mb-4 text-[color:var(--color-primary)]"
+          class="text-3xl md:text-4xl leading-tight mb-4 text-(--color-primary)"
         >
           CarnaBal des monstres
         </h1>
@@ -163,7 +168,7 @@ const previewPages = [
 
     <!-- Histoire et origine -->
     <section
-      class="card bg-[color:rgba(var(--color-primary-rgb),0.03)] p-8 my-10 rounded-xl border-t-4 border-t-[color:var(--color-primary)] shadow-lg"
+      class="card bg-[rgba(var(--color-primary-rgb),0.03)] p-8 my-10 rounded-xl border-t-4 border-t-(--color-primary) shadow-lg"
     >
       <h2 class="text-2xl mb-6 text-center border-b pb-2">
         L'esprit du CarnaBal
@@ -237,7 +242,7 @@ const previewPages = [
 
           <!-- Image des conteurs -->
           <div
-            class="bg-[color:rgba(var(--color-primary-rgb),0.05)] rounded-lg overflow-hidden flex items-center justify-center p-4"
+            class="bg-[rgba(var(--color-primary-rgb),0.05)] rounded-lg overflow-hidden flex items-center justify-center p-4"
           >
             <OptimizeImage
               src="/src/assets/contesnobg.png"
@@ -406,10 +411,10 @@ const previewPages = [
     />
 
     <!-- Ateliers préparatoires -->
-    <section id="ateliers" class="my-8">
+    <section id="ateliers" class="my-8 hidden">
       <!-- 🎭 Déguisez-vous ! -->
       <div
-        class="mb-6 p-4 bg-[color:rgba(var(--color-secondary-rgb,131,197,190),0.1)] rounded-lg border-l-4 border-l-[color:var(--color-secondary)]"
+        class="mb-6 p-4 bg-[rgba(var(--color-secondary-rgb,131,197,190),0.1)] rounded-lg border-l-4 border-l-(--color-secondary)"
       >
         <p class="font-medium mb-2">👹 Libérez votre monstre intérieur !</p>
         <p class="text-sm text-balance">
@@ -420,11 +425,11 @@ const previewPages = [
 
       <div class="grid gap-4 md:grid-cols-2 mb-8">
         <div
-          class="card p-6 bg-[color:rgba(var(--color-primary-rgb),0.03)] hover:bg-[color:rgba(var(--color-primary-rgb),0.05)] transition-colors"
+          class="card p-6 bg-[rgba(var(--color-primary-rgb),0.03)] hover:bg-[rgba(var(--color-primary-rgb),0.05)] transition-colors"
         >
           <h2 class="text-lg mb-3 flex items-center gap-2">
             <svg
-              class="w-5 h-5 text-[color:var(--color-primary)]"
+              class="w-5 h-5 text-(--color-primary)"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -448,11 +453,19 @@ const previewPages = [
     </section>
 
     
-    <!-- Galerie -->
-    <div class="mb-10">
+    <!-- Galerie CarnaBal -->
+    <div class="my-10">
       <h2 class="text-xl mb-4">Inspirations monstrueuses</h2>
       <EventGallery event={carnaBal} maxThumbnails={5} />
     </div>
+
+    <!-- Galerie Adieu Meringue -->
+    {atelier && (
+      <div class="my-10">
+        <h2 class="text-xl mb-4">Ateliers avant spectacle "Adieu Meringue"</h2>
+        <EventGallery event={atelier} maxThumbnails={5} />
+      </div>
+    )}
     <!-- Navigation entre événements -->
     <EventNavigation currentSlug={carnaBal.id} />
   </article>

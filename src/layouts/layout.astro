@@ -32,7 +32,7 @@ function isActive(path: string): boolean {
 
 const mobileMenuItems = [
   { title: "À venir", url: "/events/" },
-  { title: "Le carnabal", url: "/events/2025-10-25-carnabal/" },
+  { title: "Carnabal 2025", url: "/events/2025-10-25-carnabal/" },
   { title: "Galeries", url: "/galleries/" },
   { title: "Archives", url: "/archives/" },
 ];
@@ -58,7 +58,7 @@ const mobileMenuItems = [
   
   <body class="min-h-screen flex flex-col">
     <!-- ThemeSwitcher fixe -->
-    <div class="fixed top-2 left-2 z-[99]">
+    <div class="fixed top-2 left-2 z-99">
       <ThemeSwitcher />
     </div>
 
@@ -68,7 +68,7 @@ const mobileMenuItems = [
       style="border-color: var(--color-border); background-color: var(--bg-color);"
       transition:name="header-nav"
     >
-      <div class="fixed top-2 left-2 z-[100]">
+      <div class="fixed top-2 left-2 z-100">
         <ThemeSwitcher />
       </div>
       
@@ -101,9 +101,9 @@ const mobileMenuItems = [
     </header>
 
     <!-- Contenu principal -->
-    <div class="content-wrapper flex-grow mb-6">
+    <div class="content-wrapper grow mb-6">
       <div
-        class="flex-grow container mx-auto px-4 py-6 md:py-6 flex"
+        class="grow container mx-auto px-4 py-6 md:py-6 flex"
         transition:animate="fade"
       >
         <!-- Menu latéral desktop -->
