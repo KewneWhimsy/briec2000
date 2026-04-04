@@ -137,7 +137,7 @@ function formatDate(date: Date | string): string {
                         alt={nextEvent.data.title}
                         class="w-auto max-h-72 rounded-lg"
                         loading="eager"
-
+                        transition:persist={`event-image-${nextEvent.id}`}
                       />
                     </a>
                   </div>
