@@ -47,21 +47,12 @@ const imageSrc = imageMap[src] || src;
 
 // Vérifier si c'est l'image repas.png pour appliquer un arrière-plan automatiquement
 const isRepasImage = src?.includes('repas.png') || false;
-const isSilhouetteWithClass = src?.includes('silhouette') && className?.includes('silhouette-mobile') || false;
-const isSpecialImage = isRepasImage || isSilhouetteWithClass;
-
-// Vérifier si c'est confection.png pour appliquer le filtre thématique
-const isConfectionImage = src?.includes('loup.png') || false;
 
 // Construire la classe finale
 let finalClassName = className || '';
 
-if (isSpecialImage) {
+if (isRepasImage) {
   finalClassName += ' special-image-with-bg';
-}
-
-if (isConfectionImage) {
-  finalClassName += ' theme-filtered';
 }
 ---
 
