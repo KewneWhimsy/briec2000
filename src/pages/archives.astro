@@ -89,7 +89,6 @@ const sortedYears = Object.keys(eventsByYear)
                             sizes="(max-width: 1023px) 100vw, 200px"
                             class="w-full h-full object-cover rounded-lg"
                             withBg={String(event.data.image || '').includes('repas.png')}
-                            transition:persist={`event-image-${event.id}`}
                           />
                         </a>
                       </div>
