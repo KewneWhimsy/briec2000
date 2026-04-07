@@ -18,7 +18,7 @@ for (const [path, image] of Object.entries(images)) {
 
 // Props du composant
 export interface Props {
-  src: string;
+  src: ImageMetadata | string;
   alt: string;
   widths?: number[];
   sizes?: string;
@@ -43,10 +43,10 @@ if (!src) {
 }
 
 // Récupérer l'image optimisée ou utiliser le src tel quel si non trouvé
-const imageSrc = imageMap[src] || src;
+const imageSrc = typeof src === 'string' ? (imageMap[src] || src) : src;
 
 // Vérifier si c'est l'image repas.png pour appliquer un arrière-plan automatiquement
-const isRepasImage = src?.includes('repas.png') || false;
+const isRepasImage = typeof src === 'string' && src.includes('repas.png');
 
 // Construire la classe finale
 let finalClassName = className || '';

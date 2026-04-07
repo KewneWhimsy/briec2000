@@ -3,7 +3,7 @@ import type { ImageMetadata } from 'astro';
 import type { EventEntry } from '../../types';
 
 export interface GalleryPhoto {
-  src: string;  // Chemin string pour OptimizeImage
+  src: ImageMetadata;
   alt: string;
   index: number;
 }
@@ -45,7 +45,7 @@ export async function loadEventGallery(eventSlug: string, event: EventEntry): Pr
         const index = match ? parseInt(match[1]) - 1 : eventImages.length;
         
         eventImages.push({
-          src: path,  // Utiliser le chemin original, pas l'objet ImageMetadata
+          src: image,
           alt: `Photo de ${event.data.title} - ${eventImages.length + 1}`,
           index: Math.max(0, index)
         });
