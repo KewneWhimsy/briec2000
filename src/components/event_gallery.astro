@@ -1,6 +1,5 @@
 ---
 // src/components/event_gallery.astro
-// Version sécurisée avec vérifications des sources d'images
 
 import { loadEventGallery } from '../utils/gallery';
 import type { EventEntry } from '../../types';
@@ -11,39 +10,35 @@ export interface Props {
   maxThumbnails?: number;
 }
 
-const { 
-  event, 
-  maxThumbnails = 3 
+const {
+  event,
+  maxThumbnails = 3
 } = Astro.props;
 
-// Charger la galerie de l'événement
 const gallery = await loadEventGallery(event.id, event);
 
-// Si pas de galerie, ne rien afficher
 if (!gallery || !gallery.photos || gallery.photos.length === 0) {
   return null;
 }
 
-// Filtrer les photos qui ont une source valide
 const validPhotos = gallery.photos.filter(photo => photo && photo.src);
 
-// Si pas de photos valides, ne rien afficher
 if (validPhotos.length === 0) {
   return null;
 }
 
-// Limiter les miniatures affichées
 const thumbnails = validPhotos.slice(0, maxThumbnails);
 ---
 
 {gallery && validPhotos.length > 0 && (
   <section class="event-gallery my-8 mx-2">
-    
+
+    <!-- Miniatures déclencheurs -->
     <div class="flex gap-3 overflow-x-auto pb-4">
       {thumbnails.map((photo, index) => (
         photo.src && (
           <div class="flex-none w-32">
-            <button 
+            <button
               class="gallery-trigger my-2 w-full h-32 block cursor-pointer hover:opacity-80 transition-opacity rounded-lg overflow-hidden bg-(--color-primary)/5"
               data-gallery-id={event.id}
               data-start-index={index}
@@ -62,10 +57,10 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
           </div>
         )
       ))}
-      
+
       {validPhotos.length > maxThumbnails && (
         <div class="flex-none w-32">
-          <button 
+          <button
             class="gallery-trigger my-2 w-full h-32 flex items-center justify-center text-sm opacity-60 border border-dashed border-(--color-border) rounded-lg cursor-pointer hover:opacity-80 hover:border-(--color-primary) transition-all bg-(--color-primary)/5"
             data-gallery-id={event.id}
             data-start-index={maxThumbnails}
@@ -77,32 +72,14 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
       )}
     </div>
 
-    <!-- Container caché avec toutes les images optimisées pour extraction des sources -->
-    <div class="hidden" aria-hidden="true">
-      {validPhotos.map((photo, index) => (
-        photo.src && (
-          <div class="gallery-optimized-source" data-photo-index={index}>
-            <OptimizeImage
-              src={photo.src}
-              alt={photo.alt || `Photo ${index + 1}`}
-              class="gallery-source-img"
-              widths={[800, 1200, 1600]}
-              sizes="(max-width: 767px) 90vw, 1200px"
-              loading="lazy"
-            />
-          </div>
-        )
-      ))}
-    </div>
-
-    <!-- Modal galerie intégrée -->
-    <div 
+    <!-- Modal galerie -->
+    <div
       id={`gallery-modal-${event.id}`}
-      class="gallery-modal rounded-xl border border-(--color-border) overflow-hidden max-w-[95vw] max-h-[95vh]" 
+      class="gallery-modal rounded-xl border border-(--color-border) overflow-hidden max-w-[95vw] max-h-[95vh]"
       popover
       tabindex="-1"
     >
-      <!-- Header avec info et bouton fermer -->
+      <!-- Header -->
       <div class="bg-(--color-secondary) text-white p-3 flex justify-between items-center">
         <div>
           <h3 class="font-medium" style="color: white;">
@@ -110,7 +87,7 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
           </h3>
           <p class="text-sm opacity-90">Photos de {gallery.photographer}</p>
         </div>
-        <button 
+        <button
           class="w-7 h-7 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
           popovertarget={`gallery-modal-${event.id}`}
           aria-label="Fermer"
@@ -120,22 +97,31 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
           </svg>
         </button>
       </div>
-      
-      <!-- Zone image avec swipe et navigation invisible -->
+
+      <!-- Zone image -->
       <div class="gallery-viewer bg-black relative min-h-[70vh] touch-pan-x">
-        <!-- Picture element qui sera mis à jour dynamiquement -->
-        <picture id={`gallery-picture-${event.id}`} class="gallery-picture absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <!-- Les sources seront ajoutées dynamiquement par JavaScript -->
-          <img
-            id={`gallery-current-${event.id}`}
-            class="gallery-main-image"
-            alt=""
-            loading="eager"
-          />
-        </picture>
-        
-        <!-- Zone tactile gauche (invisible mais cliquable) -->
-        <button 
+
+        <!-- Slides : une par photo, OptimizeImage direct -->
+        {validPhotos.map((photo, index) => (
+          photo.src && (
+            <div
+              class={`gallery-slide absolute inset-0 flex items-center justify-center${index > 0 ? ' hidden' : ''}`}
+              data-slide={index}
+            >
+              <OptimizeImage
+                src={photo.src}
+                alt={photo.alt || `Photo ${index + 1}`}
+                class="gallery-main-image"
+                widths={[800, 1200]}
+                sizes="(max-width: 767px) 90vw, 1200px"
+                loading="lazy"
+              />
+            </div>
+          )
+        ))}
+
+        <!-- Navigation gauche -->
+        <button
           id={`gallery-prev-${event.id}`}
           class="gallery-nav-zone absolute left-0 top-0 w-1/12 h-full z-10 opacity-0 flex items-center justify-start pl-4 md:opacity-100 md:w-10 md:h-10 md:left-4 md:top-1/2 md:-translate-y-1/2 md:justify-center md:pl-0 md:rounded-full hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
           style="background-color: transparent; color: white; border: none;"
@@ -145,9 +131,9 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
             <polyline points="15 18 9 12 15 6"></polyline>
           </svg>
         </button>
-        
-        <!-- Zone tactile droite (invisible mais cliquable) -->
-        <button 
+
+        <!-- Navigation droite -->
+        <button
           id={`gallery-next-${event.id}`}
           class="gallery-nav-zone absolute right-0 top-0 w-1/12 h-full z-10 opacity-0 flex items-center justify-end pr-4 md:opacity-100 md:w-10 md:h-10 md:right-4 md:top-1/2 md:-translate-y-1/2 md:justify-center md:pr-0 md:rounded-full hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
           style="background-color: transparent; color: white; border: none;"
@@ -158,13 +144,13 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
           </svg>
         </button>
       </div>
-      
-      <!-- Barre de miniatures horizontale -->
+
+      <!-- Barre de miniatures -->
       <div class="p-3 bg-(--bg-color) border-t border-(--color-border)">
         <div class="flex gap-2 overflow-x-auto pb-2">
           {validPhotos.map((photo, index) => (
             photo.src && (
-              <button 
+              <button
                 class="gallery-thumb flex-none w-16 h-12 rounded overflow-hidden border-2 border-transparent hover:border-(--color-primary) transition-colors"
                 data-index={index}
                 aria-label={`Voir photo ${index + 1}`}
@@ -187,7 +173,6 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
 )}
 
 <style>
-  /* Image principale - prend tout l'espace disponible */
   .gallery-main-image {
     max-width: 100vw;
     max-height: 70vh;
@@ -196,7 +181,6 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
     object-fit: contain;
   }
 
-  /* Styles de centrage avec positionnement plus haut */
   .gallery-modal {
     position: fixed;
     top: 25%;
@@ -204,7 +188,7 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
     transform: translate(-50%, -25%) scale(0.8);
     margin: 0;
     opacity: 0;
-    transition: 
+    transition:
       display 0.3s allow-discrete,
       opacity 0.3s ease,
       transform 0.3s ease;
@@ -214,7 +198,7 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
   .gallery-modal:popover-open {
     opacity: 1;
     transform: translate(-50%, -25%) scale(1);
-    
+
     @starting-style {
       opacity: 0;
       transform: translate(-50%, -25%) scale(0.8);
@@ -226,44 +210,44 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
       transition: display 0.3s allow-discrete, opacity 0.3s ease;
       transform: translate(-50%, -25%) scale(1);
     }
-    
+
     .gallery-modal:popover-open {
       transform: translate(-50%, -25%) scale(1);
     }
   }
-  
-  /* Style pour miniature active */
+
   .gallery-thumb.active {
     border-color: var(--color-primary);
     border-width: 4px;
   }
 
-  /* Styles pour les zones de navigation mobile */
   .gallery-nav-zone {
     border: none;
     cursor: pointer;
   }
 
-  /* Desktop : fond de couleur pour les boutons */
   @media (min-width: 768px) {
     .gallery-nav-zone {
       background-color: var(--color-secondary) !important;
     }
   }
 
-  /* Mobile : cacher complètement les boutons disabled */
   @media (max-width: 767px) {
     .gallery-nav-zone:disabled {
       display: none;
     }
   }
 
-  /* Zone tactile avec feedback visuel discret au touch */
   .gallery-nav-zone:active {
     background-color: rgba(255, 255, 255, 0.1);
   }
 
-  /* Support du swipe */
+  /* Slides proches : préchargées par le browser mais invisibles */
+  .gallery-slide.slide-inactive {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
   .gallery-viewer {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -272,183 +256,97 @@ const thumbnails = validPhotos.slice(0, maxThumbnails);
 </style>
 
 <script>
-  // Script simplifié pour gérer les galeries d'événements
   function initEventGalleries() {
-    document.querySelectorAll('[data-gallery-id]').forEach(trigger => {
-      const galleryId = trigger.getAttribute('data-gallery-id');
-      if (!galleryId) return;
+    // On boucle sur les modaux (pas les triggers) pour éviter les listeners dupliqués
+    document.querySelectorAll('.gallery-modal[id^="gallery-modal-"]').forEach(modal => {
+      if ((modal as HTMLElement).dataset.initialized) return;
+      (modal as HTMLElement).dataset.initialized = 'true';
 
-      const modal = document.getElementById(`gallery-modal-${galleryId}`);
-      const picture = document.getElementById(`gallery-picture-${galleryId}`) as HTMLPictureElement;
-      const currentImage = document.getElementById(`gallery-current-${galleryId}`) as HTMLImageElement;
-      const prevBtn = document.getElementById(`gallery-prev-${galleryId}`);
-      const nextBtn = document.getElementById(`gallery-next-${galleryId}`);
-      const galleryViewer = modal?.querySelector('.gallery-viewer');
-      
-      if (!modal || !picture || !currentImage || !prevBtn || !nextBtn || !galleryViewer) return;
+      const galleryId = modal.id.replace('gallery-modal-', '');
+      const prevBtn = document.getElementById(`gallery-prev-${galleryId}`) as HTMLButtonElement;
+      const nextBtn = document.getElementById(`gallery-next-${galleryId}`) as HTMLButtonElement;
+      const galleryViewer = modal.querySelector('.gallery-viewer');
+      const slides = Array.from(modal.querySelectorAll('.gallery-slide')) as HTMLElement[];
+      const thumbs = Array.from(modal.querySelectorAll('.gallery-thumb'));
 
-      // Récupérer les sources optimisées depuis le DOM caché
-      const gallerySection = trigger.closest('.event-gallery');
-      const optimizedSources = gallerySection?.querySelectorAll('.gallery-optimized-source');
-      
-      if (!optimizedSources) return;
-
-      // Extraire les données de chaque image
-      const galleryData: any[] = [];
-      optimizedSources.forEach((sourceDiv, index) => {
-        const pictureEl = sourceDiv.querySelector('picture');
-        if (pictureEl) {
-          const sources = pictureEl.querySelectorAll('source');
-          const img = pictureEl.querySelector('img');
-          
-          galleryData.push({
-            sources: Array.from(sources).map(source => ({
-              srcset: source.srcset,
-              type: source.type,
-              sizes: source.sizes
-            })),
-            img: {
-              src: img?.src || '',
-              srcset: img?.srcset || '',
-              alt: img?.alt || '',
-              sizes: img?.sizes || ''
-            }
-          });
-        }
-      });
-
-      // Récupérer toutes les miniatures
-      const thumbs = modal.querySelectorAll('.gallery-thumb');
+      if (!prevBtn || !nextBtn || !galleryViewer || !slides.length) return;
 
       let currentIndex = 0;
 
-      // Fonction pour mettre à jour l'affichage avec les sources optimisées
       function updateDisplay() {
-        const item = galleryData[currentIndex];
-        if (item) {
-          // Supprimer les anciennes sources
-          picture.querySelectorAll('source').forEach(source => source.remove());
-          
-          // Ajouter les nouvelles sources (AVIF, WebP, etc.)
-          item.sources.forEach((sourceData: any) => {
-            const source = document.createElement('source');
-            source.srcset = sourceData.srcset;
-            source.type = sourceData.type;
-            if (sourceData.sizes) source.sizes = sourceData.sizes;
-            picture.insertBefore(source, currentImage);
-          });
-          
-          // Mettre à jour l'image de fallback
-          currentImage.src = item.img.src;
-          currentImage.srcset = item.img.srcset;
-          currentImage.alt = item.img.alt;
-          if (item.img.sizes) currentImage.sizes = item.img.sizes;
-          
-          // Mettre à jour les boutons de navigation
-          (prevBtn as HTMLButtonElement).disabled = currentIndex === 0;
-          (nextBtn as HTMLButtonElement).disabled = currentIndex === galleryData.length - 1;
-          
-          // Mettre à jour les miniatures actives
-          thumbs.forEach((thumb, index) => {
-            thumb.classList.toggle('active', index === currentIndex);
-          });
-          
-          // Scroll automatique de la barre de miniatures
-          const activeThumbnail = thumbs[currentIndex];
-          if (activeThumbnail && modal) {
-            const thumbnailsContainer = modal.querySelector('.flex.gap-2.overflow-x-auto');
-            if (thumbnailsContainer) {
-              const containerWidth = thumbnailsContainer.clientWidth;
-              const thumbWidth = (activeThumbnail as HTMLElement).offsetWidth;
-              const thumbLeft = (activeThumbnail as HTMLElement).offsetLeft;
-              
-              const scrollLeft = thumbLeft - (containerWidth / 2) + (thumbWidth / 2);
-              
-              thumbnailsContainer.scrollTo({
-                left: Math.max(0, scrollLeft),
-                behavior: 'smooth'
-              });
-            }
+        slides.forEach((slide, i) => {
+          const diff = Math.abs(i - currentIndex);
+          if (i === currentIndex) {
+            slide.classList.remove('hidden', 'slide-inactive');
+          } else if (diff <= 2) {
+            slide.classList.remove('hidden');
+            slide.classList.add('slide-inactive');
+          } else {
+            slide.classList.add('hidden');
+            slide.classList.remove('slide-inactive');
+          }
+        });
+
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex === slides.length - 1;
+
+        thumbs.forEach((thumb, i) => thumb.classList.toggle('active', i === currentIndex));
+
+        // Scroll automatique barre miniatures
+        const activeThumbnail = thumbs[currentIndex] as HTMLElement | undefined;
+        if (activeThumbnail) {
+          const container = modal.querySelector('.flex.gap-2.overflow-x-auto');
+          if (container) {
+            const scrollLeft = activeThumbnail.offsetLeft - (container.clientWidth / 2) + (activeThumbnail.offsetWidth / 2);
+            container.scrollTo({ left: Math.max(0, scrollLeft), behavior: 'smooth' });
           }
         }
       }
 
-      // Navigation functions
       function goToPrev() {
-        if (currentIndex > 0) {
-          currentIndex--;
-          updateDisplay();
-        }
+        if (currentIndex > 0) { currentIndex--; updateDisplay(); }
       }
 
       function goToNext() {
-        if (currentIndex < galleryData.length - 1) {
-          currentIndex++;
-          updateDisplay();
-        }
+        if (currentIndex < slides.length - 1) { currentIndex++; updateDisplay(); }
       }
 
-      // Ouvrir la galerie depuis TOUS les triggers (miniatures ET carré "+X photos")
-      trigger.addEventListener('click', (e) => {
-        e.preventDefault();
-        const startIndex = parseInt(trigger.getAttribute('data-start-index') || '0');
-        currentIndex = startIndex;
-        updateDisplay();
-        (modal as any).showPopover();
-        
-        setTimeout(() => modal.focus(), 100);
-      });
-
-      // Navigation boutons
-      prevBtn.addEventListener('click', goToPrev);
-      nextBtn.addEventListener('click', goToNext);
-
-      // Navigation par miniatures
-      thumbs.forEach((thumb, index) => {
-        thumb.addEventListener('click', () => {
-          currentIndex = index;
+      // Triggers (miniatures + "+X photos") → ouvrir le modal
+      document.querySelectorAll(`[data-gallery-id="${galleryId}"]`).forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+          e.preventDefault();
+          currentIndex = parseInt(trigger.getAttribute('data-start-index') || '0');
           updateDisplay();
+          (modal as any).showPopover();
+          setTimeout(() => (modal as HTMLElement).focus(), 100);
         });
       });
 
-      // Navigation clavier
-      modal.addEventListener('keydown', (e: KeyboardEvent) => {
-        if (e.key === 'ArrowLeft') {
-          e.preventDefault();
-          goToPrev();
-        } else if (e.key === 'ArrowRight') {
-          e.preventDefault();
-          goToNext();
-        }
+      prevBtn.addEventListener('click', goToPrev);
+      nextBtn.addEventListener('click', goToNext);
+
+      thumbs.forEach((thumb, index) => {
+        thumb.addEventListener('click', () => { currentIndex = index; updateDisplay(); });
       });
 
-      // Gestion tactile mobile simplifiée
+      (modal as HTMLElement).addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'ArrowLeft') { e.preventDefault(); goToPrev(); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); goToNext(); }
+      });
+
       let startX = 0;
-      
       galleryViewer.addEventListener('touchstart', (e) => {
         startX = (e as TouchEvent).touches[0].clientX;
       }, { passive: true });
-
       galleryViewer.addEventListener('touchend', (e) => {
-        const endX = (e as TouchEvent).changedTouches[0].clientX;
-        const deltaX = endX - startX;
-        
-        if (Math.abs(deltaX) > 50) {
-          if (deltaX > 0) {
-            goToPrev();
-          } else {
-            goToNext();
-          }
-        }
+        const deltaX = (e as TouchEvent).changedTouches[0].clientX - startX;
+        if (Math.abs(deltaX) > 50) { deltaX > 0 ? goToPrev() : goToNext(); }
       }, { passive: true });
     });
   }
 
-  // Initialiser au chargement et lors des transitions Astro
-  document.addEventListener('DOMContentLoaded', initEventGalleries);
   document.addEventListener('astro:page-load', initEventGalleries);
-  
-  // Initialiser immédiatement si déjà chargé
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initEventGalleries);
   } else {

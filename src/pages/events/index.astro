@@ -72,6 +72,7 @@ function formatDate(date: Date | string): string {
                       sizes="(max-width: 767px) 100vw, 300px"
                       class="w-full h-full object-cover rounded-lg"
                       loading="eager"
+                      withBg={String(event.data.image || '').includes('repas.png')}
                       transition:persist={`event-image-${event.id}`}
                     />
                   </a>

@@ -24,17 +24,19 @@ export interface Props {
   sizes?: string;
   class?: string;
   loading?: "eager" | "lazy";
+  withBg?: boolean;
   [key: string]: any;
 }
 
-const { 
-  src, 
-  alt, 
+const {
+  src,
+  alt,
   widths = [400, 800, 1200],
   sizes = "(max-width: 767px) 100vw, 800px",
   class: className = "w-full h-auto",
   loading = "lazy",
-  ...props 
+  withBg = false,
+  ...props
 } = Astro.props;
 
 // Vérification de sécurité pour src - retourner null au lieu de lancer une erreur
@@ -45,15 +47,7 @@ if (!src) {
 // Récupérer l'image optimisée ou utiliser le src tel quel si non trouvé
 const imageSrc = typeof src === 'string' ? (imageMap[src] || src) : src;
 
-// Vérifier si c'est l'image repas.png pour appliquer un arrière-plan automatiquement
-const isRepasImage = typeof src === 'string' && src.includes('repas.png');
-
-// Construire la classe finale
-let finalClassName = className || '';
-
-if (isRepasImage) {
-  finalClassName += ' special-image-with-bg';
-}
+const finalClassName = withBg ? `${className || ''} special-image-with-bg`.trim() : (className || '');
 ---
 
 <Picture 
