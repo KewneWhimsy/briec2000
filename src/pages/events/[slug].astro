@@ -63,6 +63,7 @@ function formatDate(date: Date | string): string {
           <OptimizeImage
             src={entry.data.image}
             alt={entry.data.title}
+            widths={[600, 800]}
             class="w-auto max-h-[500px] rounded-lg"
             loading="eager"
             withBg={String(entry.data.image || '').includes('repas.png')}
