@@ -33,7 +33,7 @@ const {
     <div class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory">
       {items.map((item, index) => (
         <div class="flex-none w-40 snap-center">
-          <div class="bg-[color:rgba(var(--color-primary-rgb),0.05)] rounded-lg shadow-md overflow-hidden">
+          <div class="bg-[rgba(var(--color-primary-rgb),0.05)] rounded-lg shadow-md overflow-hidden">
             <button 
               class="gallery-trigger w-full h-80 block cursor-pointer hover:opacity-80 transition-opacity"
               aria-label={`Agrandir ${item.title}`}
@@ -56,13 +56,13 @@ const {
   <!-- Popover unique avec navigation -->
   <div 
     id="gallery-modal" 
-    class="gallery-modal rounded-xl border border-[var(--color-border)] overflow-hidden max-w-[95vw] max-h-[95vh]" 
+    class="gallery-modal rounded-xl border border-(--color-border) overflow-hidden max-w-[95vw] max-h-[95vh]" 
     popover
     tabindex="-1"
   >
     <!-- Bouton fermer -->
     <button 
-      class="absolute top-2 right-2 z-10 w-7 h-7 bg-[var(--color-secondary)] text-white rounded-full flex items-center justify-center hover:opacity-80"
+      class="absolute top-2 right-2 z-10 w-7 h-7 bg-(--color-secondary) text-white rounded-full flex items-center justify-center hover:opacity-80"
       popovertarget="gallery-modal"
       aria-label="Fermer"
     >
@@ -72,7 +72,7 @@ const {
     </button>
     
     <!-- Container image avec fond -->
-    <div class="bg-[color:rgba(var(--color-primary-rgb),0.05)] p-4 flex justify-center items-center relative min-h-[80vh]">
+    <div class="bg-[rgba(var(--color-primary-rgb),0.05)] p-4 flex justify-center items-center relative min-h-[80vh]">
       <img
         id="gallery-current-image"
         class="max-w-full max-h-[80vh] object-contain w-auto h-auto"
@@ -81,7 +81,7 @@ const {
       />
       
       <!-- Navigation discrète en bas -->
-      <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-4 bg-[var(--color-secondary)] rounded-full px-3 py-2">
+      <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-4 bg-(--color-secondary) rounded-full px-3 py-2">
         <button 
           id="gallery-prev"
           class="w-6 h-6 text-white/80 hover:text-white transition-colors disabled:text-white/40 disabled:cursor-not-allowed"

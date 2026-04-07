@@ -10,7 +10,7 @@ price:
     amount: 0
 gallery:
   photographer: "Vincent Douat"
-  title: "Atelier créatif et repas pré-spectacle du 18 Juillet"
+  title: "Atelier créatif et repas pré-spectacle du 18 juillet 2025"
   # coverImageIndex: 0  # Optionnel, par défaut la première photo
 draft: false
 ---
