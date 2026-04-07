@@ -3,7 +3,7 @@ title: "Murder party"
 date: 2026-04-25
 description: "Venez découvrir qui est le coupable en menant l'enquête auprès des suspects ! Le jeu se joue en équipe de 5, à partir de 10 ans. Prix libre (suggestion 2€)."
 location: "SIVOM, centre social du pays Glazik, Place de Ruthin, 29510 Briec"
-time: "Créneaux à 17h et 19h30, cafétéria de 17h à 21h"
+time: "Créneaux à 17h30 et 19h30, cafétéria de 17h30 à 21h"
 image: "/src/assets/events/murder.jpg"
 price:
   - name: "Participation (prix libre, suggestion)"
@@ -25,11 +25,11 @@ Le jeu se joue en équipe de 5. Vous pouvez constituer votre équipe, mais si vo
 
 **Prix libre** — une suggestion de 2€ par personne est faite.
 
-Deux créneaux disponibles : **17h** et **19h30**. Réservation sur HelloAsso.
+Deux créneaux disponibles : **17h30** et **19h30**. Réservation sur HelloAsso.
 
 ## La cafétéria du commissariat
 
-Le commissariat dispose d'une cafétéria ! Vous pouvez manger entre 17h et 21h, quand vous voulez. **Les réservations sont obligatoires.**
+Le commissariat dispose d'une cafétéria ! Vous pouvez manger entre 17h30 et 21h, quand vous voulez. **Les réservations sont obligatoires.**
 
 Il n'est pas obligatoire de manger sur place pour participer à la murder party.
 
