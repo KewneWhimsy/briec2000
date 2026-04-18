@@ -1,0 +1,207 @@
+---
+import type { EventData } from '../lib/markdown';
+
+interface Props {
+  action: string;
+  submitLabel: string;
+  existingSlug?: string;
+  existingSha?: string;
+  initial?: EventData & { content?: string };
+  error?: string;
+  githubOwner?: string;
+  githubRepo?: string;
+}
+const { action, submitLabel, existingSlug, existingSha, initial = {}, error, githubOwner = 'briec2000', githubRepo = 'briec2000' } = Astro.props;
+const ic = 'w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500';
+const menuNotesStr = (initial.menuNotes ?? []).join('\n');
+---
+
+{error && (
+  <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+    Erreur : {error}
+  </div>
+)}
+
+<form method="POST" action={action} enctype="multipart/form-data" class="space-y-6">
+  {existingSlug && <input type="hidden" name="_slug" value={existingSlug} />}
+  {existingSha && <input type="hidden" name="_sha" value={existingSha} />}
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
+    <h2 class="font-semibold text-gray-700 border-b pb-2">Informations générales</h2>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Titre *</label>
+      <input type="text" name="title" required value={initial.title ?? ''} class={ic} />
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Date *</label>
+        <input type="date" name="date" required value={initial.date ?? ''} class={ic} />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Heure *</label>
+        <input type="text" name="time" required value={initial.time ?? ''} placeholder="19h — 23h" class={ic} />
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Lieu *</label>
+      <input type="text" name="location" required value={initial.location ?? ''}
+        placeholder="SIVOM, Place de Ruthin, 29510 Briec" class={ic} />
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Description *</label>
+      <textarea name="description" required rows="3" class={`${ic} resize-y`}>{initial.description ?? ''}</textarea>
+      <p class="text-xs text-gray-400 mt-1">Courte description affichée dans la liste des événements.</p>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Image de présentation</label>
+      {initial.image && (
+        <div class="mb-3">
+          <img
+            id="image-preview"
+            src={`https://raw.githubusercontent.com/${import.meta.env.GITHUB_OWNER ?? 'briec2000'}/${import.meta.env.GITHUB_REPO ?? 'briec2000'}/master${initial.image}`}
+            alt="Aperçu"
+            class="h-40 rounded-lg object-cover border border-gray-200"
+          />
+        </div>
+      )}
+      {!initial.image && (
+        <div id="image-preview-wrap" class="hidden mb-3">
+          <img id="image-preview" alt="Aperçu" class="h-40 rounded-lg object-cover border border-gray-200" />
+        </div>
+      )}
+      <input type="file" name="image_file" id="image_file" accept="image/*"
+        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" />
+      <p class="text-xs text-gray-400 mt-1">
+        {initial.image
+          ? `Fichier actuel : ${initial.image} — choisir un nouveau fichier pour le remplacer`
+          : 'JPG, PNG, WebP recommandé'}
+      </p>
+      <input type="hidden" name="image" value={initial.image ?? ''} />
+    </div>
+
+    <label class="flex items-center gap-2 cursor-pointer">
+      <input type="checkbox" name="draft" class="w-4 h-4 text-blue-600 rounded" checked={initial.draft ?? false} />
+      <span class="text-sm font-medium text-gray-700">Brouillon (non visible sur le site)</span>
+    </label>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between border-b pb-2 mb-4">
+      <h2 class="font-semibold text-gray-700">Tarifs</h2>
+      <button type="button" id="add-price" class="text-sm text-blue-600 hover:text-blue-800 font-medium cursor-pointer">+ Ajouter</button>
+    </div>
+    <div id="prices-container" class="space-y-2">
+      {(initial.price ?? []).map(p => (
+        <div class="flex gap-2 items-center price-row">
+          <input type="text" name="price_name" value={p.name} placeholder="Nom du tarif"
+            class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <input type="number" name="price_amount" value={p.amount} step="0.01" min="0"
+            class="w-28 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <span class="text-gray-400 text-sm">€</span>
+          <button type="button" class="remove-price text-red-400 hover:text-red-600 px-2 text-xl leading-none cursor-pointer">&times;</button>
+        </div>
+      ))}
+    </div>
+    <p class="text-xs text-gray-400 mt-2">Optionnel. Laissez vide si entrée gratuite ou prix libre.</p>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h2 class="font-semibold text-gray-700 border-b pb-2 mb-4">Notes de menu</h2>
+    <textarea name="menu_notes" rows="3" class={`${ic} resize-y`}
+      placeholder="Une note par ligne&#10;Ex: Réservation obligatoire pour le repas"
+    >{menuNotesStr}</textarea>
+    <p class="text-xs text-gray-400 mt-1">Optionnel. Une note par ligne.</p>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <div class="flex items-center justify-between border-b pb-2 mb-4">
+      <h2 class="font-semibold text-gray-700">Galerie photos</h2>
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input type="checkbox" id="has_gallery" name="has_gallery" class="w-4 h-4 text-blue-600 rounded"
+          checked={!!initial.gallery} />
+        <span class="text-sm text-gray-600">Activer la galerie</span>
+      </label>
+    </div>
+    <div id="gallery-fields" class={`space-y-3 ${initial.gallery ? '' : 'hidden'}`}>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Photographe</label>
+        <input type="text" name="gallery_photographer" value={initial.gallery?.photographer ?? ''} class={ic} />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Index image de couverture</label>
+        <input type="number" name="gallery_cover_index" value={initial.gallery?.coverImageIndex ?? 0} min="0"
+          class="w-32 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Titre de la galerie (optionnel)</label>
+        <input type="text" name="gallery_title" value={initial.gallery?.title ?? ''} class={ic} />
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+    <h2 class="font-semibold text-gray-700 border-b pb-2 mb-4">Contenu (Markdown)</h2>
+    <textarea name="content" rows="20" class={`${ic} font-mono resize-y`}
+      placeholder="## Titre de section&#10;&#10;Votre contenu en Markdown..."
+    >{initial.content ?? ''}</textarea>
+  </div>
+
+  <div class="flex justify-between">
+    <a href="/hibou/" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-6 rounded-lg transition-colors text-sm">
+      Annuler
+    </a>
+    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors text-sm cursor-pointer">
+      {submitLabel}
+    </button>
+  </div>
+</form>
+
+<script>
+  // ── Galerie toggle ───────────────────────────────────────────────────────
+  const hasGallery = document.getElementById('has_gallery');
+  const galleryFields = document.getElementById('gallery-fields');
+  hasGallery?.addEventListener('change', () =>
+    galleryFields?.classList.toggle('hidden', !hasGallery.checked)
+  );
+
+  // ── Lignes de tarif dynamiques ───────────────────────────────────────────
+  const addBtn = document.getElementById('add-price');
+  const priceContainer = document.getElementById('prices-container');
+
+  function makeRow() {
+    const row = document.createElement('div');
+    row.className = 'flex gap-2 items-center price-row';
+    row.innerHTML = `
+      <input type="text" name="price_name" placeholder="Nom du tarif"
+        class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      <input type="number" name="price_amount" placeholder="0.00" step="0.01" min="0"
+        class="w-28 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      <span class="text-gray-400 text-sm">€</span>
+      <button type="button" class="remove-price text-red-400 hover:text-red-600 px-2 text-xl leading-none cursor-pointer">&times;</button>`;
+    row.querySelector('.remove-price')?.addEventListener('click', () => row.remove());
+    priceContainer?.appendChild(row);
+  }
+
+  addBtn?.addEventListener('click', makeRow);
+  priceContainer?.querySelectorAll('.remove-price').forEach(b =>
+    b.addEventListener('click', () => b.closest('.price-row')?.remove())
+  );
+
+  // ── Aperçu image upload (miniature dans le formulaire) ───────────────────
+  const fileInput = document.getElementById('image_file');
+  fileInput?.addEventListener('change', () => {
+    const file = fileInput.files?.[0];
+    if (!file) return;
+    const thumb = document.getElementById('image-preview');
+    const wrap  = document.getElementById('image-preview-wrap');
+    if (thumb) { thumb.src = URL.createObjectURL(file); thumb.style.display = 'block'; }
+    if (wrap)  wrap.classList.remove('hidden');
+  });
+
+
+</script>

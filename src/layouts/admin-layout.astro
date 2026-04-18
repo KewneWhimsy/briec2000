@@ -1,0 +1,28 @@
+---
+export const prerender = false;
+import "../styles/global.css";
+interface Props { title?: string; wide?: boolean }
+const { title = "Admin", wide = false } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>{title} — Admin Briec 2000</title>
+</head>
+<body class="bg-gray-50 min-h-screen text-gray-900">
+  <nav class="bg-slate-800 text-white px-6 py-3 flex items-center justify-between shadow">
+    <a href="/hibou/" class="font-bold text-lg">Briec 2000 — Admin</a>
+    <form method="POST" action="/api/hibou/logout/">
+      <button type="submit" class="text-sm text-slate-300 hover:text-white transition-colors cursor-pointer">
+        Déconnexion
+      </button>
+    </form>
+  </nav>
+  <main class={`${wide ? 'max-w-screen-xl' : 'max-w-5xl'} mx-auto p-6`}>
+    <slot />
+  </main>
+</body>
+</html>

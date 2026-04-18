@@ -1,0 +1,75 @@
+---
+export const prerender = false;
+import AdminLayout from "../../../layouts/admin-layout.astro";
+import AdminEventForm from "../../../components/admin-event-form.astro";
+import { getGithubToken } from '../../../lib/env';
+import { getEvent } from '../../../lib/github';
+import { parseFrontmatter } from '../../../lib/markdown';
+
+const { slug } = Astro.params;
+if (!slug) return Astro.redirect('/hibou/');
+
+const token = getGithubToken();
+const error = Astro.url.searchParams.get('error') ?? undefined;
+const githubOwner = import.meta.env.GITHUB_OWNER ?? 'briec2000';
+const githubRepo  = import.meta.env.GITHUB_REPO  ?? 'briec2000';
+
+let initial: any = {};
+let sha = '';
+
+try {
+  const { content, sha: fileSha } = await getEvent(token, slug);
+  sha = fileSha;
+  const { data, body } = parseFrontmatter(content);
+  initial = { ...data, content: body };
+} catch (e) {
+  return Astro.redirect('/hibou/?error=' + encodeURIComponent(String(e)));
+}
+---
+<AdminLayout title={`Modifier — ${initial.title ?? slug}`} wide>
+  <div class="flex gap-6 items-start">
+
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-3 mb-2">
+        <a href="/hibou/" class="text-gray-400 hover:text-gray-600 text-sm">← Retour</a>
+        <h1 class="text-2xl font-bold">Modifier l'événement</h1>
+      </div>
+      <p class="text-xs text-gray-400 mb-6">Fichier : <code class="bg-gray-100 px-1 rounded">{slug}.md</code></p>
+      <AdminEventForm
+        action="/api/hibou/save-event/"
+        submitLabel="Sauvegarder les modifications"
+        existingSlug={slug}
+        existingSha={sha}
+        initial={initial}
+        error={error}
+        githubOwner={githubOwner}
+        githubRepo={githubRepo}
+      />
+    </div>
+
+    <div class="w-[420px] shrink-0 sticky top-6">
+      <p class="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">Aperçu</p>
+      <iframe id="preview-frame"
+        class="w-full rounded-xl border border-gray-200 bg-white"
+        style="height: calc(100vh - 7rem)"></iframe>
+    </div>
+
+  </div>
+  <script is:inline>
+    (function() {
+      var frame = document.getElementById('preview-frame');
+      var form  = document.querySelector('form[action*="save-event"]');
+      if (!frame || !form) return;
+      var timer;
+      function refresh() {
+        fetch('/api/hibou/preview/', { method: 'POST', body: new FormData(form) })
+          .then(function(r) { return r.text(); })
+          .then(function(html) { frame.srcdoc = html.replace(/<script[\s\S]*?<\/script>/gi, ''); })
+          .catch(function(e) { console.error('preview:', e); });
+      }
+      form.addEventListener('input',  function() { clearTimeout(timer); timer = setTimeout(refresh, 600); });
+      form.addEventListener('change', function() { clearTimeout(timer); timer = setTimeout(refresh, 300); });
+      refresh();
+    })();
+  </script>
+</AdminLayout>
