@@ -4,16 +4,16 @@ date: 2026-04-25
 description: "Venez découvrir qui est le coupable en menant l'enquête auprès des suspects ! Le jeu se joue en équipe de 5, à partir de 10 ans. Prix libre (suggestion 2€)."
 location: "SIVOM, centre social du pays Glazik, Place de Ruthin, 29510 Briec"
 time: "Créneaux à 17h30 et 19h30, cafétéria de 17h30 à 21h"
-image: "/src/assets/events/murder.jpg"
+image: "/src/assets/events/2026-04-25-murder-party.webp"
 price:
   - name: "Participation (prix libre, suggestion)"
     amount: 2
   - name: "Croque-monsieur"
-    amount: 4.50
+    amount: 4.5
   - name: "Waffle burger"
-    amount: 7.50
+    amount: 7.5
   - name: "Gaufre"
-    amount: 1.50
+    amount: 1.5
 draft: false
 ---
 
