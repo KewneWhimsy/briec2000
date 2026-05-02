@@ -34,7 +34,7 @@ const menuNotesStr = (initial.menuNotes ?? []).join('\n');
       <input type="text" name="title" required value={initial.title ?? ''} class={ic} />
     </div>
 
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Date *</label>
         <input type="date" name="date" required value={initial.date ?? ''} class={ic} />
