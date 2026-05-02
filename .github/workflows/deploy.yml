@@ -20,6 +20,8 @@ jobs:
 
       - run: bun run build
 
+      - run: ls dist/ && ls dist/_worker.js/ 2>/dev/null || echo "pas de _worker.js"
+
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
