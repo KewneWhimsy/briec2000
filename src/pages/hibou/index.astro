@@ -58,7 +58,8 @@ const fmt = (d: string) => { const [y,m,j] = d.split('-'); return d ? `${j}/${m}
     {events.length === 0 && !loadError ? (
       <p class="text-gray-400 text-center py-12">Aucun événement.</p>
     ) : (
-      <table class="w-full text-sm">
+      <div class="overflow-x-auto">
+      <table class="w-full text-sm min-w-[480px]">
         <thead class="bg-gray-50 border-b border-gray-200">
           <tr>
             <th class="text-left px-4 py-3 font-medium text-gray-600">Date</th>
@@ -92,6 +93,7 @@ const fmt = (d: string) => { const [y,m,j] = d.split('-'); return d ? `${j}/${m}
           ))}
         </tbody>
       </table>
+      </div>
     )}
   </div>
 </AdminLayout>
