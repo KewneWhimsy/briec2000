@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
-  adapter: cloudflare({ platformProxy: { enabled: true }, imageService: 'compile' }),
+  adapter: cloudflare({ platformProxy: { enabled: true }, imageService: 'compile', session: false }),
 
   site: 'https://briec2000.fr',
 
