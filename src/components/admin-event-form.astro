@@ -145,7 +145,31 @@ const menuNotesStr = (initial.menuNotes ?? []).join('\n');
   </div>
 
   <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-    <h2 class="font-semibold text-gray-700 border-b pb-2 mb-4">Contenu (Markdown)</h2>
+    <div class="flex items-center justify-between border-b pb-2 mb-4">
+      <h2 class="font-semibold text-gray-700">Contenu (Markdown)</h2>
+    </div>
+    <details class="mb-4 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700">
+      <summary class="px-4 py-2 cursor-pointer text-blue-500 hover:text-blue-700 text-xs">Aide Markdown</summary>
+      <div class="px-4 pb-4 space-y-3">
+        <table class="w-full text-xs leading-relaxed">
+          <thead>
+            <tr class="text-left text-gray-500 border-b border-gray-200">
+              <th class="pb-1 pr-4 font-medium">Ce que tu écris</th>
+              <th class="pb-1 font-medium">Ce que ça donne</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr><td class="py-1 pr-4 font-mono">## Titre principal</td><td class="py-1">Gros titre de section</td></tr>
+            <tr><td class="py-1 pr-4 font-mono">### Sous-titre</td><td class="py-1">Titre plus petit</td></tr>
+            <tr><td class="py-1 pr-4 font-mono">**texte en gras**</td><td class="py-1"><strong>texte en gras</strong></td></tr>
+            <tr><td class="py-1 pr-4 font-mono">*texte en italique*</td><td class="py-1"><em>texte en italique</em></td></tr>
+            <tr><td class="py-1 pr-4 font-mono">- Premier élément{"\n"}- Deuxième élément</td><td class="py-1">Liste à puces</td></tr>
+            <tr><td class="py-1 pr-4 font-mono">[Texte du lien](https://…)</td><td class="py-1">Lien cliquable</td></tr>
+          </tbody>
+        </table>
+        <p class="text-xs text-gray-400">Laisser une ligne vide entre deux paragraphes pour les séparer.</p>
+      </div>
+    </details>
     <textarea name="content" rows="20" class={`${ic} font-mono resize-y`}
       placeholder="## Titre de section&#10;&#10;Votre contenu en Markdown..."
     >{initial.content ?? ''}</textarea>
